@@ -35,13 +35,20 @@ extension WebService {
                 do {
                     try self.validate(response, for: endpoint)
 
-                    let basicResponse: BasicResponse = try self.parse(from: data)
-                    try self.validate(basicResponse, for: endpoint)
+                    if BasicResponse.self != NoBasicResponse.self {
+                        let basicResponse: BasicResponse = try self.parse(from: data)
+                        try self.validate(basicResponse, for: endpoint)
+                    }
 
                     onComplete(.success(data))
                 }
                 catch {
-                    onComplete(.failure(error))
+                    if BasicResponse.self != NoErrorResponse.self, let response: ErrorResponse = try? self.parse(from: data) {
+                        onComplete(.failure(RequestError.parsed(response)))
+                    }
+                    else {
+                        onComplete(.failure(error))
+                    }
                 }
             }
             task.resume()

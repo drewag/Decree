@@ -22,6 +22,9 @@
 		4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694022E3B85500B69FFC /* TestService.swift */; };
 		4994694C22E3B8AD00B69FFC /* TestURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694122E3B85500B69FFC /* TestURLSession.swift */; };
 		4994694D22E3B8BA00B69FFC /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693D22E3B85500B69FFC /* XCTestManifests.swift */; };
+		4994694F22E3C30600B69FFC /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694E22E3C30600B69FFC /* ErrorResponse.swift */; };
+		4994695122E3C5D400B69FFC /* NoBasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994695022E3C5D400B69FFC /* NoBasicResponse.swift */; };
+		4994695422E3C85F00B69FFC /* TestNoStandardsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,9 @@
 		4994693E22E3B85500B69FFC /* EmptyResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyResultTests.swift; sourceTree = "<group>"; };
 		4994694022E3B85500B69FFC /* TestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestService.swift; sourceTree = "<group>"; };
 		4994694122E3B85500B69FFC /* TestURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestURLSession.swift; sourceTree = "<group>"; };
+		4994694E22E3C30600B69FFC /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		4994695022E3C5D400B69FFC /* NoBasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBasicResponse.swift; sourceTree = "<group>"; };
+		4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNoStandardsService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +147,8 @@
 				4994693122E3B84200B69FFC /* Method.swift */,
 				4994693222E3B84200B69FFC /* EmptyResult.swift */,
 				4994693322E3B84200B69FFC /* RequestError.swift */,
+				4994694E22E3C30600B69FFC /* ErrorResponse.swift */,
+				4994695022E3C5D400B69FFC /* NoBasicResponse.swift */,
 			);
 			name = "Basic Types";
 			path = "Sources/DeclarativeHTTPRequests/Basic Types";
@@ -162,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				4994694022E3B85500B69FFC /* TestService.swift */,
+				4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */,
 				4994694122E3B85500B69FFC /* TestURLSession.swift */,
 			);
 			path = Helpers;
@@ -278,11 +287,13 @@
 			files = (
 				4994693A22E3B84200B69FFC /* RequestError.swift in Sources */,
 				4994693822E3B84200B69FFC /* Method.swift in Sources */,
+				4994695122E3C5D400B69FFC /* NoBasicResponse.swift in Sources */,
 				4994693622E3B84200B69FFC /* WebService.swift in Sources */,
 				4994693922E3B84200B69FFC /* EmptyResult.swift in Sources */,
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,
 				4994693722E3B84200B69FFC /* Endpoint.swift in Sources */,
 				4994693422E3B84200B69FFC /* Endpoint+MakeRequest.swift in Sources */,
+				4994694F22E3C30600B69FFC /* ErrorResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +303,7 @@
 			files = (
 				4994694722E3B8A400B69FFC /* EmptyResultTests.swift in Sources */,
 				4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */,
+				4994695422E3C85F00B69FFC /* TestNoStandardsService.swift in Sources */,
 				4994694922E3B8AD00B69FFC /* MakeRequestTests.swift in Sources */,
 				4994694C22E3B8AD00B69FFC /* TestURLSession.swift in Sources */,
 				4994690122E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift in Sources */,

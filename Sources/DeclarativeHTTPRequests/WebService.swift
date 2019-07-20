@@ -25,7 +25,21 @@ public protocol WebService {
     ///
     /// This will be parsed from first from every response and provided
     /// to validate(_:for:) for an custom response validation
+    ///
+    /// If the service does not return a standard basic response, use `NoBasicResponse`
     associatedtype BasicResponse: Decodable
+
+    /// A type to represent all error responses
+    ///
+    /// When there is an error parsing/verifying the response,
+    /// this will be attempted to be decoded to provide a service
+    /// defined error message.
+    ///
+    /// For example, many services return a "message" property whenever
+    /// an error occures.
+    ///
+    /// If the service does not return JSON errors, simply use `NoErrorResponse`
+    associatedtype ErrorResponse: AnyErrorResponse
 
     /// The default web service to use for requests
     static var shared: Self {get}

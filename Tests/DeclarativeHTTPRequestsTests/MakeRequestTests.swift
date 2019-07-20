@@ -10,6 +10,7 @@ import DeclarativeHTTPRequests
 
 class MakeRequestTests: XCTestCase {
     let failData = #"{"success": false}"#.data(using: .utf8)!
+    let errorMessageData = #"{"message": "parsed error"}"#.data(using: .utf8)!
     let successData = #"{"success": true}"#.data(using: .utf8)!
     let invalidOutData = #"{"success": true, "date": "1969-07-20"}"#.data(using: .utf8)!
     let validOutData = #"{"success": true, "date": -14182980}"#.data(using: .utf8)!
@@ -115,6 +116,9 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "unsuccessful")})
 
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "parsed error")})
+
         self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
         XCTAssertNoThrow(try Empty().makeSynchronousRequest())
         XCTAssertThrowsError(try Out().makeSynchronousRequest(to: .sharedErrorConfiguring), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
@@ -145,6 +149,9 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: invalidOutData, response: TestResponse(), error: nil)
         XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "parsed error")})
+
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
         XCTAssertEqual(try Out().makeSynchronousRequest().date.timeIntervalSince1970, -14182980)
         XCTAssertThrowsError(try Out().makeSynchronousRequest(to: .sharedErrorConfiguring), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
@@ -168,6 +175,9 @@ class MakeRequestTests: XCTestCase {
 
         self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "unsuccessful")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "parsed error")})
 
         self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
         XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
@@ -202,6 +212,9 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: invalidOutData, response: TestResponse(), error: nil)
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "parsed error")})
+
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
         XCTAssertEqual(try InOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
@@ -209,73 +222,42 @@ class MakeRequestTests: XCTestCase {
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
-}
 
-struct Empty: EmptyEndpoint {
-    typealias Service = TestService
-    static let method = Method.get
+    func testIgnoringBasicAndErrorResponses() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "No response returned")})
 
-    let path = "empty"
-}
+        self.session.fixedOutput = (data: nil, response: nil, error: RequestError.custom("custom"))
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "custom")})
 
-struct Out: OutEndpoint {
-    typealias Service = TestService
-    static let method = Method.get
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "No data returned")})
 
-    typealias Output = TestOutput
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 500), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Bad status code: 500")})
 
-    let path = "out"
-}
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
-struct In: InEndpoint {
-    typealias Service = TestService
-    static let method = Method.put
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
-    typealias Input = TestInput
+        self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
-    let path = "in"
-}
+        self.session.fixedOutput = (data: invalidOutData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
-struct InOut: InOutEndpoint {
-    typealias Service = TestService
-    static let method = Method.post
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
 
-    typealias Input = TestInput
-    typealias Output = TestOutput
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
-    let path = "inout"
-}
-
-struct TestInput: Encodable {
-    let date: Date?
-    let otherError: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case date
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, otherError: false)")})
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
-
-    init(date: Date?, otherError: Bool = false) {
-        self.date = date
-        self.otherError = otherError
-    }
-
-    func encode(to encoder: Swift.Encoder) throws {
-        guard !otherError else {
-            throw RequestError.custom("other encoding error")
-        }
-
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        guard let date = self.date else {
-            let context = EncodingError.Context(codingPath: [], debugDescription: "nil date")
-            throw EncodingError.invalidValue(self.date as Any, context)
-        }
-        try container.encode(date, forKey: .date)
-    }
-}
-
-struct TestOutput: Decodable {
-    let date: Date
 }
 
 extension Result {

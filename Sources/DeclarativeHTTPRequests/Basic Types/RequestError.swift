@@ -12,6 +12,7 @@ public enum RequestError: Error {
     case missingData
     case decoding(typeName: String, DecodingError)
     case encoding(Encodable, EncodingError)
+    case parsed(AnyErrorResponse)
 
     case custom(String)
 }
@@ -29,6 +30,8 @@ extension RequestError: CustomStringConvertible {
             return "Error decoding \(typeName)"
         case .encoding(let value, _):
             return "Error encoding \(value)"
+        case .parsed(let parsed):
+            return parsed.message
         }
     }
 }

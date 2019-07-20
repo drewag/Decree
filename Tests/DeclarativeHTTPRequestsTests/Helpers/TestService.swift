@@ -13,6 +13,10 @@ struct TestService: WebService {
         let success: Bool
     }
 
+    struct ErrorResponse: AnyErrorResponse {
+        let message: String
+    }
+
     static var shared = TestService(errorConfiguring: false)
     static var sharedErrorConfiguring = TestService(errorConfiguring: true)
 
@@ -55,4 +59,71 @@ struct TestService: WebService {
             throw RequestError.custom("unsuccessful")
         }
     }
+}
+
+struct Empty: EmptyEndpoint {
+    typealias Service = TestService
+    static let method = Method.get
+
+    let path = "empty"
+}
+
+struct Out: OutEndpoint {
+    typealias Service = TestService
+    static let method = Method.get
+
+    typealias Output = TestOutput
+
+    let path = "out"
+}
+
+struct In: InEndpoint {
+    typealias Service = TestService
+    static let method = Method.put
+
+    typealias Input = TestInput
+
+    let path = "in"
+}
+
+struct InOut: InOutEndpoint {
+    typealias Service = TestService
+    static let method = Method.post
+
+    typealias Input = TestInput
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
+struct TestInput: Encodable {
+    let date: Date?
+    let otherError: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case date
+    }
+
+    init(date: Date?, otherError: Bool = false) {
+        self.date = date
+        self.otherError = otherError
+    }
+
+    func encode(to encoder: Swift.Encoder) throws {
+        guard !otherError else {
+            throw RequestError.custom("other encoding error")
+        }
+
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        guard let date = self.date else {
+            let context = EncodingError.Context(codingPath: [], debugDescription: "nil date")
+            throw EncodingError.invalidValue(self.date as Any, context)
+        }
+        try container.encode(date, forKey: .date)
+    }
+}
+
+struct TestOutput: Decodable {
+    let date: Date
 }
