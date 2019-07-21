@@ -71,7 +71,7 @@ CheckStatus().makeRequest() { result in
 }
 ```
     
-We can also make synchronous requests that simply throw an error if an error occures.
+We can also make synchronous requests that simply throw an error if an error occurs.
 
 ```swift
 try CheckStatus().makeSynchronousRequest()
