@@ -20,6 +20,8 @@ public protocol Endpoint {
 
     /// The path to be appended to the Service's base URL
     var path: String {get}
+
+    static var authorizationRequirement: AuthorizationRequirement {get}
 }
 
 /// Requirements for endpoints with input
@@ -58,6 +60,9 @@ public protocol InOutEndpoint: EndpointWithInput, EndpointWithOutput {}
 extension Endpoint {
     /// Default method to GET
     public static var method: Method { return .get }
+
+    /// Default to including auth if present
+    public static var authorizationRequirement: AuthorizationRequirement { return .optional }
 }
 
 extension EndpointWithInput {

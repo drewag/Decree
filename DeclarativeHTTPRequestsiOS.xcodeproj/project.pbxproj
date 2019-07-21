@@ -19,13 +19,23 @@
 		4994693922E3B84200B69FFC /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693222E3B84200B69FFC /* EmptyResult.swift */; };
 		4994693A22E3B84200B69FFC /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693322E3B84200B69FFC /* RequestError.swift */; };
 		4994694722E3B8A400B69FFC /* EmptyResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693E22E3B85500B69FFC /* EmptyResultTests.swift */; };
-		4994694922E3B8AD00B69FFC /* MakeRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693C22E3B85500B69FFC /* MakeRequestTests.swift */; };
+		4994694922E3B8AD00B69FFC /* RequestFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693C22E3B85500B69FFC /* RequestFlowTests.swift */; };
 		4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694022E3B85500B69FFC /* TestService.swift */; };
 		4994694C22E3B8AD00B69FFC /* TestURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694122E3B85500B69FFC /* TestURLSession.swift */; };
 		4994694D22E3B8BA00B69FFC /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994693D22E3B85500B69FFC /* XCTestManifests.swift */; };
 		4994694F22E3C30600B69FFC /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994694E22E3C30600B69FFC /* ErrorResponse.swift */; };
 		4994695122E3C5D400B69FFC /* NoBasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994695022E3C5D400B69FFC /* NoBasicResponse.swift */; };
 		4994695422E3C85F00B69FFC /* TestNoStandardsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */; };
+		49ADB56222E4E2C5008BD9CB /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56122E4E2C5008BD9CB /* Authorization.swift */; };
+		49ADB56422E4E6FF008BD9CB /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56322E4E6FF008BD9CB /* AuthorizationRequirement.swift */; };
+		49ADB56722E4E9D5008BD9CB /* AuthenticatedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56522E4E9CB008BD9CB /* AuthenticatedService.swift */; };
+		49ADB56A22E4EC6D008BD9CB /* ResponseParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56822E4EC63008BD9CB /* ResponseParsingTests.swift */; };
+		49ADB56C22E4ECB9008BD9CB /* Data+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56B22E4ECB9008BD9CB /* Data+Helpers.swift */; };
+		49ADB56E22E4ECDD008BD9CB /* Decodable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56D22E4ECDD008BD9CB /* Decodable+Helpers.swift */; };
+		49ADB57022E4ECF9008BD9CB /* Result+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB56F22E4ECF9008BD9CB /* Result+Helpers.swift */; };
+		49ADB57222E4ED72008BD9CB /* StatusCodeValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */; };
+		49ADB57422E4EDC2008BD9CB /* MakeRequestTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57322E4EDC2008BD9CB /* MakeRequestTestCase.swift */; };
+		49ADB57622E4EE13008BD9CB /* AuthenticationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57522E4EE13008BD9CB /* AuthenticationTests.swift */; };
 		49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */; };
 		49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */; };
 		49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5222E3D18100D17CD0 /* RequestInput.swift */; };
@@ -60,7 +70,7 @@
 		4994693122E3B84200B69FFC /* Method.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
 		4994693222E3B84200B69FFC /* EmptyResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyResult.swift; sourceTree = "<group>"; };
 		4994693322E3B84200B69FFC /* RequestError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
-		4994693C22E3B85500B69FFC /* MakeRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeRequestTests.swift; sourceTree = "<group>"; };
+		4994693C22E3B85500B69FFC /* RequestFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestFlowTests.swift; sourceTree = "<group>"; };
 		4994693D22E3B85500B69FFC /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		4994693E22E3B85500B69FFC /* EmptyResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyResultTests.swift; sourceTree = "<group>"; };
 		4994694022E3B85500B69FFC /* TestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestService.swift; sourceTree = "<group>"; };
@@ -68,6 +78,16 @@
 		4994694E22E3C30600B69FFC /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		4994695022E3C5D400B69FFC /* NoBasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBasicResponse.swift; sourceTree = "<group>"; };
 		4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNoStandardsService.swift; sourceTree = "<group>"; };
+		49ADB56122E4E2C5008BD9CB /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
+		49ADB56322E4E6FF008BD9CB /* AuthorizationRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequirement.swift; sourceTree = "<group>"; };
+		49ADB56522E4E9CB008BD9CB /* AuthenticatedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedService.swift; sourceTree = "<group>"; };
+		49ADB56822E4EC63008BD9CB /* ResponseParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseParsingTests.swift; sourceTree = "<group>"; };
+		49ADB56B22E4ECB9008BD9CB /* Data+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Helpers.swift"; sourceTree = "<group>"; };
+		49ADB56D22E4ECDD008BD9CB /* Decodable+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+Helpers.swift"; sourceTree = "<group>"; };
+		49ADB56F22E4ECF9008BD9CB /* Result+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Helpers.swift"; sourceTree = "<group>"; };
+		49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCodeValidationTests.swift; sourceTree = "<group>"; };
+		49ADB57322E4EDC2008BD9CB /* MakeRequestTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeRequestTestCase.swift; sourceTree = "<group>"; };
+		49ADB57522E4EE13008BD9CB /* AuthenticationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTests.swift; sourceTree = "<group>"; };
 		49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormat.swift; sourceTree = "<group>"; };
 		49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoder.swift; sourceTree = "<group>"; };
 		49FD0D5222E3D18100D17CD0 /* RequestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInput.swift; sourceTree = "<group>"; };
@@ -171,6 +191,8 @@
 				4994695022E3C5D400B69FFC /* NoBasicResponse.swift */,
 				49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */,
 				49FD0EFA22E41BCA00D17CD0 /* Session.swift */,
+				49ADB56122E4E2C5008BD9CB /* Authorization.swift */,
+				49ADB56322E4E6FF008BD9CB /* AuthorizationRequirement.swift */,
 			);
 			name = "Basic Types";
 			path = "Sources/DeclarativeHTTPRequests/Basic Types";
@@ -179,11 +201,15 @@
 		4994693B22E3B85500B69FFC /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4994693C22E3B85500B69FFC /* MakeRequestTests.swift */,
-				4994693D22E3B85500B69FFC /* XCTestManifests.swift */,
+				49ADB57322E4EDC2008BD9CB /* MakeRequestTestCase.swift */,
+				4994693C22E3B85500B69FFC /* RequestFlowTests.swift */,
+				49ADB56822E4EC63008BD9CB /* ResponseParsingTests.swift */,
+				49ADB57522E4EE13008BD9CB /* AuthenticationTests.swift */,
+				49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */,
 				4994693E22E3B85500B69FFC /* EmptyResultTests.swift */,
 				49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */,
 				4994693F22E3B85500B69FFC /* Helpers */,
+				4994693D22E3B85500B69FFC /* XCTestManifests.swift */,
 			);
 			name = Tests;
 			path = Tests/DeclarativeHTTPRequestsTests;
@@ -196,6 +222,10 @@
 				4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */,
 				4994694122E3B85500B69FFC /* TestURLSession.swift */,
 				4980FE9622E4532700531D7C /* TestMinimalService.swift */,
+				49ADB56522E4E9CB008BD9CB /* AuthenticatedService.swift */,
+				49ADB56B22E4ECB9008BD9CB /* Data+Helpers.swift */,
+				49ADB56D22E4ECDD008BD9CB /* Decodable+Helpers.swift */,
+				49ADB56F22E4ECF9008BD9CB /* Result+Helpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -319,11 +349,13 @@
 				49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */,
 				49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */,
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,
+				49ADB56422E4E6FF008BD9CB /* AuthorizationRequirement.swift in Sources */,
 				4994693722E3B84200B69FFC /* Endpoint.swift in Sources */,
 				49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */,
 				49FD1C5422E43E8200D17CD0 /* ResponseError.swift in Sources */,
 				4994693422E3B84200B69FFC /* Endpoint+MakeRequest.swift in Sources */,
 				4994694F22E3C30600B69FFC /* ErrorResponse.swift in Sources */,
+				49ADB56222E4E2C5008BD9CB /* Authorization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,12 +364,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				4994694722E3B8A400B69FFC /* EmptyResultTests.swift in Sources */,
+				49ADB57622E4EE13008BD9CB /* AuthenticationTests.swift in Sources */,
+				49ADB56722E4E9D5008BD9CB /* AuthenticatedService.swift in Sources */,
 				4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */,
 				4980FE9722E4532700531D7C /* TestMinimalService.swift in Sources */,
 				4994695422E3C85F00B69FFC /* TestNoStandardsService.swift in Sources */,
-				4994694922E3B8AD00B69FFC /* MakeRequestTests.swift in Sources */,
+				4994694922E3B8AD00B69FFC /* RequestFlowTests.swift in Sources */,
 				4994694C22E3B8AD00B69FFC /* TestURLSession.swift in Sources */,
+				49ADB57422E4EDC2008BD9CB /* MakeRequestTestCase.swift in Sources */,
+				49ADB56A22E4EC6D008BD9CB /* ResponseParsingTests.swift in Sources */,
+				49ADB57222E4ED72008BD9CB /* StatusCodeValidationTests.swift in Sources */,
 				4994690122E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift in Sources */,
+				49ADB56C22E4ECB9008BD9CB /* Data+Helpers.swift in Sources */,
+				49ADB57022E4ECF9008BD9CB /* Result+Helpers.swift in Sources */,
+				49ADB56E22E4ECDD008BD9CB /* Decodable+Helpers.swift in Sources */,
 				49FD0EF922E3D9BB00D17CD0 /* KeyValueEncoderTests.swift in Sources */,
 				4994694D22E3B8BA00B69FFC /* XCTestManifests.swift in Sources */,
 			);

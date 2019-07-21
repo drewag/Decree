@@ -9,6 +9,7 @@ import Foundation
 
 public enum RequestError: Error {
     case encoding(Encodable, EncodingError)
+    case unauthorized
 
     case custom(String)
 }
@@ -20,6 +21,8 @@ extension RequestError: CustomStringConvertible {
             return message
         case .encoding(let value, _):
             return "Error encoding \(value)"
+        case .unauthorized:
+            return "Unauthorized"
         }
     }
 }

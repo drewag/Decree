@@ -55,28 +55,37 @@ public protocol WebService {
     /// to this URL
     var baseURL: URL {get}
 
+    /// The authorization to include with each request based on the auth requirement of
+    /// its endpoint
+    ///
+    /// This is expected to change as the client is authenticated and deauthenticated
+    var authorization: Authorization {get}
+
     // MARK: Configuration
 
     /// **OPTIONAL** Chance to configure each URLRequest
     func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws
 
-    // **OPTIONAL** Chance to configure each input encoder
+    /// **OPTIONAL** Chance to configure each input encoder
     func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws
 
-    // **OPTIONAL** Chance to configure each output encoder
+    /// **OPTIONAL** Chance to configure each output encoder
     func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws
 
     // MARK: Validation
 
-    // **OPTIONAL** Chance to validate the URLResponse
+    /// **OPTIONAL** Chance to validate the URLResponse
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws
 
-    // **OPTIONAL** Chance to validate the BasicResponse
+    /// **OPTIONAL** Chance to validate the BasicResponse
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws
 }
 
 
 extension WebService {
+    /// Default to having no authorization
+    public var authorization: Authorization { return .none }
+
     public var sessionOverride: Session? { return nil }
     public func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {}
     public func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws {}

@@ -145,6 +145,7 @@ struct TestInput: Encodable {
     enum CodingKeys: String, CodingKey {
         case date
         case string
+        case nullValue
     }
 
     init(date: Date?, otherError: Bool = false) {
@@ -165,6 +166,7 @@ struct TestInput: Encodable {
         }
         try container.encode(date, forKey: .date)
         try container.encode(self.string, forKey: .string)
+        try container.encodeNil(forKey: .nullValue)
     }
 }
 

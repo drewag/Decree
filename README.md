@@ -32,6 +32,11 @@ Features
 - URL Query
 - Form URL Encoded
 
+**Three types of Authorization**
+- Basic
+- Bearer
+- Custom
+
 **Configable**
 - Customize URLRequest (e.g. custom headers)
 - Customize JSON encoders and decoders

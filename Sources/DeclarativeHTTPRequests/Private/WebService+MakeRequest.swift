@@ -164,9 +164,36 @@ private extension WebService {
 
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
+        switch E.authorizationRequirement {
+        case .none:
+            break
+        case .optional:
+            try self.addAuthorization(to: &request, isRequired: false)
+        case .required:
+            try self.addAuthorization(to: &request, isRequired: true)
+        }
+
         try self.configure(&request, for: endpoint)
 
         return request
+    }
+
+    func addAuthorization(to request: inout URLRequest, isRequired: Bool) throws {
+        switch self.authorization {
+        case .none:
+            if isRequired {
+                throw RequestError.unauthorized
+            }
+        case let .basic(username, password):
+            guard let base64Token = "\(username):\(password)".data(using: .utf8)?.base64EncodedString() else {
+                throw RequestError.custom("invalid username and/or password for basic auth")
+            }
+            request.setValue("Basic \(base64Token)", forHTTPHeaderField: "Authorization")
+        case .bearer(let base64Token):
+            request.setValue("Bearer \(base64Token)", forHTTPHeaderField: "Authorization")
+        case .custom(let key, let value):
+            request.setValue(value, forHTTPHeaderField: key)
+        }
     }
 
     func automaticValidate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {
