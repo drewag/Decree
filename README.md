@@ -1,7 +1,13 @@
 Declarative HTTP Requests
 ==============
 
-Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints.
+*Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints.*
+
+When it comes to making URL requests with Swift, you largely have two options: use the URLSession APIs in Foundation or use some heavy handed framework.
+
+This framework is designed to be light-weight while remaining customizable and focusing on declaring the interface to an API in a declarative manner. Once declared, making requests to the various endpoints is very straight-forward and type safe. It works on iOS, macOS, and Linux.
+
+I developed this strategy through the implementation of many different apps and backend services written in Swift. I've used this paradigm for communicating between my own front and back-ends (both implemented in Swift) as well as to services such as Spotify, Freshdesk, Stripe, and more.
 
 Table of Contents
 --------------
