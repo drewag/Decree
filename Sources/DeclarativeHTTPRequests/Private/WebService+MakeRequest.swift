@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import XMLParsing
 
 extension WebService {
     /// Make request to any endpoint
@@ -76,6 +77,10 @@ extension WebService {
                 var encoder = JSONEncoder()
                 try self.configure(&encoder, for: endpoint)
                 return .json(try encoder.encode(input))
+            case .XML(let rootNode):
+                var encoder = XMLEncoder()
+                try self.configure(&encoder, for: endpoint)
+                return .xml(try encoder.encode(input, withRootKey: rootNode))
             case .urlQuery:
                 let encoder = KeyValueEncoder(codingPath: [])
                 try input.encode(to: encoder)
@@ -110,9 +115,16 @@ extension WebService {
             throw ResponseError.missingData
         }
         do {
-            var decoder = JSONDecoder()
-            try self.configure(&decoder, for: endpoint)
-            return try decoder.decode(Output.self, from: data)
+            switch E.outputFormat {
+            case .JSON:
+                var decoder = JSONDecoder()
+                try self.configure(&decoder, for: endpoint)
+                return try decoder.decode(Output.self, from: data)
+            case .XML:
+                var decoder = XMLDecoder()
+                try self.configure(&decoder, for: endpoint)
+                return try decoder.decode(Output.self, from: data)
+            }
         }
         catch let error as DecodingError {
             throw ResponseError.decoding(typeName: "\(Output.self)", error)
@@ -138,7 +150,7 @@ private extension WebService {
         }
 
         switch input {
-        case .none, .json, .formURLEncoded:
+        case .none, .json, .formURLEncoded, .xml:
             break
         case .urlQuery(let query):
             components.queryItems = query
@@ -156,6 +168,9 @@ private extension WebService {
             break
         case .json(let data):
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = data
+        case .xml(let data):
+            request.setValue("text/xml", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
         case .formURLEncoded(let data):
             request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")

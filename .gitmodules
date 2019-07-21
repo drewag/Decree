@@ -1,0 +1,3 @@
+[submodule "iOS/XMLParsing"]
+	path = iOS/XMLParsing
+	url = https://github.com/drewag/XMLParsing.git

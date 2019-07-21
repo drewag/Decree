@@ -8,6 +8,7 @@
 /// Format for uploading data to endpoint
 public enum InputFormat {
     case JSON
+    case XML(rootNode: String)
     case urlQuery
     case formURLEncoded
 }

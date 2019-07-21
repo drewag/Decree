@@ -36,6 +36,8 @@
 		49ADB57222E4ED72008BD9CB /* StatusCodeValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */; };
 		49ADB57422E4EDC2008BD9CB /* MakeRequestTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57322E4EDC2008BD9CB /* MakeRequestTestCase.swift */; };
 		49ADB57622E4EE13008BD9CB /* AuthenticationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB57522E4EE13008BD9CB /* AuthenticationTests.swift */; };
+		49ADB59722E50D13008BD9CB /* XMLParsing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49ADB59522E50D05008BD9CB /* XMLParsing.framework */; };
+		49ADB59922E50F05008BD9CB /* OutputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB59822E50F05008BD9CB /* OutputFormat.swift */; };
 		49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */; };
 		49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */; };
 		49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5222E3D18100D17CD0 /* RequestInput.swift */; };
@@ -52,6 +54,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 499468F122E38D1B00B69FFC;
 			remoteInfo = DeclarativeHTTPRequests;
+		};
+		49ADB59222E50D05008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB58B22E50D05008BD9CB /* XMLParsing.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "XMLParsing::XMLParsingTests::Product";
+			remoteInfo = XMLParsingTests;
+		};
+		49ADB59422E50D05008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB58B22E50D05008BD9CB /* XMLParsing.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "XMLParsing::XMLParsing::Product";
+			remoteInfo = XMLParsing;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -88,6 +104,8 @@
 		49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCodeValidationTests.swift; sourceTree = "<group>"; };
 		49ADB57322E4EDC2008BD9CB /* MakeRequestTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeRequestTestCase.swift; sourceTree = "<group>"; };
 		49ADB57522E4EE13008BD9CB /* AuthenticationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTests.swift; sourceTree = "<group>"; };
+		49ADB58B22E50D05008BD9CB /* XMLParsing.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XMLParsing.xcodeproj; path = iOS/XMLParsing/XMLParsing.xcodeproj; sourceTree = SOURCE_ROOT; };
+		49ADB59822E50F05008BD9CB /* OutputFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputFormat.swift; sourceTree = "<group>"; };
 		49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormat.swift; sourceTree = "<group>"; };
 		49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoder.swift; sourceTree = "<group>"; };
 		49FD0D5222E3D18100D17CD0 /* RequestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInput.swift; sourceTree = "<group>"; };
@@ -102,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49ADB59722E50D13008BD9CB /* XMLParsing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,9 +138,11 @@
 		499468E822E38D1B00B69FFC = {
 			isa = PBXGroup;
 			children = (
+				49ADB58A22E50CE0008BD9CB /* External */,
 				499468F422E38D1B00B69FFC /* DeclarativeHTTPRequests */,
 				499468FF22E38D1B00B69FFC /* DeclarativeHTTPRequestsTests */,
 				499468F322E38D1B00B69FFC /* Products */,
+				49ADB59622E50D13008BD9CB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,6 +211,7 @@
 				4994694E22E3C30600B69FFC /* ErrorResponse.swift */,
 				4994695022E3C5D400B69FFC /* NoBasicResponse.swift */,
 				49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */,
+				49ADB59822E50F05008BD9CB /* OutputFormat.swift */,
 				49FD0EFA22E41BCA00D17CD0 /* Session.swift */,
 				49ADB56122E4E2C5008BD9CB /* Authorization.swift */,
 				49ADB56322E4E6FF008BD9CB /* AuthorizationRequirement.swift */,
@@ -228,6 +250,30 @@
 				49ADB56F22E4ECF9008BD9CB /* Result+Helpers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		49ADB58A22E50CE0008BD9CB /* External */ = {
+			isa = PBXGroup;
+			children = (
+				49ADB58B22E50D05008BD9CB /* XMLParsing.xcodeproj */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		49ADB58C22E50D05008BD9CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49ADB59322E50D05008BD9CB /* XMLParsingTests.xctest */,
+				49ADB59522E50D05008BD9CB /* XMLParsing.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49ADB59622E50D13008BD9CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,6 +355,12 @@
 			mainGroup = 499468E822E38D1B00B69FFC;
 			productRefGroup = 499468F322E38D1B00B69FFC /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 49ADB58C22E50D05008BD9CB /* Products */;
+					ProjectRef = 49ADB58B22E50D05008BD9CB /* XMLParsing.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				499468F122E38D1B00B69FFC /* DeclarativeHTTPRequests */,
@@ -316,6 +368,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		49ADB59322E50D05008BD9CB /* XMLParsingTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = XMLParsingTests.xctest;
+			remoteRef = 49ADB59222E50D05008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		49ADB59522E50D05008BD9CB /* XMLParsing.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = XMLParsing.framework;
+			remoteRef = 49ADB59422E50D05008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		499468F022E38D1B00B69FFC /* Resources */ = {
@@ -346,6 +415,7 @@
 				4994695122E3C5D400B69FFC /* NoBasicResponse.swift in Sources */,
 				4994693622E3B84200B69FFC /* WebService.swift in Sources */,
 				4994693922E3B84200B69FFC /* EmptyResult.swift in Sources */,
+				49ADB59922E50F05008BD9CB /* OutputFormat.swift in Sources */,
 				49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */,
 				49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */,
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,

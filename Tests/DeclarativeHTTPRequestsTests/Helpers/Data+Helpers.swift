@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import XMLParsing
 
 extension Data {
     var string: String? {
@@ -15,6 +16,11 @@ extension Data {
 
     var jsonDict: [String:Raw] {
         let decoder = JSONDecoder()
+        return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
+    }
+
+    var xmlDict: [String:Raw] {
+        let decoder = XMLDecoder()
         return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
     }
 }

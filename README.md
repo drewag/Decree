@@ -27,10 +27,15 @@ Features
 - `OutEndpoint` (only output)
 - `InOutEndpoint` (input and output)
 
-**Three Input formats**
+**Four Input formats**
 - JSON
 - URL Query
 - Form URL Encoded
+- XML
+
+**Two Output formats**
+- JSON
+- XML
 
 **Three types of Authorization**
 - Basic
@@ -75,13 +80,13 @@ CheckStatus().makeRequest() { result in
     }
 }
 ```
-    
+
 We can also make synchronous requests that simply throw an error if an error occurs.
 
 ```swift
 try CheckStatus().makeSynchronousRequest()
 ```
-    
+
 ### Input and Output
 
 We can also define endpoints that have input and/or output. Here, we define a Login endpoint that is a
@@ -105,7 +110,7 @@ struct Login: InOutEndpoint {
     }
 }
 ```
-    
+
 Then we can make an asynchronous request.
 
 ```swift
@@ -146,7 +151,7 @@ struct ExampleService: WebService {
     let baseURL = URL(string: "https://example.com")!
 }
 ```
-    
+
 Here we define a `WebService` called `ExampleService` with the a few properties.
 
 That's all you need. You can then define as many endpoints as you like and use them in a clear and type safe way.

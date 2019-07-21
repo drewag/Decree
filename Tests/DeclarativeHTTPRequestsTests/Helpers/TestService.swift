@@ -7,6 +7,7 @@
 
 import Foundation
 import DeclarativeHTTPRequests
+import XMLParsing
 
 struct TestService: WebService {
     struct BasicResponse: Decodable {
@@ -45,6 +46,14 @@ struct TestService: WebService {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
 
+    func configure<E: Endpoint>(_ encoder: inout XMLEncoder, for endpoint: E) throws {
+        encoder.dateEncodingStrategy = .secondsSince1970
+    }
+
+    func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws {
+        decoder.dateDecodingStrategy = .secondsSince1970
+    }
+
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
         guard statusCode != 201 else {
@@ -71,6 +80,16 @@ struct Out: OutEndpoint {
     typealias Output = TestOutput
 
     let path = "out"
+}
+
+struct XMLOut: OutEndpoint {
+    typealias Service = TestService
+
+    typealias Output = TestOutput
+
+    let path = "out"
+
+    static let outputFormat = OutputFormat.XML
 }
 
 struct In: InEndpoint {
@@ -137,9 +156,31 @@ struct FormInOut: InOutEndpoint {
     let path = "inout"
 }
 
+struct XMLIn: InEndpoint {
+    typealias Service = TestService
+    static let method = Method.put
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.XML(rootNode: "root")
+
+    let path = "in"
+}
+
+struct XMLInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let method = Method.post
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.XML(rootNode: "root")
+
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
 struct TestInput: Encodable {
     let date: Date?
-    let string = "weird&=?characters"
+    let string = "weird&=?<>characters"
     let otherError: Bool
 
     enum CodingKeys: String, CodingKey {

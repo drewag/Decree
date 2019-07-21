@@ -22,6 +22,11 @@ public protocol Endpoint {
     var path: String {get}
 
     static var authorizationRequirement: AuthorizationRequirement {get}
+
+    /// **OPTIONAL** The format for parsing the output
+    ///
+    /// Defaults to JSON
+    static var outputFormat: OutputFormat {get}
 }
 
 /// Requirements for endpoints with input
@@ -63,6 +68,9 @@ extension Endpoint {
 
     /// Default to including auth if present
     public static var authorizationRequirement: AuthorizationRequirement { return .optional }
+
+    /// Default to JSON input
+    public static var outputFormat: OutputFormat { return .JSON }
 }
 
 extension EndpointWithInput {

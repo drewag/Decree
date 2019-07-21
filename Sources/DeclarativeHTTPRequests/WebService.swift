@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import XMLParsing
 
 /// Root of a given request
 ///
@@ -72,6 +73,12 @@ public protocol WebService {
     /// **OPTIONAL** Chance to configure each output encoder
     func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws
 
+    /// **OPTIONAL** Chance to configure each input encoder
+    func configure<E: Endpoint>(_ encoder: inout XMLEncoder, for endpoint: E) throws
+
+    /// **OPTIONAL** Chance to configure each output encoder
+    func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws
+
     // MARK: Validation
 
     /// **OPTIONAL** Chance to validate the URLResponse
@@ -90,6 +97,8 @@ extension WebService {
     public func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {}
     public func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws {}
     public func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws {}
+    public func configure<E: Endpoint>(_ encoder: inout XMLEncoder, for endpoint: E) throws {}
+    public func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {}
 }

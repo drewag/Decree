@@ -43,6 +43,8 @@ extension RequestFlowTests {
         ("testOutRequestFlow", testOutRequestFlow),
         ("testURLQueryInOutRequestFlow", testURLQueryInOutRequestFlow),
         ("testURLQueryInRequestFlow", testURLQueryInRequestFlow),
+        ("testXMLInOutRequestFlow", testXMLInOutRequestFlow),
+        ("testXMLInRequestFlow", testXMLInRequestFlow),
     ]
 }
 
@@ -57,6 +59,7 @@ extension ResponseParsingTests {
         ("testInOut", testInOut),
         ("testMinimalInOutRequest", testMinimalInOutRequest),
         ("testOut", testOut),
+        ("testXMLOut", testXMLOut),
     ]
 }
 

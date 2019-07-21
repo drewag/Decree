@@ -7,6 +7,7 @@
 
 import Foundation
 import DeclarativeHTTPRequests
+import XMLParsing
 
 struct TestNoStandardsService: WebService {
     typealias BasicResponse = NoBasicResponse
@@ -36,6 +37,14 @@ struct TestNoStandardsService: WebService {
     }
 
     func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws {
+        decoder.dateDecodingStrategy = .secondsSince1970
+    }
+
+    func configure<E: Endpoint>(_ encoder: inout XMLEncoder, for endpoint: E) throws {
+        encoder.dateEncodingStrategy = .secondsSince1970
+    }
+
+    func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
 
