@@ -6,6 +6,8 @@
 //  Copyright © 2019 Drewag. All rights reserved.
 //
 
+import Foundation
+
 public enum ResponseError: Error {
     case noResponse
     case missingData
