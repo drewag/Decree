@@ -1,8 +1,28 @@
 Declarative HTTP Requests
 ==============
 
-Make HTTP requests by declaratively defining web services and endpoints.
+Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints.
 
+Features
+--------
+
+**Four types of Endpoints**
+- `EmptyEndpoint` (no input or output)
+- `InEndpoint` (only input)
+- `OutEndpoint` (only output)
+- `InOutEndpoint` (input and output)
+
+**Two Input formats**
+- JSON
+- URL Query
+
+**Configable**
+- Customize URLRequest (e.g. custom headers)
+- Customize JSON encoders and decoders
+- Custom response validation
+- Custom error response format
+- Custom standard response format
+    
 Examples
 ----------
 Here are a few examples of how this framework is used.
@@ -128,3 +148,13 @@ struct ExampleService: WebService {
 Here we define a `WebService` called `ExampleService` with the a few properties and some extra validation.
 
 That's all you need. You can then define as many endpoints as you like and use them in a clear and type safe way.
+
+Hopeful Features
+------------
+
+It would be great to develop the following additional features
+
+- Better handle authenticated requests by defining a web services authentication mechanism and allow an endpoint to require auth
+- Form URL encoded input format
+- Additional output formats
+- File download and uploading
