@@ -58,13 +58,13 @@ public protocol WebService {
     // MARK: Configuration
 
     /// **OPTIONAL** Chance to configure each URLRequest
-    func configure(_ request: inout URLRequest) throws
+    func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws
 
     // **OPTIONAL** Chance to configure each input encoder
-    func configure(_ encoder: inout JSONEncoder) throws
+    func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws
 
     // **OPTIONAL** Chance to configure each output encoder
-    func configure(_ decoder: inout JSONDecoder) throws
+    func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws
 
     // MARK: Validation
 
@@ -78,9 +78,9 @@ public protocol WebService {
 
 extension WebService {
     public var sessionOverride: Session? { return nil }
-    public func configure(_ request: inout URLRequest) throws {}
-    public func configure(_ encoder: inout JSONEncoder) throws {}
-    public func configure(_ decoder: inout JSONDecoder) throws {}
+    public func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {}
+    public func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws {}
+    public func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {}
 }

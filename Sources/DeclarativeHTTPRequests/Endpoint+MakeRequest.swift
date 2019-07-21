@@ -99,7 +99,7 @@ extension OutEndpoint {
                 onComplete(.failure(error))
             case .success(let data):
                 do {
-                    onComplete(.success(try service.parse(from: data)))
+                    onComplete(.success(try service.parse(from: data, for: self)))
                 }
                 catch {
                     onComplete(.failure(error))
@@ -145,7 +145,7 @@ extension InOutEndpoint {
                     onComplete(.failure(error))
                 case .success(let data):
                     do {
-                        onComplete(.success(try service.parse(from: data)))
+                        onComplete(.success(try service.parse(from: data, for: self)))
                     }
                     catch {
                         onComplete(.failure(error))

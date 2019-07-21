@@ -24,29 +24,27 @@ struct TestNoStandardsService: WebService {
     let sessionOverride: Session? = TestURLSession.test
     let baseURL = URL(string: "https://example.com")!
 
-    func configure(_ request: inout URLRequest) throws {
+    func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {
         guard !errorConfiguring else {
             throw RequestError.custom("error configuring")
         }
         request.setValue("VALUE", forHTTPHeaderField: "Test")
     }
 
-    func configure(_ encoder: inout JSONEncoder) throws {
+    func configure<E: Endpoint>(_ encoder: inout JSONEncoder, for endpoint: E) throws {
         encoder.dateEncodingStrategy = .secondsSince1970
     }
 
-    func configure(_ decoder: inout JSONDecoder) throws {
+    func configure<E: Endpoint>(_ decoder: inout JSONDecoder, for endpoint: E) throws {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
 
-    func validate<E>(_ response: URLResponse, for endpoint: E) throws where E : Endpoint {
+    func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
         guard statusCode != 201 else {
             throw RequestError.custom("Bad status code: \(statusCode)")
         }
     }
-
-    func validate<E>(_ response: NoBasicResponse, for endpoint: E) throws where E : Endpoint {}
 }
 
 struct NoStandardInOut: InOutEndpoint {

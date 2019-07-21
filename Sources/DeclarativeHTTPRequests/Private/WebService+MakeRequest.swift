@@ -37,7 +37,7 @@ extension WebService {
                     try self.validate(response, for: endpoint)
 
                     if !(BasicResponse.self is NoBasicResponse.Type) {
-                        let basicResponse: BasicResponse = try self.parse(from: data)
+                        let basicResponse: BasicResponse = try self.parse(from: data, for: endpoint)
                         try self.validate(basicResponse, for: endpoint)
                     }
 
@@ -45,7 +45,7 @@ extension WebService {
                 }
                 catch {
                     if ErrorResponse.self != NoErrorResponse.self
-                        , let response: ErrorResponse = try? self.parse(from: data)
+                        , let response: ErrorResponse = try? self.parse(from: data, for: endpoint)
                     {
                         onComplete(.failure(ResponseError.parsed(response)))
                     }
@@ -74,7 +74,7 @@ extension WebService {
             switch E.inputFormat {
             case .JSON:
                 var encoder = JSONEncoder()
-                try self.configure(&encoder)
+                try self.configure(&encoder, for: endpoint)
                 return .json(try encoder.encode(input))
             case .urlQuery:
                 let encoder = KeyValueEncoder(codingPath: [])
@@ -105,13 +105,13 @@ extension WebService {
     /// - Parameter data: data to decode from
     ///
     /// - Returns: decoded output
-    func parse<Output: Decodable>(from data: Data?) throws -> Output {
+    func parse<Output: Decodable, E: Endpoint>(from data: Data?, for endpoint: E) throws -> Output {
         guard let data = data else {
             throw ResponseError.missingData
         }
         do {
             var decoder = JSONDecoder()
-            try self.configure(&decoder)
+            try self.configure(&decoder, for: endpoint)
             return try decoder.decode(Output.self, from: data)
         }
         catch let error as DecodingError {
@@ -164,7 +164,7 @@ private extension WebService {
 
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        try self.configure(&request)
+        try self.configure(&request, for: endpoint)
 
         return request
     }

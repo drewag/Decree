@@ -46,7 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4980FE9622E4532700531D7C /* TestMinimalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestMinimalService.swift; path = "../../../../../../../../System/Volumes/Data/Users/andrew/git/personal/declarative-http-requests/Tests/DeclarativeHTTPRequestsTests/Helpers/TestMinimalService.swift"; sourceTree = "<group>"; };
+		4980FE9622E4532700531D7C /* TestMinimalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMinimalService.swift; sourceTree = "<group>"; };
 		499468F222E38D1B00B69FFC /* DeclarativeHTTPRequests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeclarativeHTTPRequests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		499468F522E38D1B00B69FFC /* DeclarativeHTTPRequests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeclarativeHTTPRequests.h; sourceTree = "<group>"; };
 		499468F622E38D1B00B69FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,11 +139,11 @@
 		4994692A22E3B83200B69FFC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4994693022E3B84200B69FFC /* Basic Types */,
+				4994692E22E3B84200B69FFC /* WebService.swift */,
 				4994692F22E3B84200B69FFC /* Endpoint.swift */,
 				4994692B22E3B84200B69FFC /* Endpoint+MakeRequest.swift */,
+				4994693022E3B84200B69FFC /* Basic Types */,
 				4994692C22E3B84200B69FFC /* Private */,
-				4994692E22E3B84200B69FFC /* WebService.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
