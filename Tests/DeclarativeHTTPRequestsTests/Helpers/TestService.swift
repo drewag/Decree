@@ -82,6 +82,7 @@ struct In: InEndpoint {
     static let method = Method.put
 
     typealias Input = TestInput
+    static let inputFormat = InputFormat.JSON
 
     let path = "in"
 }
@@ -91,6 +92,30 @@ struct InOut: InOutEndpoint {
     static let method = Method.post
 
     typealias Input = TestInput
+    static let inputFormat = InputFormat.JSON
+
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
+struct URLQueryIn: InEndpoint {
+    typealias Service = TestService
+    static let method = Method.put
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.urlQuery
+
+    let path = "in"
+}
+
+struct URLQueryInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let method = Method.post
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.urlQuery
+
     typealias Output = TestOutput
 
     let path = "inout"
@@ -98,10 +123,12 @@ struct InOut: InOutEndpoint {
 
 struct TestInput: Encodable {
     let date: Date?
+    let string = "weird&=?characters"
     let otherError: Bool
 
     enum CodingKeys: String, CodingKey {
         case date
+        case string
     }
 
     init(date: Date?, otherError: Bool = false) {
@@ -121,6 +148,7 @@ struct TestInput: Encodable {
             throw EncodingError.invalidValue(self.date as Any, context)
         }
         try container.encode(date, forKey: .date)
+        try container.encode(self.string, forKey: .string)
     }
 }
 

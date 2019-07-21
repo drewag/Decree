@@ -13,7 +13,7 @@ extension EmptyEndpoint {
     /// - Parameter service: service to make the request to
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, onComplete: @escaping (_ result: EmptyResult) -> ()) {
-        service.makeRequest(to: self, body: nil) { result in
+        service.makeRequest(to: self, input: .none) { result in
             switch result {
             case .failure(let error):
                 onComplete(.failure(error))
@@ -51,8 +51,8 @@ extension InEndpoint {
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, with input: Input, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         do {
-            let body = try service.encode(input: input)
-            service.makeRequest(to: self, body: body) { result in
+            let input = try service.encode(input: input, for: self)
+            service.makeRequest(to: self, input: input) { result in
                 switch result {
                 case .failure(let error):
                     onComplete(.failure(error))
@@ -93,7 +93,7 @@ extension OutEndpoint {
     /// - Parameter service: service to make the request to
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, onComplete: @escaping (_ result: Result<Output, Error>) -> ()) {
-        service.makeRequest(to: self, body: nil) { result in
+        service.makeRequest(to: self, input: .none) { result in
             switch result {
             case .failure(let error):
                 onComplete(.failure(error))
@@ -138,8 +138,8 @@ extension InOutEndpoint {
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, with input: Input, onComplete: @escaping (_ error: Result<Output, Error>) -> ()) {
         do {
-            let body = try service.encode(input: input)
-            service.makeRequest(to: self, body: body) { result in
+            let input = try service.encode(input: input, for: self)
+            service.makeRequest(to: self, input: input) { result in
                 switch result {
                 case .failure(let error):
                     onComplete(.failure(error))

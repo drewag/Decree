@@ -20,21 +20,31 @@ public protocol Endpoint {
     var path: String {get}
 }
 
+/// Requirements for endpoints with input
+///
+/// Do not implment this protocol directly. Instead, implement
+/// EmptyEndpoint, InEndpoint, OutEndpoint, or InOutEndpoint
+public protocol EndpointWithInput: Endpoint {
+    associatedtype Input: Encodable
+    static var inputFormat: InputFormat {get}
+}
+
+/// Requirements for endpoints with output
+///
+/// Do not implment this protocol directly. Instead, implement
+/// EmptyEndpoint, InEndpoint, OutEndpoint, or InOutEndpoint
+public protocol EndpointWithOutput: Endpoint {
+    associatedtype Output: Decodable
+}
+
 /// Endpoint without input or output
 public protocol EmptyEndpoint: Endpoint {}
 
 /// Endpoint with only input
-public protocol InEndpoint: Endpoint {
-    associatedtype Input: Encodable
-}
+public protocol InEndpoint: EndpointWithInput {}
 
 /// Endpoint with only output
-public protocol OutEndpoint: Endpoint {
-    associatedtype Output: Decodable
-}
+public protocol OutEndpoint: EndpointWithOutput {}
 
 /// Endpoint with both input and output
-public protocol InOutEndpoint: Endpoint {
-    associatedtype Input: Encodable
-    associatedtype Output: Decodable
-}
+public protocol InOutEndpoint: EndpointWithInput, EndpointWithOutput {}

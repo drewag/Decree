@@ -19,9 +19,9 @@ extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func makeRequest<E: Endpoint>(to endpoint: E, body: Data?, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
+    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
         do {
-            let request = try self.createRequest(to: endpoint, body: body)
+            let request = try self.createRequest(to: endpoint, input: input)
             let session = self.sessionOverride ?? URLSession.shared
             let task = session.dataTask(with: request) { data, response, error in
                 if let error = error {
@@ -63,13 +63,23 @@ extension WebService {
     /// The web service can customize the configuration of the encoder
     ///
     /// - Parameter input: input to encode
+    /// - Parameter endpoint: the endpoint the input is for
     ///
     /// - Returns: encoded data
-    func encode<Input: Encodable>(input: Input) throws -> Data {
-        var encoder = JSONEncoder()
+    func encode<Input: Encodable, E: EndpointWithInput>(input: Input, for endpoint: E) throws -> RequestInput {
         do {
-            try self.configure(&encoder)
-            return try encoder.encode(input)
+            switch E.inputFormat {
+            case .JSON:
+                var encoder = JSONEncoder()
+                try self.configure(&encoder)
+                return .body(try encoder.encode(input))
+            case .urlQuery:
+                let encoder = KeyValueEncoder(codingPath: [])
+                try input.encode(to: encoder)
+                return .urlQuery(encoder.values.map { value in
+                    return URLQueryItem(name: value.0, value: value.1)
+                })
+            }
         }
         catch let error as EncodingError {
             throw RequestError.encoding(input, error)
@@ -113,11 +123,31 @@ private extension WebService {
     /// - Parameter body: http body of the request
     ///
     /// - Returns: the created request
-    func createRequest<E: Endpoint>(to endpoint: E, body: Data?) throws -> URLRequest {
-        let url = self.baseURL.appendingPathComponent(endpoint.path)
+    func createRequest<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URLRequest {
+        guard var components = URLComponents(url: self.baseURL.appendingPathComponent(endpoint.path), resolvingAgainstBaseURL: false) else {
+            throw RequestError.custom("invalid url generated")
+        }
+
+        switch input {
+        case .none, .body:
+            break
+        case .urlQuery(let query):
+            components.queryItems = query
+        }
+
+        guard let url = components.url else {
+            throw RequestError.custom("invalid url components generated")
+        }
+
         var request = URLRequest(url: url)
         request.httpMethod = E.method.rawValue
-        request.httpBody = body
+
+        switch input {
+        case .none, .urlQuery:
+            break
+        case .body(let data):
+            request.httpBody = data
+        }
 
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

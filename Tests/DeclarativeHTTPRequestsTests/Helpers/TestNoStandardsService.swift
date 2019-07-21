@@ -58,6 +58,8 @@ struct NoStandardInOut: InOutEndpoint {
     static let method = Method.post
 
     typealias Input = TestInput
+    static let inputFormat = InputFormat.JSON
+
     typealias Output = TestOutput
 
     let path = "inout"

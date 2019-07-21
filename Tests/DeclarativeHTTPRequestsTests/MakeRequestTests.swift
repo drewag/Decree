@@ -70,7 +70,7 @@ class MakeRequestTests: XCTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980}"#)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980,"string":"weird&=?characters"}"#)
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["TEST"], "VALUE")
@@ -88,11 +88,47 @@ class MakeRequestTests: XCTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980}"#)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980,"string":"weird&=?characters"}"#)
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["TEST"], "VALUE")
         XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout")
+        self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
+        XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
+    }
+
+    func testURLQueryInRequestFlow() {
+        var result: EmptyResult?
+        URLQueryIn().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody, nil)
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["TEST"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in?date=-14182980.0&string=weird%26%3D?characters")
+        self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+        XCTAssertNil(result?.error)
+    }
+
+    func testURLQueryInOutRequestFlow() {
+        var result: Result<InOut.Output, Error>?
+        URLQueryInOut().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody, nil)
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["TEST"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout?date=-14182980.0&string=weird%26%3D?characters")
         self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
         XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
     }
@@ -182,7 +218,7 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
         XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
 
-        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, otherError: false)")})
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, string: \"weird&=?characters\", otherError: false)")})
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
         XCTAssertThrowsError(try In().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
@@ -218,7 +254,7 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
         XCTAssertEqual(try InOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
-        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, otherError: false)")})
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, string: \"weird&=?characters\", otherError: false)")})
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
@@ -254,7 +290,7 @@ class MakeRequestTests: XCTestCase {
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
         XCTAssertEqual(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
-        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, otherError: false)")})
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, string: \"weird&=?characters\", otherError: false)")})
         XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
         XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
