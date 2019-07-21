@@ -173,7 +173,6 @@ Hopeful Features
 It would be great to develop the following additional features
 
 - Better handle authenticated requests by defining a web services authentication mechanism and allow an endpoint to require auth
-- Form URL encoded input format
 - Additional output formats
 - File download and uploading
 
