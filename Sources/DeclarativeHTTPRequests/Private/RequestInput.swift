@@ -9,6 +9,7 @@ import Foundation
 
 enum RequestInput {
     case none
-    case body(Data)
+    case json(Data)
+    case formURLEncoded(Data)
     case urlQuery([URLQueryItem])
 }

@@ -72,7 +72,7 @@ extension WebService {
             case .JSON:
                 var encoder = JSONEncoder()
                 try self.configure(&encoder)
-                return .body(try encoder.encode(input))
+                return .json(try encoder.encode(input))
             case .urlQuery:
                 let encoder = KeyValueEncoder(codingPath: [])
                 try input.encode(to: encoder)
@@ -84,7 +84,7 @@ extension WebService {
                 try input.encode(to: encoder)
                 let body = FormURLEncoder.encode(encoder.values)
                 let data = body.data(using: .utf8) ?? Data()
-                return .body(data)
+                return .formURLEncoded(data)
             }
         }
         catch let error as EncodingError {
@@ -135,7 +135,7 @@ private extension WebService {
         }
 
         switch input {
-        case .none, .body:
+        case .none, .json, .formURLEncoded:
             break
         case .urlQuery(let query):
             components.queryItems = query
@@ -151,12 +151,15 @@ private extension WebService {
         switch input {
         case .none, .urlQuery:
             break
-        case .body(let data):
+        case .json(let data):
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = data
+        case .formURLEncoded(let data):
+            request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
         }
 
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
 
         try self.configure(&request)
 
