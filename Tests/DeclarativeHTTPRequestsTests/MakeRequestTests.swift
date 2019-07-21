@@ -70,7 +70,8 @@ class MakeRequestTests: XCTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980,"string":"weird&=?characters"}"#)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.jsonDict["date"]?.interval, -14182980)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.jsonDict["string"]?.string, "weird&=?characters")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -88,7 +89,8 @@ class MakeRequestTests: XCTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, #"{"date":-14182980,"string":"weird&=?characters"}"#)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.jsonDict["date"]?.interval, -14182980)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.jsonDict["string"]?.string, "weird&=?characters")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -316,8 +318,47 @@ extension Result {
     }
 }
 
+enum Raw: Decodable {
+    case string(String)
+    case interval(TimeInterval)
+
+    var string: String? {
+        switch self {
+        case .string(let string):
+            return string
+        default:
+            return nil
+        }
+    }
+
+    var interval: TimeInterval? {
+        switch self {
+        case .interval(let interval):
+            return interval
+        default:
+            return nil
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        do {
+            self = .interval(try container.decode(TimeInterval.self))
+        }
+        catch {
+            self = .string(try container.decode(String.self))
+        }
+    }
+}
+
 extension Data {
     var string: String? {
         return String(data: self, encoding: .utf8)
+    }
+
+    var jsonDict: [String:Raw] {
+        let decoder = JSONDecoder()
+        return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
     }
 }
