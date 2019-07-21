@@ -3,6 +3,14 @@ Declarative HTTP Requests
 
 Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints.
 
+Table of Contents
+--------------
+
+- [Features](#features)
+- [Examples](#examples)
+- [Hopeful Features](#hopeful-features)
+- [Contributing](#contributing)
+
 Features
 --------
 
@@ -161,7 +169,7 @@ It would be great to develop the following additional features
 - Additional output formats
 - File download and uploading
 
-Contribution
+Contributing
 ---------
 
 It is very much encouraged for you to report any issues and/or make pull requests for new functionality.
