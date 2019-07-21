@@ -47,7 +47,7 @@ Here are a few examples of how this framework is used.
 
 ### Simple Get
 
-Here we define a `CheckStatus` endpoint that is a GET with no input or output that exists at the path “/status”.
+Here we define a `CheckStatus` endpoint that is a GET (the default) with no input or output that exists at the path “/status”.
 Scroll down to see the definition of ExampleService.
 
 ```swift
