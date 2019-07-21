@@ -31,6 +31,7 @@
 		49FD0EF922E3D9BB00D17CD0 /* KeyValueEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */; };
 		49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EFA22E41BCA00D17CD0 /* Session.swift */; };
 		49FD1A9B22E4341300D17CD0 /* FormURLEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */; };
+		49FD1C5422E43E8200D17CD0 /* ResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD1C5322E43E8200D17CD0 /* ResponseError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoderTests.swift; sourceTree = "<group>"; };
 		49FD0EFA22E41BCA00D17CD0 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormURLEncoder.swift; sourceTree = "<group>"; };
+		49FD1C5322E43E8200D17CD0 /* ResponseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				4994693122E3B84200B69FFC /* Method.swift */,
 				4994693222E3B84200B69FFC /* EmptyResult.swift */,
 				4994693322E3B84200B69FFC /* RequestError.swift */,
+				49FD1C5322E43E8200D17CD0 /* ResponseError.swift */,
 				4994694E22E3C30600B69FFC /* ErrorResponse.swift */,
 				4994695022E3C5D400B69FFC /* NoBasicResponse.swift */,
 				49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */,
@@ -315,6 +318,7 @@
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,
 				4994693722E3B84200B69FFC /* Endpoint.swift in Sources */,
 				49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */,
+				49FD1C5422E43E8200D17CD0 /* ResponseError.swift in Sources */,
 				4994693422E3B84200B69FFC /* Endpoint+MakeRequest.swift in Sources */,
 				4994694F22E3C30600B69FFC /* ErrorResponse.swift in Sources */,
 			);

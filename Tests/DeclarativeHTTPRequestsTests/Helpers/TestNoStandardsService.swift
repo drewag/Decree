@@ -44,7 +44,7 @@ struct TestNoStandardsService: WebService {
 
     func validate<E>(_ response: URLResponse, for endpoint: E) throws where E : Endpoint {
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-        guard statusCode >= 200 && statusCode < 300 else {
+        guard statusCode != 201 else {
             throw RequestError.custom("Bad status code: \(statusCode)")
         }
     }
