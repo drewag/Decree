@@ -162,7 +162,7 @@ struct ExampleService: WebService {
     var sessionOverride: URLSession? { return nil }
 
     // All requests will be sent to their endpoint at "https://example.com"
-    var baseURL: URL { return URL(string: "https://example.com")! }
+    let baseURL = URL(string: "https://example.com")!
 
     // Don't do any configuration of request, encoders, or decoders
     func configure(_ request: inout URLRequest) throws {}
