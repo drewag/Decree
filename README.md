@@ -22,6 +22,8 @@ Features
 - Custom response validation
 - Custom error response format
 - Custom standard response format
+
+**Virtually 100% Code Coverage**
     
 Examples
 ----------
@@ -158,3 +160,8 @@ It would be great to develop the following additional features
 - Form URL encoded input format
 - Additional output formats
 - File download and uploading
+
+Contribution
+---------
+
+It is very much encouraged for you to report any issues and/or make pull requests for new functionality.
