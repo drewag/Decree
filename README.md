@@ -1,7 +1,7 @@
 Declarative HTTP Requests
 ==============
 
-*Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints.*
+*Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints on **iOS**, **macOS**, and **Linux***
 
 When it comes to making URL requests with Swift, you largely have two options: use the URLSession APIs in Foundation or use some heavy handed framework.
 
