@@ -139,7 +139,7 @@ struct ExampleService: WebService {
     static var shared = ExampleService()
 
     // Use URLSession.shared
-    var sessionOverride: URLSession? { return nil }
+    var sessionOverride: Session? { return nil }
 
     // All requests will be sent to their endpoint at "https://example.com"
     let baseURL = URL(string: "https://example.com")!
