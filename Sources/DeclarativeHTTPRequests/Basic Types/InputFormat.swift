@@ -9,4 +9,5 @@
 public enum InputFormat {
     case JSON
     case urlQuery
+    case formURLEncoded
 }

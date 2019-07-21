@@ -79,6 +79,12 @@ extension WebService {
                 return .urlQuery(encoder.values.map { value in
                     return URLQueryItem(name: value.0, value: value.1)
                 })
+            case .formURLEncoded:
+                let encoder = KeyValueEncoder(codingPath: [])
+                try input.encode(to: encoder)
+                let body = FormURLEncoder.encode(encoder.values)
+                let data = body.data(using: .utf8) ?? Data()
+                return .body(data)
             }
         }
         catch let error as EncodingError {

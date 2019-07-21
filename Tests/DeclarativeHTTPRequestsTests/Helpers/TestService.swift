@@ -121,6 +121,28 @@ struct URLQueryInOut: InOutEndpoint {
     let path = "inout"
 }
 
+struct FormIn: InEndpoint {
+    typealias Service = TestService
+    static let method = Method.put
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.formURLEncoded
+
+    let path = "in"
+}
+
+struct FormInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let method = Method.post
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.formURLEncoded
+
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
 struct TestInput: Encodable {
     let date: Date?
     let string = "weird&=?characters"

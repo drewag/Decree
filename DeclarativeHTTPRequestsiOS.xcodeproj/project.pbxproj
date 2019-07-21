@@ -30,6 +30,7 @@
 		49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5222E3D18100D17CD0 /* RequestInput.swift */; };
 		49FD0EF922E3D9BB00D17CD0 /* KeyValueEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */; };
 		49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EFA22E41BCA00D17CD0 /* Session.swift */; };
+		49FD1A9B22E4341300D17CD0 /* FormURLEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		49FD0D5222E3D18100D17CD0 /* RequestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInput.swift; sourceTree = "<group>"; };
 		49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoderTests.swift; sourceTree = "<group>"; };
 		49FD0EFA22E41BCA00D17CD0 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormURLEncoder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				4994692D22E3B84200B69FFC /* WebService+MakeRequest.swift */,
 				49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */,
 				49FD0D5222E3D18100D17CD0 /* RequestInput.swift */,
+				49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */,
 			);
 			name = Private;
 			path = Sources/DeclarativeHTTPRequests/Private;
@@ -302,6 +305,7 @@
 			files = (
 				4994693A22E3B84200B69FFC /* RequestError.swift in Sources */,
 				4994693822E3B84200B69FFC /* Method.swift in Sources */,
+				49FD1A9B22E4341300D17CD0 /* FormURLEncoder.swift in Sources */,
 				49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */,
 				4994695122E3C5D400B69FFC /* NoBasicResponse.swift in Sources */,
 				4994693622E3B84200B69FFC /* WebService.swift in Sources */,

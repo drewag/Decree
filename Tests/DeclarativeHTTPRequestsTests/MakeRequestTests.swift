@@ -135,6 +135,43 @@ class MakeRequestTests: XCTestCase {
         XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
     }
 
+    func testFormInRequestFlow() {
+        var result: EmptyResult?
+        FormIn().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980.0&string=weird%26%3D%3Fcharacters")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in")
+        self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+        XCTAssertNil(result?.error)
+    }
+
+    func testFormInOutRequestFlow() {
+        var result: Result<InOut.Output, Error>?
+        FormInOut().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980.0&string=weird%26%3D%3Fcharacters")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout")
+        self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
+        XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
+    }
+
+
     func testEmpty() {
         self.session.fixedOutput = (data: nil, response: nil, error: nil)
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "No response returned")})

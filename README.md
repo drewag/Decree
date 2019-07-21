@@ -27,9 +27,10 @@ Features
 - `OutEndpoint` (only output)
 - `InOutEndpoint` (input and output)
 
-**Two Input formats**
+**Three Input formats**
 - JSON
 - URL Query
+- Form URL Encoded
 
 **Configable**
 - Customize URLRequest (e.g. custom headers)
