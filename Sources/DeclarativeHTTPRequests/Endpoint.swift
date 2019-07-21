@@ -13,7 +13,9 @@ public protocol Endpoint {
     /// The service that provides this endpoint
     associatedtype Service: WebService
 
-    /// The method to use when making a request to this endpoint
+    /// **OPTIONAL** The method to use when making a request to this endpoint
+    ///
+    /// Defaults to GET
     static var method: Method {get}
 
     /// The path to be appended to the Service's base URL
@@ -26,6 +28,10 @@ public protocol Endpoint {
 /// EmptyEndpoint, InEndpoint, OutEndpoint, or InOutEndpoint
 public protocol EndpointWithInput: Endpoint {
     associatedtype Input: Encodable
+
+    /// **OPTIONAL** The format for uploading the input
+    ///
+    /// Defaults to JSON
     static var inputFormat: InputFormat {get}
 }
 

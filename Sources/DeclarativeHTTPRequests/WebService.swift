@@ -44,7 +44,7 @@ public protocol WebService {
     /// The default web service to use for requests
     static var shared: Self {get}
 
-    /// URL session to use for requests
+    /// **OPTIONAL** URL session to use for requests
     ///
     /// Defaults to `URLSession.shared`
     var sessionOverride: Session? {get}
@@ -57,21 +57,21 @@ public protocol WebService {
 
     // MARK: Configuration
 
-    /// Chance to configure each URLRequest
+    /// **OPTIONAL** Chance to configure each URLRequest
     func configure(_ request: inout URLRequest) throws
 
-    // Chance to configure each input encoder
+    // **OPTIONAL** Chance to configure each input encoder
     func configure(_ encoder: inout JSONEncoder) throws
 
-    // Chance to configure each output encoder
+    // **OPTIONAL** Chance to configure each output encoder
     func configure(_ decoder: inout JSONDecoder) throws
 
     // MARK: Validation
 
-    // Chance to validate the URLResponse
+    // **OPTIONAL** Chance to validate the URLResponse
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws
 
-    // Chance to validate the BasicResponse
+    // **OPTIONAL** Chance to validate the BasicResponse
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws
 }
 
