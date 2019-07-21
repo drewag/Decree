@@ -3,7 +3,6 @@
 //  DeclarativeHTTPRequestsTests
 //
 //  Created by Andrew J Wagner on 7/20/19.
-//  Copyright © 2019 Drewag. All rights reserved.
 //
 
 import XCTest

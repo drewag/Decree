@@ -3,7 +3,6 @@
 //  DeclarativeHTTPRequests
 //
 //  Created by Andrew J Wagner on 7/20/19.
-//  Copyright © 2019 Drewag. All rights reserved.
 //
 
 //
@@ -11,7 +10,6 @@
 //  EdSuite
 //
 //  Created by Andrew J Wagner on 5/31/19.
-//  Copyright © 2019 Learn Brigade. All rights reserved.
 //
 
 import Foundation
