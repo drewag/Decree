@@ -29,6 +29,7 @@
 		49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */; };
 		49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5222E3D18100D17CD0 /* RequestInput.swift */; };
 		49FD0EF922E3D9BB00D17CD0 /* KeyValueEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */; };
+		49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0EFA22E41BCA00D17CD0 /* Session.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoder.swift; sourceTree = "<group>"; };
 		49FD0D5222E3D18100D17CD0 /* RequestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInput.swift; sourceTree = "<group>"; };
 		49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoderTests.swift; sourceTree = "<group>"; };
+		49FD0EFA22E41BCA00D17CD0 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 				4994694E22E3C30600B69FFC /* ErrorResponse.swift */,
 				4994695022E3C5D400B69FFC /* NoBasicResponse.swift */,
 				49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */,
+				49FD0EFA22E41BCA00D17CD0 /* Session.swift */,
 			);
 			name = "Basic Types";
 			path = "Sources/DeclarativeHTTPRequests/Basic Types";
@@ -304,6 +307,7 @@
 				4994693622E3B84200B69FFC /* WebService.swift in Sources */,
 				4994693922E3B84200B69FFC /* EmptyResult.swift in Sources */,
 				49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */,
+				49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */,
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,
 				4994693722E3B84200B69FFC /* Endpoint.swift in Sources */,
 				49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */,

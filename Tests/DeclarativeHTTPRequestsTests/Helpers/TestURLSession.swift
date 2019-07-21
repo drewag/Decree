@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import DeclarativeHTTPRequests
 
-class TestURLSession: URLSession {
+class TestURLSession: Session {
     static let test = TestURLSession()
 
     class StartedTask {
@@ -23,7 +24,7 @@ class TestURLSession: URLSession {
     var startedTasks = [StartedTask]()
     var fixedOutput: (data: Data?, response: URLResponse?, error: Error?)?
 
-    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         return TestURLSessionDataTask(session: self, request: request, completionHandler: completionHandler)
     }
 }

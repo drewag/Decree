@@ -21,7 +21,7 @@ struct TestNoStandardsService: WebService {
         self.errorConfiguring = errorConfiguring
     }
 
-    var sessionOverride: URLSession? {
+    var sessionOverride: Session? {
         return TestURLSession.test
     }
 
@@ -31,7 +31,7 @@ struct TestNoStandardsService: WebService {
         guard !errorConfiguring else {
             throw RequestError.custom("error configuring")
         }
-        request.addValue("VALUE", forHTTPHeaderField: "TEST")
+        request.setValue("VALUE", forHTTPHeaderField: "Test")
     }
 
     func configure(_ encoder: inout JSONEncoder) throws {

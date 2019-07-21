@@ -47,7 +47,7 @@ public protocol WebService {
     /// URL session to use for requests
     ///
     /// Defaults to `URLSession.shared`
-    var sessionOverride: URLSession? {get}
+    var sessionOverride: Session? {get}
 
     /// Base URL for all requests to this service
     ///
