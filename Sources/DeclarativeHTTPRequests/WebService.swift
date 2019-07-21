@@ -74,3 +74,13 @@ public protocol WebService {
     // Chance to validate the BasicResponse
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws
 }
+
+
+extension WebService {
+    public var sessionOverride: Session? { return nil }
+    public func configure(_ request: inout URLRequest) throws {}
+    public func configure(_ encoder: inout JSONEncoder) throws {}
+    public func configure(_ decoder: inout JSONDecoder) throws {}
+    public func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {}
+    public func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {}
+}

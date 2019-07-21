@@ -12,8 +12,8 @@ struct TestNoStandardsService: WebService {
     typealias BasicResponse = NoBasicResponse
     typealias ErrorResponse = NoErrorResponse
 
-    static var shared = TestNoStandardsService(errorConfiguring: false)
-    static var sharedErrorConfiguring = TestNoStandardsService(errorConfiguring: true)
+    static let shared = TestNoStandardsService(errorConfiguring: false)
+    static let sharedErrorConfiguring = TestNoStandardsService(errorConfiguring: true)
 
     let errorConfiguring: Bool
 
@@ -21,11 +21,8 @@ struct TestNoStandardsService: WebService {
         self.errorConfiguring = errorConfiguring
     }
 
-    var sessionOverride: Session? {
-        return TestURLSession.test
-    }
-
-    var baseURL: URL { return URL(string: "https://example.com")! }
+    let sessionOverride: Session? = TestURLSession.test
+    let baseURL = URL(string: "https://example.com")!
 
     func configure(_ request: inout URLRequest) throws {
         guard !errorConfiguring else {
@@ -57,7 +54,6 @@ struct NoStandardInOut: InOutEndpoint {
     static let method = Method.post
 
     typealias Input = TestInput
-    static let inputFormat = InputFormat.JSON
 
     typealias Output = TestOutput
 

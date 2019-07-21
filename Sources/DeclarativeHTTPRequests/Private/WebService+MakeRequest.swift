@@ -36,7 +36,7 @@ extension WebService {
                     try self.automaticValidate(response, for: endpoint)
                     try self.validate(response, for: endpoint)
 
-                    if BasicResponse.self != NoBasicResponse.self {
+                    if !(BasicResponse.self is NoBasicResponse.Type) {
                         let basicResponse: BasicResponse = try self.parse(from: data)
                         try self.validate(basicResponse, for: endpoint)
                     }
@@ -44,7 +44,9 @@ extension WebService {
                     onComplete(.success(data))
                 }
                 catch {
-                    if BasicResponse.self != NoErrorResponse.self, let response: ErrorResponse = try? self.parse(from: data) {
+                    if ErrorResponse.self != NoErrorResponse.self
+                        , let response: ErrorResponse = try? self.parse(from: data)
+                    {
                         onComplete(.failure(ResponseError.parsed(response)))
                     }
                     else {

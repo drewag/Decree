@@ -17,8 +17,8 @@ struct TestService: WebService {
         let message: String
     }
 
-    static var shared = TestService(errorConfiguring: false)
-    static var sharedErrorConfiguring = TestService(errorConfiguring: true)
+    static let shared = TestService(errorConfiguring: false)
+    static let sharedErrorConfiguring = TestService(errorConfiguring: true)
 
     let errorConfiguring: Bool
 
@@ -26,11 +26,9 @@ struct TestService: WebService {
         self.errorConfiguring = errorConfiguring
     }
 
-    var sessionOverride: Session? {
-        return TestURLSession.test
-    }
 
-    var baseURL: URL { return URL(string: "https://example.com")! }
+    let sessionOverride: Session? = TestURLSession.test
+    let baseURL = URL(string: "https://example.com")!
 
     func configure(_ request: inout URLRequest) throws {
         guard !errorConfiguring else {
@@ -63,14 +61,12 @@ struct TestService: WebService {
 
 struct Empty: EmptyEndpoint {
     typealias Service = TestService
-    static let method = Method.get
 
     let path = "empty"
 }
 
 struct Out: OutEndpoint {
     typealias Service = TestService
-    static let method = Method.get
 
     typealias Output = TestOutput
 
@@ -82,7 +78,6 @@ struct In: InEndpoint {
     static let method = Method.put
 
     typealias Input = TestInput
-    static let inputFormat = InputFormat.JSON
 
     let path = "in"
 }
@@ -92,7 +87,6 @@ struct InOut: InOutEndpoint {
     static let method = Method.post
 
     typealias Input = TestInput
-    static let inputFormat = InputFormat.JSON
 
     typealias Output = TestOutput
 

@@ -48,3 +48,13 @@ public protocol OutEndpoint: EndpointWithOutput {}
 
 /// Endpoint with both input and output
 public protocol InOutEndpoint: EndpointWithInput, EndpointWithOutput {}
+
+extension Endpoint {
+    /// Default method to GET
+    public static var method: Method { return .get }
+}
+
+extension EndpointWithInput {
+    /// Default to JSON input
+    public static var inputFormat: InputFormat { return .JSON }
+}

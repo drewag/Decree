@@ -48,12 +48,11 @@ Here are a few examples of how this framework is used.
 ### Simple Get
 
 Here we define a `CheckStatus` endpoint that is a GET with no input or output that exists at the path “/status”.
-Scroll down to see the defintion of ExampleService.
+Scroll down to see the definition of ExampleService.
 
 ```swift
 struct CheckStatus: EmptyEndpoint {
     typealias Service = ExampleService
-    static let method = Method.get
 
     let path = "status"
 }
@@ -95,7 +94,6 @@ struct Login: InOutEndpoint {
         let username: String
         let password: String
     }
-    static let inputFormat = InputFormat.JSON
 
     struct Output: Decodable {
         let token: String
@@ -139,31 +137,12 @@ struct ExampleService: WebService {
     // Requests should use this service instance by default
     static var shared = ExampleService()
 
-    // Use URLSession.shared
-    var sessionOverride: Session? { return nil }
-
     // All requests will be sent to their endpoint at "https://example.com"
     let baseURL = URL(string: "https://example.com")!
-
-    // Don't do any configuration of request, encoders, or decoders
-    func configure(_ request: inout URLRequest) throws {}
-    func configure(_ encoder: inout JSONEncoder) throws {}
-    func configure(_ decoder: inout JSONDecoder) throws {}
-
-    // Validate that the response codes are in the 200 range
-    func validate<E>(_ response: URLResponse, for endpoint: E) throws where E : Endpoint {
-        let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-        guard statusCode >= 200 && statusCode < 300 else {
-            throw RequestError.custom("Bad status code: \(statusCode)")
-        }
-    }
-
-    // This will not be called because we've specified NoBasicResponse
-    func validate<E>(_ response: NoBasicResponse, for endpoint: E) throws where E : Endpoint {}
 }
 ```
     
-Here we define a `WebService` called `ExampleService` with the a few properties and some extra validation.
+Here we define a `WebService` called `ExampleService` with the a few properties.
 
 That's all you need. You can then define as many endpoints as you like and use them in a clear and type safe way.
 

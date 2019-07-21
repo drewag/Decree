@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4980FE9722E4532700531D7C /* TestMinimalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4980FE9622E4532700531D7C /* TestMinimalService.swift */; };
 		499468FC22E38D1B00B69FFC /* DeclarativeHTTPRequests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499468F222E38D1B00B69FFC /* DeclarativeHTTPRequests.framework */; };
 		4994690122E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994690022E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift */; };
 		4994690322E38D1B00B69FFC /* DeclarativeHTTPRequests.h in Headers */ = {isa = PBXBuildFile; fileRef = 499468F522E38D1B00B69FFC /* DeclarativeHTTPRequests.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4980FE9622E4532700531D7C /* TestMinimalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestMinimalService.swift; path = "../../../../../../../../System/Volumes/Data/Users/andrew/git/personal/declarative-http-requests/Tests/DeclarativeHTTPRequestsTests/Helpers/TestMinimalService.swift"; sourceTree = "<group>"; };
 		499468F222E38D1B00B69FFC /* DeclarativeHTTPRequests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeclarativeHTTPRequests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		499468F522E38D1B00B69FFC /* DeclarativeHTTPRequests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeclarativeHTTPRequests.h; sourceTree = "<group>"; };
 		499468F622E38D1B00B69FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				4994694022E3B85500B69FFC /* TestService.swift */,
 				4994695222E3C7FE00B69FFC /* TestNoStandardsService.swift */,
 				4994694122E3B85500B69FFC /* TestURLSession.swift */,
+				4980FE9622E4532700531D7C /* TestMinimalService.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 			files = (
 				4994694722E3B8A400B69FFC /* EmptyResultTests.swift in Sources */,
 				4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */,
+				4980FE9722E4532700531D7C /* TestMinimalService.swift in Sources */,
 				4994695422E3C85F00B69FFC /* TestNoStandardsService.swift in Sources */,
 				4994694922E3B8AD00B69FFC /* MakeRequestTests.swift in Sources */,
 				4994694C22E3B8AD00B69FFC /* TestURLSession.swift in Sources */,

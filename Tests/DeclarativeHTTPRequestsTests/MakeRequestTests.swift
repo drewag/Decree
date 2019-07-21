@@ -334,6 +334,41 @@ class MakeRequestTests: XCTestCase {
         XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "error configuring")})
     }
 
+    func testMinimalInOutRequest() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "No response returned")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: RequestError.custom("custom"))
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "custom")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "No data returned")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: invalidOutData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error decoding TestOutput")})
+
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, 964124220.0)
+
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error encoding TestInput(date: nil, string: \"weird&=?characters\", otherError: false)")})
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "other encoding error")})
+    }
+
     func testStatusCodeValidation() {
         self.session.fixedOutput = (data: nil, response: TestResponse(statusCode: 300), error: nil)
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "MULTIPLE CHOICES")})
@@ -469,4 +504,16 @@ extension Data {
         let decoder = JSONDecoder()
         return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
     }
+}
+
+struct ExampleService: WebService {
+    // There is no service wide standard response format
+    typealias BasicResponse = NoBasicResponse
+    typealias ErrorResponse = NoErrorResponse
+
+    // Requests should use this service instance by default
+    static var shared = ExampleService()
+
+    // All requests will be sent to their endpoint at "https://example.com"
+    let baseURL = URL(string: "https://example.com")!
 }
