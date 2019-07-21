@@ -7,6 +7,7 @@ Table of Contents
 --------------
 
 - [Features](#features)
+- [Installation](#installation)
 - [Examples](#examples)
 - [Hopeful Features](#hopeful-features)
 - [Contributing](#contributing)
@@ -33,6 +34,32 @@ Features
 
 **Virtually 100% Code Coverage**
     
+Installation
+---------
+
+### iOS
+
+As git submodule
+
+- Run `git submodle add https://github.com/drewag/DeclarativeHTTPRequests.git external/DeclarativeHTTPRequests`
+- Drag 'DeclarativeHTTPRequestsiOS.xcodeproj' into your project
+- Add `import DeclarativeHTTPRequests` to the top of any file you would like to use this library in
+
+Linux and macOS
+----------------
+
+### Using Swift Package Manager
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "MyPackage",
+    dependencies: [
+        .Package(url: "https://github.com/drewag/DeclarativeHTTPRequests.git", majorVersion: 0),
+    ]
+)
+```
+
 Examples
 ----------
 Here are a few examples of how this framework is used.
