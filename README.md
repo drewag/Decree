@@ -7,7 +7,7 @@ Table of Contents
 --------------
 
 - [Features](#features)
-- [Installation](#installation)
+- [Getting Started](https://github.com/drewag/DeclarativeHTTPRequests/wiki)
 - [Examples](#examples)
 - [Hopeful Features](#hopeful-features)
 - [Contributing](#contributing)
