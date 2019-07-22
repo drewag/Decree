@@ -1,4 +1,4 @@
-Declarative HTTP Requests
+Decree
 ==============
 
 *Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints on **iOS**, **macOS**, and **Linux***
@@ -13,7 +13,7 @@ Table of Contents
 --------------
 
 - [Features](#features)
-- [Getting Started](https://github.com/drewag/DeclarativeHTTPRequests/wiki)
+- [Getting Started](https://github.com/drewag/Decree/wiki)
 - [Examples](#examples)
 - [Hopeful Features](#hopeful-features)
 - [Contributing](#contributing)
@@ -162,7 +162,7 @@ That's all you need. You can then define as many endpoints as you like and use t
 
 ### Real World Examples
 
-To see real world examples, [check out how we declared our built in services](https://github.com/drewag/DeclarativeHTTPRequests/tree/master/Sources/DeclarativeHTTPRequests/Services) like S3.
+To see real world examples, [check out how we declared our built in services](https://github.com/drewag/Decree/tree/master/Sources/Decree/Services) like S3.
 
 Hopeful Features
 ------------

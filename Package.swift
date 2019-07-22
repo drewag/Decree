@@ -4,25 +4,29 @@
 import PackageDescription
 
 let package = Package(
-    name: "DeclarativeHTTPRequests",
+    name: "Decree",
+    platforms: [
+        .macOS(.v10_10), .iOS(.v8), .tvOS(.v9),
+    ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
-            name: "DeclarativeHTTPRequests",
-            targets: ["DeclarativeHTTPRequests"]),
+            name: "Decree",
+            targets: ["Decree"]),
     ],
     dependencies: [
         .package(url: "https://github.com/drewag/XMLCoder.git", from: "1.0.0"),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.0.0"),
+        .package(url: "https://github.com/drewag/CryptoSwift.git", from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "DeclarativeHTTPRequests",
+            name: "Decree",
             dependencies: ["XMLCoder","CryptoSwift"]),
         .testTarget(
-            name: "DeclarativeHTTPRequestsTests",
-            dependencies: ["DeclarativeHTTPRequests"]),
-    ]
+            name: "DecreeTests",
+            dependencies: ["Decree"]),
+    ],
+    swiftLanguageVersions: [.v5]
 )

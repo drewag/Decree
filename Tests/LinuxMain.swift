@@ -1,8 +1,8 @@
 import XCTest
 
-import DeclarativeHTTPRequestsTests
+import DecreeTests
 
 var tests = [XCTestCaseEntry]()
-tests += DeclarativeHTTPRequestsTests.__allTests()
+tests += DecreeTests.__allTests()
 
 XCTMain(tests)
