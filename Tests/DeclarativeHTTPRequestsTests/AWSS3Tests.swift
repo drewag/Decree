@@ -11,6 +11,14 @@ import XCTest
 class AWSS3Tests: XCTestCase {
     let session = TestURLSession()
 
+    #if os(Linux)
+    let amzDateKey = "X-Amz-Date"
+    let amzContentKey = "X-Amz-Content-Sha256"
+    #else
+    let amzDateKey = "x-amz-date"
+    let amzContentKey = "x-amz-content-sha256"
+    #endif
+
     override func setUp() {
         super.setUp()
 
@@ -32,8 +40,8 @@ class AWSS3Tests: XCTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.url?.absoluteString, "http://bucket.name.s3.amazonaws.com/test.txt")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "GET")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpBody, nil)
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-content-sha256"], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-date"], "19690720T201700Z")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzContentKey], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzDateKey], "19690720T201700Z")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Accept"], "text/xml")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Host"], "bucket.name.s3.amazonaws.com")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Authorization"], "AWS4-HMAC-SHA256 Credential=ACCESS/19690720/region/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=842767d35081b54387252d439593f6af580aeab0a6adb286c02b938979477255")
@@ -50,8 +58,8 @@ class AWSS3Tests: XCTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.url?.absoluteString, "http://bucket.name.s3.amazonaws.com/test.txt")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "PUT")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpBody?.string, "Example Body")
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-content-sha256"], "c210a4cca76229ad7bb0a9d2e24fd0440bf24d0f38e2784242a4b10b0fdf826f")
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-date"], "19690720T201700Z")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzContentKey], "c210a4cca76229ad7bb0a9d2e24fd0440bf24d0f38e2784242a4b10b0fdf826f")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzDateKey], "19690720T201700Z")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Accept"], "text/xml")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Host"], "bucket.name.s3.amazonaws.com")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Authorization"], "AWS4-HMAC-SHA256 Credential=ACCESS/19690720/region/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=fd7cc326c5042e9f0cfc7558dfb12fe3f678c641f4fa1c2d4939d161755d9314")
@@ -67,8 +75,8 @@ class AWSS3Tests: XCTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.url?.absoluteString, "http://bucket.name.s3.amazonaws.com/test.txt")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "DELETE")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpBody, nil)
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-content-sha256"], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
-        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["x-amz-date"], "19690720T201700Z")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzContentKey], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?[amzDateKey], "19690720T201700Z")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Accept"], "text/xml")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Host"], "bucket.name.s3.amazonaws.com")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Authorization"], "AWS4-HMAC-SHA256 Credential=ACCESS/19690720/region/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=fd52d27114132799fd2f57bc1fd9c91b319a189fbfb5c6111bf487bfc5ceb808")
