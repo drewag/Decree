@@ -148,21 +148,7 @@ private extension WebService {
     ///
     /// - Returns: the created request
     func createRequest<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URLRequest {
-        guard var components = URLComponents(url: self.baseURL.appendingPathComponent(endpoint.path), resolvingAgainstBaseURL: false) else {
-            throw RequestError.custom("invalid url generated")
-        }
-
-        switch input {
-        case .none, .json, .formURLEncoded, .xml:
-            break
-        case .urlQuery(let query):
-            components.queryItems = query
-        }
-
-        guard let url = components.url else {
-            throw RequestError.custom("invalid url components generated")
-        }
-
+        let url = try self.createUrl(to: endpoint, input: input)
         var request = URLRequest(url: url)
         request.httpMethod = E.method.rawValue
 
@@ -194,6 +180,35 @@ private extension WebService {
         try self.configure(&request, for: endpoint)
 
         return request
+    }
+
+    /// Create the URL to send the input to the given endpoint
+    ///
+    /// - Parameter endpoint: endpoint defining url path
+    /// - Parameter input: the input to upload
+    ///
+    /// - Returns: the URL to send the input to
+    func createUrl<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URL{
+        var withoutQuery = self.baseURL
+        if !endpoint.path.isEmpty {
+            withoutQuery.appendPathComponent(endpoint.path)
+        }
+
+        guard var components = URLComponents(url: withoutQuery, resolvingAgainstBaseURL: false) else {
+            throw RequestError.custom("invalid url generated")
+        }
+
+        switch input {
+        case .none, .json, .formURLEncoded, .xml:
+            break
+        case .urlQuery(let query):
+            components.queryItems = query
+        }
+
+        guard let url = components.url else {
+            throw RequestError.custom("invalid url components generated")
+        }
+        return url
     }
 
     func addAuthorization(to request: inout URLRequest, isRequired: Bool) throws {

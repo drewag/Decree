@@ -221,7 +221,11 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertThrowsError(try XMLOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Bad status code: 201")})
 
         self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        #if os(Linux)
+        XCTAssertThrowsError(try XMLOut().makeSynchronousRequest(), "", { XCTAssertEqual("\($0)", "Error decoding BasicResponse")})
+        #else
         XCTAssertThrowsError(try XMLOut().makeSynchronousRequest(), "", { XCTAssertEqual("\($0)", "Error parsing response: The parser object encountered an internal error.")})
+        #endif
 
         self.session.fixedOutput = (data: xmlFailData, response: TestResponse(), error: nil)
         XCTAssertThrowsError(try XMLOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "unsuccessful")})
