@@ -1,4 +1,4 @@
-Decree
+Decree – Declarative HTTP Requests
 ==============
 
 *Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints on **iOS**, **macOS**, and **Linux***
