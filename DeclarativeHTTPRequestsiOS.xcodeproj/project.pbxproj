@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4980FE9722E4532700531D7C /* TestMinimalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4980FE9622E4532700531D7C /* TestMinimalService.swift */; };
 		499468FC22E38D1B00B69FFC /* DeclarativeHTTPRequests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499468F222E38D1B00B69FFC /* DeclarativeHTTPRequests.framework */; };
-		4994690122E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994690022E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift */; };
 		4994690322E38D1B00B69FFC /* DeclarativeHTTPRequests.h in Headers */ = {isa = PBXBuildFile; fileRef = 499468F522E38D1B00B69FFC /* DeclarativeHTTPRequests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4994693422E3B84200B69FFC /* Endpoint+MakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994692B22E3B84200B69FFC /* Endpoint+MakeRequest.swift */; };
 		4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4994692D22E3B84200B69FFC /* WebService+MakeRequest.swift */; };
@@ -39,6 +38,12 @@
 		49ADB59922E50F05008BD9CB /* OutputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB59822E50F05008BD9CB /* OutputFormat.swift */; };
 		49ADB5B822E54E0C008BD9CB /* XMLCoder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49ADB5B522E54DF0008BD9CB /* XMLCoder.framework */; };
 		49ADB5BA22E54E35008BD9CB /* NSXMLParser_ErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5B922E54E35008BD9CB /* NSXMLParser_ErrorCode.swift */; };
+		49ADB5C422E556DB008BD9CB /* AWSS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5BE22E556DB008BD9CB /* AWSS3.swift */; };
+		49ADB5C622E55E52008BD9CB /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5C522E55E52008BD9CB /* String+Helpers.swift */; };
+		49ADB5E122E599A2008BD9CB /* AWSS3+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5DC22E599A2008BD9CB /* AWSS3+Private.swift */; };
+		49ADB5F622E59A18008BD9CB /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49ADB5ED22E59A11008BD9CB /* CryptoSwift.framework */; };
+		49ADB5F722E59A20008BD9CB /* AWSS3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5E222E599B9008BD9CB /* AWSS3Tests.swift */; };
+		49ADB5F922E59A40008BD9CB /* Date+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADB5F822E59A40008BD9CB /* Date+Testable.swift */; };
 		49FD0D4F22E3CA8B00D17CD0 /* InputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */; };
 		49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */; };
 		49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD0D5222E3D18100D17CD0 /* RequestInput.swift */; };
@@ -70,6 +75,41 @@
 			remoteGlobalIDString = "XMLCoder::XMLCoderTests::Product";
 			remoteInfo = XMLCoderTests;
 		};
+		49ADB5EC22E59A11008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE45519693E190098E6F3;
+			remoteInfo = CryptoSwift;
+		};
+		49ADB5EE22E59A11008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 75211F92207249D8004E41F8;
+			remoteInfo = "CryptoSwift-TestHostApp";
+		};
+		49ADB5F022E59A11008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE46019693E190098E6F3;
+			remoteInfo = Tests;
+		};
+		49ADB5F222E59A11008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7595C14A2072E48C00EA1A5F;
+			remoteInfo = "TestsPerformance-Mac";
+		};
+		49ADB5F422E59A11008BD9CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7564F0602072EAEB00CA5A96;
+			remoteInfo = "TestsPerformance-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -78,7 +118,6 @@
 		499468F522E38D1B00B69FFC /* DeclarativeHTTPRequests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeclarativeHTTPRequests.h; sourceTree = "<group>"; };
 		499468F622E38D1B00B69FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		499468FB22E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeclarativeHTTPRequestsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4994690022E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclarativeHTTPRequestsTests.swift; sourceTree = "<group>"; };
 		4994690222E38D1B00B69FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4994692B22E3B84200B69FFC /* Endpoint+MakeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Endpoint+MakeRequest.swift"; path = "Sources/DeclarativeHTTPRequests/Endpoint+MakeRequest.swift"; sourceTree = SOURCE_ROOT; };
 		4994692D22E3B84200B69FFC /* WebService+MakeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebService+MakeRequest.swift"; sourceTree = "<group>"; };
@@ -108,6 +147,12 @@
 		49ADB59822E50F05008BD9CB /* OutputFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputFormat.swift; sourceTree = "<group>"; };
 		49ADB5AD22E54DF0008BD9CB /* XMLCoder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XMLCoder.xcodeproj; path = iOS/XMLCoder/XMLCoder.xcodeproj; sourceTree = SOURCE_ROOT; };
 		49ADB5B922E54E35008BD9CB /* NSXMLParser_ErrorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSXMLParser_ErrorCode.swift; sourceTree = "<group>"; };
+		49ADB5BE22E556DB008BD9CB /* AWSS3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSS3.swift; sourceTree = "<group>"; };
+		49ADB5C522E55E52008BD9CB /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
+		49ADB5DC22E599A2008BD9CB /* AWSS3+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AWSS3+Private.swift"; sourceTree = "<group>"; };
+		49ADB5E222E599B9008BD9CB /* AWSS3Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSS3Tests.swift; sourceTree = "<group>"; };
+		49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = iOS/CryptoSwift/CryptoSwift.xcodeproj; sourceTree = SOURCE_ROOT; };
+		49ADB5F822E59A40008BD9CB /* Date+Testable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Testable.swift"; sourceTree = "<group>"; };
 		49FD0D4E22E3CA8B00D17CD0 /* InputFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormat.swift; sourceTree = "<group>"; };
 		49FD0D5022E3CCF800D17CD0 /* KeyValueEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoder.swift; sourceTree = "<group>"; };
 		49FD0D5222E3D18100D17CD0 /* RequestInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInput.swift; sourceTree = "<group>"; };
@@ -122,6 +167,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49ADB5F622E59A18008BD9CB /* CryptoSwift.framework in Frameworks */,
 				49ADB5B822E54E0C008BD9CB /* XMLCoder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,7 +217,6 @@
 		499468FF22E38D1B00B69FFC /* DeclarativeHTTPRequestsTests */ = {
 			isa = PBXGroup;
 			children = (
-				4994690022E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift */,
 				4994693B22E3B85500B69FFC /* Tests */,
 				4994690222E38D1B00B69FFC /* Info.plist */,
 			);
@@ -186,6 +231,7 @@
 				4994692F22E3B84200B69FFC /* Endpoint.swift */,
 				4994692B22E3B84200B69FFC /* Endpoint+MakeRequest.swift */,
 				4994693022E3B84200B69FFC /* Basic Types */,
+				49ADB5BC22E556DB008BD9CB /* Services */,
 				4994692C22E3B84200B69FFC /* Private */,
 			);
 			path = Sources;
@@ -199,6 +245,9 @@
 				49FD0D5222E3D18100D17CD0 /* RequestInput.swift */,
 				49FD1A9A22E4341300D17CD0 /* FormURLEncoder.swift */,
 				49ADB5B922E54E35008BD9CB /* NSXMLParser_ErrorCode.swift */,
+				49ADB5C522E55E52008BD9CB /* String+Helpers.swift */,
+				49ADB5DC22E599A2008BD9CB /* AWSS3+Private.swift */,
+				49ADB5F822E59A40008BD9CB /* Date+Testable.swift */,
 			);
 			name = Private;
 			path = Sources/DeclarativeHTTPRequests/Private;
@@ -233,6 +282,7 @@
 				49ADB57122E4ED72008BD9CB /* StatusCodeValidationTests.swift */,
 				4994693E22E3B85500B69FFC /* EmptyResultTests.swift */,
 				49FD0EF822E3D9BB00D17CD0 /* KeyValueEncoderTests.swift */,
+				49ADB5E222E599B9008BD9CB /* AWSS3Tests.swift */,
 				4994693F22E3B85500B69FFC /* Helpers */,
 				4994693D22E3B85500B69FFC /* XCTestManifests.swift */,
 			);
@@ -258,6 +308,7 @@
 		49ADB58A22E50CE0008BD9CB /* External */ = {
 			isa = PBXGroup;
 			children = (
+				49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */,
 				49ADB5AD22E54DF0008BD9CB /* XMLCoder.xcodeproj */,
 			);
 			path = External;
@@ -275,6 +326,27 @@
 			children = (
 				49ADB5B522E54DF0008BD9CB /* XMLCoder.framework */,
 				49ADB5B722E54DF0008BD9CB /* XMLCoderTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49ADB5BC22E556DB008BD9CB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				49ADB5BE22E556DB008BD9CB /* AWSS3.swift */,
+			);
+			name = Services;
+			path = Sources/DeclarativeHTTPRequests/Services;
+			sourceTree = SOURCE_ROOT;
+		};
+		49ADB5E522E59A11008BD9CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49ADB5ED22E59A11008BD9CB /* CryptoSwift.framework */,
+				49ADB5EF22E59A11008BD9CB /* CryptoSwift-TestHostApp.app */,
+				49ADB5F122E59A11008BD9CB /* Tests.xctest */,
+				49ADB5F322E59A11008BD9CB /* TestsPerformance-Mac.xctest */,
+				49ADB5F522E59A11008BD9CB /* TestsPerformance-iOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -360,6 +432,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 49ADB5E522E59A11008BD9CB /* Products */;
+					ProjectRef = 49ADB5E422E59A11008BD9CB /* CryptoSwift.xcodeproj */;
+				},
+				{
 					ProductGroup = 49ADB5AE22E54DF0008BD9CB /* Products */;
 					ProjectRef = 49ADB5AD22E54DF0008BD9CB /* XMLCoder.xcodeproj */;
 				},
@@ -387,6 +463,41 @@
 			remoteRef = 49ADB5B622E54DF0008BD9CB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		49ADB5ED22E59A11008BD9CB /* CryptoSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CryptoSwift.framework;
+			remoteRef = 49ADB5EC22E59A11008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		49ADB5EF22E59A11008BD9CB /* CryptoSwift-TestHostApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "CryptoSwift-TestHostApp.app";
+			remoteRef = 49ADB5EE22E59A11008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		49ADB5F122E59A11008BD9CB /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = 49ADB5F022E59A11008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		49ADB5F322E59A11008BD9CB /* TestsPerformance-Mac.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "TestsPerformance-Mac.xctest";
+			remoteRef = 49ADB5F222E59A11008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		49ADB5F522E59A11008BD9CB /* TestsPerformance-iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "TestsPerformance-iOS.xctest";
+			remoteRef = 49ADB5F422E59A11008BD9CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -412,6 +523,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4994693A22E3B84200B69FFC /* RequestError.swift in Sources */,
+				49ADB5C422E556DB008BD9CB /* AWSS3.swift in Sources */,
+				49ADB5F922E59A40008BD9CB /* Date+Testable.swift in Sources */,
 				4994693822E3B84200B69FFC /* Method.swift in Sources */,
 				49FD1A9B22E4341300D17CD0 /* FormURLEncoder.swift in Sources */,
 				49FD0D5122E3CCF800D17CD0 /* KeyValueEncoder.swift in Sources */,
@@ -419,8 +532,10 @@
 				4994693622E3B84200B69FFC /* WebService.swift in Sources */,
 				4994693922E3B84200B69FFC /* EmptyResult.swift in Sources */,
 				49ADB59922E50F05008BD9CB /* OutputFormat.swift in Sources */,
+				49ADB5E122E599A2008BD9CB /* AWSS3+Private.swift in Sources */,
 				49FD0D5322E3D18100D17CD0 /* RequestInput.swift in Sources */,
 				49FD0EFB22E41BCA00D17CD0 /* Session.swift in Sources */,
+				49ADB5C622E55E52008BD9CB /* String+Helpers.swift in Sources */,
 				4994693522E3B84200B69FFC /* WebService+MakeRequest.swift in Sources */,
 				49ADB56422E4E6FF008BD9CB /* AuthorizationRequirement.swift in Sources */,
 				4994693722E3B84200B69FFC /* Endpoint.swift in Sources */,
@@ -438,6 +553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4994694722E3B8A400B69FFC /* EmptyResultTests.swift in Sources */,
+				49ADB5F722E59A20008BD9CB /* AWSS3Tests.swift in Sources */,
 				49ADB57622E4EE13008BD9CB /* AuthenticationTests.swift in Sources */,
 				49ADB56722E4E9D5008BD9CB /* AuthenticatedService.swift in Sources */,
 				4994694B22E3B8AD00B69FFC /* TestService.swift in Sources */,
@@ -448,7 +564,6 @@
 				49ADB57422E4EDC2008BD9CB /* MakeRequestTestCase.swift in Sources */,
 				49ADB56A22E4EC6D008BD9CB /* ResponseParsingTests.swift in Sources */,
 				49ADB57222E4ED72008BD9CB /* StatusCodeValidationTests.swift in Sources */,
-				4994690122E38D1B00B69FFC /* DeclarativeHTTPRequestsTests.swift in Sources */,
 				49ADB56C22E4ECB9008BD9CB /* Data+Helpers.swift in Sources */,
 				49ADB57022E4ECF9008BD9CB /* Result+Helpers.swift in Sources */,
 				49ADB56E22E4ECDD008BD9CB /* Decodable+Helpers.swift in Sources */,

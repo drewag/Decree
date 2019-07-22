@@ -42,12 +42,16 @@ Features
 - Bearer
 - Custom
 
-**Configable**
+**Configurable**
 - Customize URLRequest (e.g. custom headers)
 - Customize JSON encoders and decoders
 - Custom response validation
 - Custom error response format
 - Custom standard response format
+
+**Third Party Service Support**
+These services have built-in WebService and Endpoint definitions.
+- Amazon AWS S3
 
 **Virtually 100% Code Coverage**
 
@@ -161,8 +165,6 @@ Hopeful Features
 
 It would be great to develop the following additional features
 
-- Better handle authenticated requests by defining a web services authentication mechanism and allow an endpoint to require auth
-- Additional output formats
 - File download and uploading
 
 Contributing

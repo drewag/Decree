@@ -74,6 +74,10 @@ extension WebService {
     ///
     /// - Returns: encoded data
     func encode<Input: Encodable, E: EndpointWithInput>(input: Input, for endpoint: E) throws -> RequestInput {
+        guard Input.self != Data.self else {
+            return .binary(input as! Data)
+        }
+
         do {
             switch E.inputFormat {
             case .JSON:
@@ -117,6 +121,9 @@ extension WebService {
         guard let data = data else {
             throw ResponseError.missingData
         }
+        guard Output.self != Data.self else {
+            return data as! Output
+        }
         do {
             switch E.outputFormat {
             case .JSON:
@@ -141,7 +148,7 @@ extension WebService {
 private extension WebService {
     /// Create the actual URLRequest
     ///
-    /// The web service can do extra configuration on the request
+    /// The web service can do extra configuration on the r≥equest
     ///
     /// - Parameter endoint: endpoint to send the request to
     /// - Parameter body: http body of the request
@@ -161,12 +168,20 @@ private extension WebService {
         case .xml(let data):
             request.setValue("text/xml", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
+        case .binary(let data):
+            request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+            request.httpBody = data
         case .formURLEncoded(let data):
             request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
         }
 
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        switch E.outputFormat {
+        case .JSON:
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+        case .XML:
+            request.setValue("text/xml", forHTTPHeaderField: "Accept")
+        }
 
         switch E.authorizationRequirement {
         case .none:
@@ -199,7 +214,7 @@ private extension WebService {
         }
 
         switch input {
-        case .none, .json, .formURLEncoded, .xml:
+        case .none, .json, .formURLEncoded, .xml, .binary:
             break
         case .urlQuery(let query):
             components.queryItems = query
