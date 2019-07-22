@@ -160,6 +160,10 @@ Here we define a `WebService` called `ExampleService` with the a few properties.
 
 That's all you need. You can then define as many endpoints as you like and use them in a clear and type safe way.
 
+### Real World Examples
+
+To see real world examples, [check out how we declared our built in services](https://github.com/drewag/DeclarativeHTTPRequests/tree/master/Sources/DeclarativeHTTPRequests/Services) like S3.
+
 Hopeful Features
 ------------
 
