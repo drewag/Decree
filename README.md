@@ -59,7 +59,8 @@ Features
 
 **Third Party Service Support**
 These services have built-in WebService and Endpoint definitions.
-- Amazon AWS S3
+- [Amazon AWS S3](https://github.com/drewag/Decree/wiki/Amazon-AWS-S3)
+- [Google Analytics](https://github.com/drewag/Decree/wiki/Google-Analytics)
 
 **Virtually 100% Code Coverage**
 
