@@ -7,7 +7,7 @@
 
 import Foundation
 import DeclarativeHTTPRequests
-import XMLParsing
+import XMLCoder
 
 struct TestNoStandardsService: WebService {
     typealias BasicResponse = NoBasicResponse

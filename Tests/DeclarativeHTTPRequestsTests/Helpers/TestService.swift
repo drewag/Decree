@@ -7,7 +7,7 @@
 
 import Foundation
 import DeclarativeHTTPRequests
-import XMLParsing
+import XMLCoder
 
 struct TestService: WebService {
     struct BasicResponse: Decodable {

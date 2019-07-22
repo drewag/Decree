@@ -12,6 +12,7 @@ public enum ResponseError: Error {
     case noResponse
     case missingData
     case decoding(typeName: String, DecodingError)
+    case parsing(message: String)
     case parsed(AnyErrorResponse)
 
     case multipleChoices
@@ -64,6 +65,8 @@ extension ResponseError: CustomStringConvertible {
             return "Error decoding \(typeName)"
         case .parsed(let parsed):
             return parsed.message
+        case .parsing(let message):
+            return "Error parsing response: \(message)"
 
         case .multipleChoices:
             return "MULTIPLE CHOICES"

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import XMLParsing
+import XMLCoder
 
 extension Data {
     var string: String? {
@@ -19,8 +19,14 @@ extension Data {
         return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
     }
 
-    var xmlDict: [String:Raw] {
+    var xmlDict: [String:Raw?] {
         let decoder = XMLDecoder()
-        return (try? decoder.decode([String:Raw].self, from: self)) ?? [:]
+        do {
+            return try decoder.decode([String:Raw?].self, from: self)
+        }
+        catch {
+            print(error)
+            return [:]
+        }
     }
 }

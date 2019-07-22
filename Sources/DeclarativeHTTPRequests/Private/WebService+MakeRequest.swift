@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import XMLParsing
+import XMLCoder
 
 extension WebService {
     /// Make request to any endpoint
@@ -49,6 +49,9 @@ extension WebService {
                         , let response: ErrorResponse = try? self.parse(from: data, for: endpoint)
                     {
                         onComplete(.failure(ResponseError.parsed(response)))
+                    }
+                    else if (error as NSError).domain == "NSXMLParserErrorDomain", let code = XMLParser.ErrorCode(rawValue: (error as NSError).code) {
+                        onComplete(.failure(ResponseError.parsing(message: code.description)))
                     }
                     else {
                         onComplete(.failure(error))

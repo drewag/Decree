@@ -1,3 +1,3 @@
-[submodule "iOS/XMLParsing"]
-	path = iOS/XMLParsing
-	url = https://github.com/drewag/XMLParsing.git
+[submodule "iOS/XMLCoder"]
+	path = iOS/XMLCoder
+	url = https://github.com/drewag/XMLCoder.git

@@ -166,8 +166,8 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["date"]?.interval, -14182980)
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["string"]?.string, "weird&=?<>characters")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["date"]??.interval, -14182980)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["string"]??.string, "weird&=?<>characters")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "text/xml")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -185,8 +185,8 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["date"]?.interval, -14182980)
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["string"]?.string, "weird&=?<>characters")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["date"]??.interval, -14182980)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.xmlDict["string"]??.string, "weird&=?<>characters")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "text/xml")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
