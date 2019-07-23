@@ -12,54 +12,78 @@ class KeyValueEncoderTests: XCTestCase {
     func testEncodingObject() throws {
         let encoder = KeyValueEncoder(codingPath: [])
         try Object().encode(to: encoder)
+        let file1 = File(name: "test.txt", content: "test content".data(using: .utf8)!, type: .text)
+        let file2 = File(name: "test2.txt", content: "test content 2".data(using: .utf8)!, type: .text)
 
-        XCTAssertEqual(encoder.values.count, 36)
+        XCTAssertEqual(encoder.values.count, 48)
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "null" && $1 == nil}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "isTrue" && $1 == "true"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "isFalse" && $1 == "false"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "null" && $1 == .none}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "isTrue" && $1 == .bool(true)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "isFalse" && $1 == .bool(false)}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "int" && $1 == "1"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "int8" && $1 == "2"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "int16" && $1 == "3"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "int32" && $1 == "4"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "int64" && $1 == "5"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "int" && $1 == .string("1")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "int8" && $1 == .string("2")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "int16" && $1 == .string("3")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "int32" && $1 == .string("4")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "int64" && $1 == .string("5")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint" && $1 == "6"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint8" && $1 == "7"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint16" && $1 == "8"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint32" && $1 == "9"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint64" && $1 == "10"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint" && $1 == .string("6")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint8" && $1 == .string("7")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint16" && $1 == .string("8")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint32" && $1 == .string("9")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "uint64" && $1 == .string("10")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "float" && $1 == "11.12"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "double" && $1 == "13.14"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "float" && $1 == .string("11.12")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "double" && $1 == .string("13.14")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "string" && $1 == "some string"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == "-14182980.0"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "data" && $1 == "c29tZSBkYXRh"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "string" && $1 == .string("some string")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleNull" && $1 == nil}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleIsTrue" && $1 == "true"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleIsFalse" && $1 == "false"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-14182980.0")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt" && $1 == "1"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt8" && $1 == "2"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt16" && $1 == "3"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt32" && $1 == "4"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt64" && $1 == "5"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "data" && $1 == .data("some data".data(using: .utf8)!)}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint" && $1 == "6"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint8" && $1 == "7"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint16" && $1 == "8"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint32" && $1 == "9"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint64" && $1 == "10"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "file" && $1 == .file(file1)}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFloat" && $1 == "11.12"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDouble" && $1 == "13.14"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("three")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleString" && $1 == "some string"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == "-14182980.0"}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleData" && $1 == "c29tZSBkYXRh"}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray[]" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray[]" && $1 == .file(file2)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleNull" && $1 == .none}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleIsTrue" && $1 == .bool(true)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleIsFalse" && $1 == .bool(false)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt" && $1 == .string("1")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt8" && $1 == .string("2")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt16" && $1 == .string("3")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt32" && $1 == .string("4")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleInt64" && $1 == .string("5")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint" && $1 == .string("6")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint8" && $1 == .string("7")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint16" && $1 == .string("8")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint32" && $1 == .string("9")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleUint64" && $1 == .string("10")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFloat" && $1 == .string("11.12")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDouble" && $1 == .string("13.14")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleString" && $1 == .string("some string")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-14182980.0")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleData" && $1 == .data("some data".data(using: .utf8)!)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFile" && $1 == .file(file1)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("three")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file2)}))
     }
 }
 
@@ -76,6 +100,9 @@ struct SingleValue<Value: Encodable>: Encodable {
         try container.encode(self.value)
     }
 }
+
+private let testFile1 = File(name: "test.txt", content: "test content".data(using: .utf8)!, type: .text)
+private let testFile2 = File(name: "test2.txt", content: "test content 2".data(using: .utf8)!, type: .text)
 
 struct Object: Encodable {
     let null: String? = nil
@@ -102,6 +129,11 @@ struct Object: Encodable {
     let date: Date = Date(timeIntervalSince1970: -14182980)
     let data: Data = "some data".data(using: .utf8)!
 
+    let file = testFile1
+
+    let array = ["one","two","three"]
+    let filesArray = [testFile1,testFile2]
+
     let singleNull = SingleValue<String?>(nil)
     let singleIsTrue = SingleValue(true)
     let singleIsFalse = SingleValue(false)
@@ -120,11 +152,14 @@ struct Object: Encodable {
     let singleString = SingleValue("some string")
     let singleDate = SingleValue(Date(timeIntervalSince1970: -14182980))
     let singleData = SingleValue("some data".data(using: .utf8)!)
+    let singleFile = SingleValue(testFile1)
+
+    let singleArray = SingleValue(["one","two","three"])
+    let singleFilesArray = SingleValue([testFile1,testFile2])
 
     enum CodingKeys: String, CodingKey {
-        case null, isTrue, isFalse, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, float, double, string, date, data
-        case singleNull, singleIsTrue, singleIsFalse, singleInt, singleInt8, singleInt16, singleInt32, singleInt64, singleUint, singleUint8, singleUint16, singleUint32, singleUint64, singleFloat, singleDouble, singleString, singleDate, singleData
-
+        case null, isTrue, isFalse, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, float, double, string, date, data, file, array, filesArray
+        case singleNull, singleIsTrue, singleIsFalse, singleInt, singleInt8, singleInt16, singleInt32, singleInt64, singleUint, singleUint8, singleUint16, singleUint32, singleUint64, singleFloat, singleDouble, singleString, singleDate, singleData, singleFile, singleArray, singleFilesArray
     }
 
     func encode(to encoder: Encoder) throws {
@@ -148,6 +183,9 @@ struct Object: Encodable {
         try container.encode(self.string, forKey: .string)
         try container.encode(self.date, forKey: .date)
         try container.encode(self.data, forKey: .data)
+        try container.encode(self.file, forKey: .file)
+        try container.encode(self.array, forKey: .array)
+        try container.encode(self.filesArray, forKey: .filesArray)
 
         try container.encode(self.singleNull, forKey: .singleNull)
         try container.encode(self.singleIsTrue, forKey: .singleIsTrue)
@@ -167,5 +205,8 @@ struct Object: Encodable {
         try container.encode(self.singleString, forKey: .singleString)
         try container.encode(self.singleDate, forKey: .singleDate)
         try container.encode(self.singleData, forKey: .singleData)
+        try container.encode(self.file, forKey: .singleFile)
+        try container.encode(self.singleArray, forKey: .singleArray)
+        try container.encode(self.singleFilesArray, forKey: .singleFilesArray)
     }
 }

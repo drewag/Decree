@@ -35,6 +35,7 @@ class GoogleAnalyticsTests: XCTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "POST")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpBody?.string, "v=1&tid=UA-222222222-2&cid=CLIENT1&ds=api&t=pageview&dp=%2Ftest&uip=0.0.0.0&cd1=Field1&cd2=Field2&cd3=Field3")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
     }
 
     func testCollectMinimalFields() throws {
@@ -48,5 +49,6 @@ class GoogleAnalyticsTests: XCTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "POST")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpBody?.string, "v=1&tid=UA-999999999-9&cid=CLIENT1&ds=api&t=pageview&dp=%2Ftest")
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
     }
 }

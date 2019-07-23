@@ -9,7 +9,7 @@
 import Foundation
 
 struct FormURLEncoder {
-    public static func encode(_ data: [(String,String?)]) -> String {
+    static func encode(_ data: [(String,KeyValueEncoder.Value)]) -> String {
         var output = ""
 
         let characterSet = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~")
@@ -21,11 +21,18 @@ struct FormURLEncoder {
             if !output.isEmpty {
                 output += "&"
             }
-            if let value = value {
-                output += "\(escape(key))=\(escape(value))"
-            }
-            else {
-                output += "\(escape(key))="
+            output += "\(escape(key))="
+            switch value {
+            case .none:
+                break
+            case .string(let string):
+                output += escape(string)
+            case .data(let data):
+                output += escape(data.base64EncodedString())
+            case .bool(let bool):
+                output += bool ? "true" : "false"
+            case .file(let file):
+                output += escape(file.content.base64EncodedString())
             }
         }
 

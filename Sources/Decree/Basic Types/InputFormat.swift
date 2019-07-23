@@ -11,4 +11,5 @@ public enum InputFormat {
     case XML(rootNode: String)
     case urlQuery
     case formURLEncoded
+    case formData
 }

@@ -24,11 +24,14 @@ extension WebService {
         do {
             let request = try self.createRequest(to: endpoint, input: input)
             let session = self.sessionOverride ?? URLSession.shared
+//            print(request.allHTTPHeaderFields)
+//            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
             let task = session.dataTask(with: request) { data, response, error in
                 if let error = error {
                     onComplete(.failure(error))
                     return
                 }
+//                print(String(data: data ?? Data(), encoding: .utf8))
                 guard let response = response else {
                     onComplete(.failure(ResponseError.noResponse))
                     return
@@ -92,7 +95,18 @@ extension WebService {
                 let encoder = KeyValueEncoder(codingPath: [])
                 try input.encode(to: encoder)
                 return .urlQuery(encoder.values.map { value in
-                    return URLQueryItem(name: value.0, value: value.1)
+                    switch value.1 {
+                    case .string(let string):
+                        return URLQueryItem(name: value.0, value: string)
+                    case .none:
+                        return URLQueryItem(name: value.0, value: nil)
+                    case .data(let data):
+                        return URLQueryItem(name: value.0, value: data.base64EncodedString())
+                    case .file(let file):
+                        return URLQueryItem(name: value.0, value: file.content.base64EncodedString())
+                    case .bool(let bool):
+                        return URLQueryItem(name: value.0, value: bool ? "true" : "false")
+                    }
                 })
             case .formURLEncoded:
                 let encoder = KeyValueEncoder(codingPath: [])
@@ -100,6 +114,12 @@ extension WebService {
                 let body = FormURLEncoder.encode(encoder.values)
                 let data = body.data(using: .utf8) ?? Data()
                 return .formURLEncoded(data)
+            case .formData:
+                let encoder = KeyValueEncoder(codingPath: [])
+                try input.encode(to: encoder)
+                let data = FormDataEncoder.encode(encoder.values)
+                return .formData(data)
+
             }
         }
         catch let error as EncodingError {
@@ -174,6 +194,9 @@ private extension WebService {
         case .formURLEncoded(let data):
             request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
+        case .formData(let data):
+            request.setValue("multipart/form-data; charset=utf-8; boundary=\(FormDataEncoder.boundary)", forHTTPHeaderField: "Content-Type")
+            request.httpBody = data
         }
 
         switch E.outputFormat {
@@ -214,7 +237,7 @@ private extension WebService {
         }
 
         switch input {
-        case .none, .json, .formURLEncoded, .xml, .binary:
+        case .none, .json, .formURLEncoded, .xml, .binary, .formData:
             break
         case .urlQuery(let query):
             components.queryItems = query

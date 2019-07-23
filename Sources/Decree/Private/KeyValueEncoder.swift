@@ -16,8 +16,16 @@ import Foundation
 
 /// Encode to key value pairs
 class KeyValueEncoder: Encoder {
+    enum Value: Equatable {
+        case none
+        case string(String)
+        case data(Data)
+        case bool(Bool)
+        case file(File)
+    }
+
     let codingPath: [CodingKey]
-    var values = [(String,String?)]()
+    var values = [(String,Value)]()
     var userInfo: [CodingUserInfoKey : Any] = [:]
 
     init(codingPath: [CodingKey] = []) {
@@ -57,27 +65,27 @@ private class KeyValueKeyedEncodingContainer<Key: CodingKey>: KeyedEncodingConta
     }
 
     func encodeNil(forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, nil))
+        self.encoder.values.append((key.stringValue, .none))
     }
 
     func encode(_ value: Int, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Bool, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, value ? "true" : "false"))
+        self.encoder.values.append((key.stringValue, .bool(value)))
     }
 
     func encode(_ value: Float, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Double, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: String, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, value))
+        self.encoder.values.append((key.stringValue, .string(value)))
     }
 
     func encode<T>(_ value: T, forKey key: Key) throws where T : Swift.Encodable {
@@ -89,63 +97,72 @@ private class KeyValueKeyedEncodingContainer<Key: CodingKey>: KeyedEncodingConta
             return
         }
 
-        if let date = value as? Date {
+        if let file = value as? File {
+            self.encoder.values.append((key.stringValue, .file(file)))
+        }
+        else if let date = value as? Date {
             try self.encode(date.timeIntervalSince1970, forKey: key)
         }
         else if let data = value as? Data {
-            try self.encode(data.base64EncodedString(), forKey: key)
+            self.encoder.values.append((key.stringValue, .data(data)))
         }
-        else {
-            do {
-                let encoder = JSONEncoder()
-                encoder.userInfo = self.encoder.userInfo
-                let data = try encoder.encode(value)
-                let string = String(data: data, encoding: .utf8) ?? ""
-                self.encoder.values.append((key.stringValue, string))
-            }
-            catch {
+        else if let array = value as? Array<Encodable> {
+            for value in array {
+                if let file = value as? File {
+                    self.encoder.values.append((key.stringValue + "[]", .file(file)))
+                    continue
+                }
                 let encoder = KeyValueEncoder(codingPath: [key])
                 encoder.userInfo = self.encoder.userInfo
                 try value.encode(to: encoder)
-                self.encoder.values += encoder.values
+                guard let first = encoder.values.first else {
+                    continue
+                }
+                self.encoder.values.append((key.stringValue + "[]", first.1))
             }
+        }
+        else {
+            let encoder = KeyValueEncoder(codingPath: [key])
+            encoder.userInfo = self.encoder.userInfo
+            try value.encode(to: encoder)
+            self.encoder.values += encoder.values
         }
     }
 
     func encode(_ value: Int8, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int16, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int32, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int64, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt8, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt16, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt32, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt64, forKey key: Key) throws {
-        self.encoder.values.append((key.stringValue, "\(value)"))
+        self.encoder.values.append((key.stringValue, .string("\(value)")))
     }
 
     func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: Key) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
@@ -168,63 +185,63 @@ private class KeyValueSingleValueEncodingContainer: SingleValueEncodingContainer
     }
 
     func encodeNil() throws {
-        self.encoder.values.append((self.key.stringValue, nil))
+        self.encoder.values.append((self.key.stringValue, .none))
     }
 
     func encode(_ value: Bool) throws {
-        self.encoder.values.append((self.key.stringValue, value ? "true" : "false"))
+        self.encoder.values.append((self.key.stringValue, .bool(value)))
     }
 
     func encode(_ value: Int) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int8) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int16) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int32) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Int64) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt8) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt16) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt32) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: UInt64) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Float) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: Double) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string("\(value)")))
     }
 
     func encode(_ value: String) throws {
-        self.encoder.values.append((self.key.stringValue, "\(value)"))
+        self.encoder.values.append((self.key.stringValue, .string(value)))
     }
 
     func encode<T>(_ value: T) throws where T : Encodable {
@@ -236,30 +253,35 @@ private class KeyValueSingleValueEncodingContainer: SingleValueEncodingContainer
             return
         }
 
-        if let date = value as? Date {
+        if let file = value as? File {
+            self.encoder.values.append((self.key.stringValue, .file(file)))
+        }
+        else if let date = value as? Date {
             try self.encode(date.timeIntervalSince1970)
         }
         else if let data = value as? Data {
-            try self.encode(data.base64EncodedString())
+            self.encoder.values.append((self.key.stringValue, .data(data)))
         }
-        else if let string = value as? String {
-            try self.encode(string)
-        }
-        else {
-            do {
-                let encoder = JSONEncoder()
-                encoder.userInfo = self.encoder.userInfo
-                let data = try encoder.encode(value)
-                let string = String(data: data, encoding: .utf8) ?? ""
-                self.encoder.values.append((self.key.stringValue, string))
-            }
-            catch {
-                let encoder = KeyValueEncoder(codingPath: self.encoder.codingPath + [self.key])
+        else if let array = value as? Array<Encodable> {
+            for value in array {
+                if let file = value as? File {
+                    self.encoder.values.append((key.stringValue + "[]", .file(file)))
+                    continue
+                }
+                let encoder = KeyValueEncoder(codingPath: [key])
                 encoder.userInfo = self.encoder.userInfo
                 try value.encode(to: encoder)
-                self.encoder.values += encoder.values
+                guard let first = encoder.values.first else {
+                    continue
+                }
+                self.encoder.values.append((self.key.stringValue + "[]", first.1))
             }
+        }
+        else {
+            let encoder = KeyValueEncoder(codingPath: self.encoder.codingPath + [self.key])
+            encoder.userInfo = self.encoder.userInfo
+            try value.encode(to: encoder)
+            self.encoder.values += encoder.values
         }
     }
 }
-
