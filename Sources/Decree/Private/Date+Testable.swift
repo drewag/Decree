@@ -10,15 +10,15 @@ import Foundation
 private var faked: (base: Date, started: Date)?
 
 extension Date {
-    static func startFakingNow(from: Date) {
+    public static func startFakingNow(from: Date) {
         faked = (from, Date())
     }
 
-    static func stopFakingNow() {
+    public static func stopFakingNow() {
         faked = nil
     }
 
-    static func addFake(interval: TimeInterval) {
+    public static func addFake(interval: TimeInterval) {
         if faked == nil {
             self.startFakingNow(from: Date())
         }
@@ -27,7 +27,7 @@ extension Date {
         }
     }
 
-    static var now: Date {
+    public static var now: Date {
         guard let faked = faked else {
             return Date()
         }
