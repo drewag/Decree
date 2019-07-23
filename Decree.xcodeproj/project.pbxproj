@@ -27,6 +27,9 @@
 		494A026922E66EE600F2B18B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026822E66EE600F2B18B /* File.swift */; };
 		494A026E22E682EA00F2B18B /* FormDataEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */; };
 		494A027022E6949100F2B18B /* FileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026F22E6949100F2B18B /* FileTests.swift */; };
+		494A02FB22E69E1100F2B18B /* AppleAppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A02FA22E69E1100F2B18B /* AppleAppStore.swift */; };
+		494A02FD22E6A3A600F2B18B /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A02FC22E6A3A600F2B18B /* ErrorHandling.swift */; };
+		494A02FF22E6D72100F2B18B /* AppleAppStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A02FE22E6D72100F2B18B /* AppleAppStoreTests.swift */; };
 		OBJ_199 /* AEAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* AEAD.swift */; };
 		OBJ_200 /* AEADChaCha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* AEADChaCha20Poly1305.swift */; };
 		OBJ_201 /* AES.Cryptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* AES.Cryptors.swift */; };
@@ -245,6 +248,9 @@
 		494A026822E66EE600F2B18B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataEncoderTests.swift; sourceTree = "<group>"; };
 		494A026F22E6949100F2B18B /* FileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTests.swift; sourceTree = "<group>"; };
+		494A02FA22E69E1100F2B18B /* AppleAppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAppStore.swift; sourceTree = "<group>"; };
+		494A02FC22E6A3A600F2B18B /* ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
+		494A02FE22E6D72100F2B18B /* AppleAppStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAppStoreTests.swift; sourceTree = "<group>"; };
 		"CryptoSwift::CryptoSwift::Product" /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CryptoSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -583,6 +589,7 @@
 				OBJ_33 /* AWSS3.swift */,
 				OBJ_34 /* GoogleAnalytics.swift */,
 				494A00BE22E6567C00F2B18B /* FreshDesk.swift */,
+				494A02FA22E69E1100F2B18B /* AppleAppStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -612,6 +619,7 @@
 				OBJ_56 /* XCTestManifests.swift */,
 				494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */,
 				494A026F22E6949100F2B18B /* FileTests.swift */,
+				494A02FE22E6D72100F2B18B /* AppleAppStoreTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -632,7 +640,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -644,7 +652,6 @@
 				OBJ_192 /* README.md */,
 				OBJ_193 /* Decree.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_57 /* Dependencies */ = {
@@ -789,6 +796,7 @@
 				OBJ_19 /* ResponseError.swift */,
 				OBJ_20 /* Session.swift */,
 				494A026822E66EE600F2B18B /* File.swift */,
+				494A02FC22E6A3A600F2B18B /* ErrorHandling.swift */,
 			);
 			path = "Basic Types";
 			sourceTree = "<group>";
@@ -940,7 +948,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_186 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1056,6 +1064,7 @@
 				OBJ_287 /* AuthorizationRequirement.swift in Sources */,
 				OBJ_288 /* EmptyResult.swift in Sources */,
 				OBJ_289 /* ErrorResponse.swift in Sources */,
+				494A02FD22E6A3A600F2B18B /* ErrorHandling.swift in Sources */,
 				OBJ_290 /* InputFormat.swift in Sources */,
 				OBJ_291 /* Method.swift in Sources */,
 				OBJ_292 /* NoBasicResponse.swift in Sources */,
@@ -1070,6 +1079,7 @@
 				OBJ_301 /* FormURLEncoder.swift in Sources */,
 				494A026922E66EE600F2B18B /* File.swift in Sources */,
 				494A00BF22E6567C00F2B18B /* FreshDesk.swift in Sources */,
+				494A02FB22E69E1100F2B18B /* AppleAppStore.swift in Sources */,
 				OBJ_302 /* KeyValueEncoder.swift in Sources */,
 				494A00C322E663C600F2B18B /* FormDataEncoder.swift in Sources */,
 				OBJ_303 /* NSXMLParser_ErrorCode.swift in Sources */,
@@ -1114,6 +1124,7 @@
 				OBJ_348 /* StatusCodeValidationTests.swift in Sources */,
 				494A027022E6949100F2B18B /* FileTests.swift in Sources */,
 				494A026E22E682EA00F2B18B /* FormDataEncoderTests.swift in Sources */,
+				494A02FF22E6D72100F2B18B /* AppleAppStoreTests.swift in Sources */,
 				OBJ_349 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

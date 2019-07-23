@@ -24,6 +24,7 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
         XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/empty")
         self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+        XCTAssertNotNil(result)
         XCTAssertNil(result?.error)
     }
 
@@ -62,6 +63,7 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
         XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in")
         self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+        XCTAssertNotNil(result)
         XCTAssertNil(result?.error)
     }
 
@@ -193,5 +195,30 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout")
         self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
         XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
+    }
+
+    func testRedirectFlow() {
+        var result: EmptyResult?
+        Empty().makeRequest() { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/empty")
+        self.session.startedTasks[0].complete(Data(), TestResponse(statusCode: 299), nil)
+
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 2)
+        XCTAssertEqual(self.session.startedTasks[1].request.httpMethod, "GET")
+        XCTAssertEqual(self.session.startedTasks[1].request.httpBody, nil)
+        XCTAssertEqual(self.session.startedTasks[1].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[1].request.allHTTPHeaderFields?["Content-Type"], nil)
+        XCTAssertEqual(self.session.startedTasks[1].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[1].request.url?.absoluteString, "https://example.com/redirected")
+        self.session.startedTasks[1].complete(successData, TestResponse(), nil)
+        XCTAssertNotNil(result)
+        XCTAssertNil(result?.error)
     }
 }

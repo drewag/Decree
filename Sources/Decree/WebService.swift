@@ -86,6 +86,11 @@ public protocol WebService {
 
     /// **OPTIONAL** Chance to validate the BasicResponse
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws
+
+    // MARK: Error Handling
+
+    /// *OPTIONAL* Chance to automatically handle a response error
+    func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling
 }
 
 
@@ -101,4 +106,10 @@ extension WebService {
     public func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {}
+    public func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling { return .none }
+}
+
+public enum ErrorKind {
+    case response(ResponseError)
+    case plain(Error)
 }

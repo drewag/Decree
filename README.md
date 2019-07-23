@@ -63,6 +63,7 @@ These services have built-in WebService and Endpoint definitions.
 - [Amazon AWS S3](https://github.com/drewag/Decree/wiki/Amazon-AWS-S3)
 - [Google Analytics](https://github.com/drewag/Decree/wiki/Google-Analytics)
 - [FreshDesk](https://github.com/drewag/Decree/wiki/FreshDesk)
+- Apple App Store Receipt Validation
 
 **Virtually 100% Code Coverage**
 

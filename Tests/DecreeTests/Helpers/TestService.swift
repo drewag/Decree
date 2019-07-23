@@ -54,16 +54,30 @@ struct TestService: WebService {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
 
+    struct Redirect: Error {}
+
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
         guard statusCode != 201 else {
             throw RequestError.custom("Bad status code: \(statusCode)")
+        }
+        guard statusCode != 299 else {
+            throw Redirect()
         }
     }
 
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {
         guard response.success else {
             throw RequestError.custom("unsuccessful")
+        }
+    }
+
+    func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling {
+        switch error {
+        case .plain(let plain) where plain is Redirect:
+            return .redirect(to: URL(string: "https://example.com/redirected")!)
+        default:
+            return .none
         }
     }
 }

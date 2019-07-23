@@ -21,51 +21,7 @@ extension WebService {
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
     func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
-        do {
-            let request = try self.createRequest(to: endpoint, input: input)
-            let session = self.sessionOverride ?? URLSession.shared
-//            print(request.allHTTPHeaderFields)
-//            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
-            let task = session.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    onComplete(.failure(error))
-                    return
-                }
-//                print(String(data: data ?? Data(), encoding: .utf8))
-                guard let response = response else {
-                    onComplete(.failure(ResponseError.noResponse))
-                    return
-                }
-                do {
-                    try self.automaticValidate(response, for: endpoint)
-                    try self.validate(response, for: endpoint)
-
-                    if !(BasicResponse.self is NoBasicResponse.Type) {
-                        let basicResponse: BasicResponse = try self.parse(from: data, for: endpoint)
-                        try self.validate(basicResponse, for: endpoint)
-                    }
-
-                    onComplete(.success(data))
-                }
-                catch {
-                    if ErrorResponse.self != NoErrorResponse.self
-                        , let response: ErrorResponse = try? self.parse(from: data, for: endpoint)
-                    {
-                        onComplete(.failure(ResponseError.parsed(response)))
-                    }
-                    else if (error as NSError).domain == "NSXMLParserErrorDomain", let code = XMLParser.ErrorCode(rawValue: (error as NSError).code) {
-                        onComplete(.failure(ResponseError.parsing(message: code.description)))
-                    }
-                    else {
-                        onComplete(.failure(error))
-                    }
-                }
-            }
-            task.resume()
-        }
-        catch {
-            onComplete(.failure(error))
-        }
+        self.doMakeRequest(to: nil, for: endpoint, input: input, onComplete: onComplete)
     }
 
     /// JSON encode the given input to data
@@ -166,6 +122,89 @@ extension WebService {
 }
 
 private extension WebService {
+    /// Make request to any endpoint
+    ///
+    /// This is the method used by all the speicalized endpoint methods.
+    /// It handles creating and executing the task as well as parsing and
+    /// validating the basic response.
+    ///
+    /// The web service can provde extra URLResponse and BasicResponse validation
+    ///
+    /// - Parameter endpoint: the endpoint for the request
+    /// - Parameter body: http body the request
+    /// - Parameter onComplete: callback for when the request completes with the data returned
+    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
+        do {
+            let request: URLRequest
+            if let url = url {
+                request = try self.createRequest(to: url, for: endpoint, input: input)
+            }
+            else {
+                request = try self.createRequest(to: endpoint, input: input)
+            }
+
+            let session = self.sessionOverride ?? URLSession.shared
+//            print(request.allHTTPHeaderFields)
+//            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    onComplete(.failure(error))
+                    return
+                }
+//                print(String(data: data ?? Data(), encoding: .utf8))
+                guard let response = response else {
+                    onComplete(.failure(ResponseError.noResponse))
+                    return
+                }
+                do {
+                    try self.automaticValidate(response, for: endpoint)
+                    try self.validate(response, for: endpoint)
+
+                    if !(BasicResponse.self is NoBasicResponse.Type) {
+                        let basicResponse: BasicResponse = try self.parse(from: data, for: endpoint)
+                        try self.validate(basicResponse, for: endpoint)
+                    }
+
+                    onComplete(.success(data))
+                }
+                catch {
+                    self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, onComplete: onComplete)
+                }
+            }
+            task.resume()
+        }
+        catch {
+            onComplete(.failure(error))
+        }
+    }
+
+    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
+        let errorKind: ErrorKind
+        if ErrorResponse.self != NoErrorResponse.self
+            , let parsed: ErrorResponse = try? self.parse(from: data, for: endpoint)
+        {
+            errorKind = .response(ResponseError.parsed(parsed))
+        }
+        else if (error as NSError).domain == "NSXMLParserErrorDomain", let code = XMLParser.ErrorCode(rawValue: (error as NSError).code) {
+            errorKind = .response(ResponseError.parsing(message: code.description))
+        }
+        else {
+            errorKind = .plain(error)
+        }
+
+        switch self.handle(errorKind, response: response, from: endpoint) {
+        case .none:
+            switch errorKind {
+            case .response(let error):
+                onComplete(.failure(error))
+            case .plain(let plain):
+                onComplete(.failure(plain))
+            }
+        case .redirect(let url):
+            self.doMakeRequest(to: url, for: endpoint, input: input, onComplete: onComplete)
+        }
+    }
+
     /// Create the actual URLRequest
     ///
     /// The web service can do extra configuration on the r≥equest
@@ -176,6 +215,19 @@ private extension WebService {
     /// - Returns: the created request
     func createRequest<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URLRequest {
         let url = try self.createUrl(to: endpoint, input: input)
+        return try self.createRequest(to: url, for: endpoint, input: input)
+    }
+
+    /// Create the actual URLRequest
+    ///
+    /// The web service can do extra configuration on the r≥equest
+    ///
+    /// - Parameter url: url to send the request to
+    /// - Parameter endpoint: endpoint to send the request to
+    /// - Parameter body: http body of the request
+    ///
+    /// - Returns: the created request
+    func createRequest<E: Endpoint>(to url: URL, for endpoint: E, input: RequestInput) throws -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = E.method.rawValue
 
@@ -344,5 +396,4 @@ private extension WebService {
             throw ResponseError.otherStatus(response.statusCode)
         }
     }
-
 }
