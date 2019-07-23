@@ -17,6 +17,8 @@ This framework is designed to be light-weight while remaining customizable and f
 
 I developed this strategy through the implementation of many different apps and backend services written in Swift. I've used this paradigm for communicating between my own front and back-ends (both implemented in Swift) as well as to services such as Spotify, Freshdesk, Stripe, and more.
 
+**We offer a separate repository [DecreeServices](https://github.com/drewag/DecreeServices) with service declarations for popular services** 
+
 Table of Contents
 --------------
 
