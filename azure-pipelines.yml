@@ -2,11 +2,6 @@ trigger:
 - master
 
 jobs:
-- job: pod
-  pool:
-    vmImage: 'macos-latest'
-  steps:
-  - bash: ./pod.sh
 - job: Xcode10_2
   pool:
     vmImage: 'macos-latest'
