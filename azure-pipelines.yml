@@ -21,10 +21,10 @@ jobs:
   pool:
     vmImage: 'macos-latest'
   steps:
-  - script: Tests/test_xcodebuild.sh
+  - script: Tests/test_swiftpm.sh
 - job: Linux
   pool:
     vmImage: 'Ubuntu 16.04'
   container: norionomura/swift:501
   steps:
-  - script: ./test_linux.sh
+  - script: Tests/test_swiftpm.sh
