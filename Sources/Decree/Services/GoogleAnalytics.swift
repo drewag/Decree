@@ -36,60 +36,64 @@ extension Google.Analytics {
         public static let method = Method.post
         public let path = "collect"
 
+        public typealias Input = Record
+
+        public init() {}
+
+        public static let inputFormat = InputFormat.formURLEncoded
+    }
+
+    public struct Record: Encodable {
         public enum Kind {
             /// Page view
             case pageView(endpoint: String)
         }
 
-        public init() {}
+        let v = "1"
+        let tid: String
+        let cid: String
+        let ds = "api"
+        let t: String
+        let dp: String?
+        let uip: String?
+        let cd1: String?
+        let cd2: String?
+        let cd3: String?
 
-        public struct Input: Encodable {
-            let v = "1"
-            let tid: String
-            let cid: String
-            let ds = "api"
-            let t: String
-            let dp: String?
-            let uip: String?
-            let cd1: String?
-            let cd2: String?
-            let cd3: String?
+        /// Define data to be recorded
+        ///
+        /// - Parameters:
+        ///     - kind: The kind of data to record
+        ///     - trackingId: Override the tracking id on the shared instance
+        ///     - ipAddress: IP Address that is the source of the record
+        ///     - clientId: A unique identifier for the source of the record
+        ///     - customField1: Custom data field
+        ///     - customField2: Custom data field
+        ///     - customField3: Custom data field
+        public init(
+            kind: Kind,
+            trackingId: String = Google.Analytics.shared.trackingId,
+            ipAddress: String? = nil,
+            clientId: String = UUID().uuidString,
+            customField1: String? = nil,
+            customField2: String? = nil,
+            customField3: String? = nil
+            )
+        {
+            self.tid = trackingId
+            self.cid = clientId
 
-            /// Define data to be recorded
-            ///
-            /// - Parameters:
-            ///     - kind: The kind of data to record
-            ///     - trackingId: Override the tracking id on the shared instance
-            ///     - ipAddress: IP Address that is the source of the record
-            ///     - clientId: A unique identifier for the source of the record
-            ///     - customField1: Custom data field
-            ///     - customField2: Custom data field
-            ///     - customField3: Custom data field
-            public init(
-                kind: Kind,
-                trackingId: String = Google.Analytics.shared.trackingId,
-                ipAddress: String? = nil,
-                clientId: String = UUID().uuidString,
-                customField1: String? = nil,
-                customField2: String? = nil,
-                customField3: String? = nil
-                )
-            {
-                self.tid = trackingId
-                self.cid = clientId
-
-                switch kind {
-                case .pageView(let endpoint):
-                    self.t = "pageview"
-                    self.dp = endpoint
-                }
-
-                self.uip = ipAddress
-                self.cd1 = customField1
-                self.cd2 = customField2
-                self.cd3 = customField3
+            switch kind {
+            case .pageView(let endpoint):
+                self.t = "pageview"
+                self.dp = endpoint
             }
+
+            self.uip = ipAddress
+            self.cd1 = customField1
+            self.cd2 = customField2
+            self.cd3 = customField3
         }
-        public static let inputFormat = InputFormat.formURLEncoded
     }
+
 }

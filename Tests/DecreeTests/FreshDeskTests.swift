@@ -19,7 +19,7 @@ class FreshDeskTests: XCTestCase {
         FreshDesk.shared.configure(domain: "domain", apiKey: "KEY")
     }
 
-    func testReal() throws {
+    func testCreateTicket() throws {
         let ticket = FreshDesk.Ticket(
             kind: .featureRequest,
             source: .mobihelp,

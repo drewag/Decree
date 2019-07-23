@@ -20,7 +20,7 @@ class GoogleAnalyticsTests: XCTestCase {
     }
 
     func testCollectAllFields() throws {
-        let input = Google.Analytics.Collect.Input(
+        let record = Google.Analytics.Record(
             kind: .pageView(endpoint: "/test"),
             trackingId: "UA-222222222-2",
             ipAddress: "0.0.0.0",
@@ -29,7 +29,7 @@ class GoogleAnalyticsTests: XCTestCase {
             customField2: "Field2",
             customField3: "Field3"
         )
-        Google.Analytics.Collect().makeRequest(with: input) { _ in }
+        Google.Analytics.Collect().makeRequest(with: record) { _ in }
 
         XCTAssertEqual(self.session.startedTasks.last!.request.url?.absoluteString, "https://www.google-analytics.com/collect")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "POST")
@@ -39,11 +39,11 @@ class GoogleAnalyticsTests: XCTestCase {
     }
 
     func testCollectMinimalFields() throws {
-        let input = Google.Analytics.Collect.Input(
+        let record = Google.Analytics.Record(
             kind: .pageView(endpoint: "/test"),
             clientId: "CLIENT1"
         )
-        Google.Analytics.Collect().makeRequest(with: input) { _ in }
+        Google.Analytics.Collect().makeRequest(with: record) { _ in }
 
         XCTAssertEqual(self.session.startedTasks.last!.request.url?.absoluteString, "https://www.google-analytics.com/collect")
         XCTAssertEqual(self.session.startedTasks.last!.request.httpMethod, "POST")
