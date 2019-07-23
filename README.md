@@ -171,7 +171,7 @@ That's all you need. You can then define as many endpoints as you like and use t
 
 ### Real World Examples
 
-To see real world examples, check out how we declared services in [DecreeServices](https://github.com/drewag/DecreeServices/tree/master/Sources).
+To see real world examples, check out how we declared services in [DecreeServices](https://github.com/drewag/DecreeServices/tree/master/Sources/DecreeServices).
 
 Hopeful Features
 ------------
