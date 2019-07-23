@@ -16,7 +16,7 @@ When it comes to making URL requests with Swift, you largely have two options: u
 
 This framework is designed to be light-weight while remaining customizable and focusing on declaring the interface to an API in a declarative manner. Once declared, making requests to the various endpoints is very straight-forward and type safe. It works on iOS, macOS, and Linux.
 
-I developed this strategy through the implementation of many different apps and backend services written in Swift. I've used this paradigm for communicating between my own front and back-ends (both implemented in Swift) as well as to services such as Spotify, Freshdesk, Stripe, and more.
+I developed this strategy through the implementation of many different apps and backend services written in Swift. I've used this paradigm for communicating between my own front and back-ends (both implemented in Swift) as well as to services such as Spotify, FreshDesk, Stripe, and more.
 
 **We offer a separate repository [DecreeServices](https://github.com/drewag/DecreeServices) with service declarations for popular services** 
 
@@ -62,6 +62,10 @@ Features
 - Custom standard response format
 
 **Virtually 100% Code Coverage**
+
+**Request and Response Logging**
+- Option to enable logging out of requests and response for debugging
+- Option to specify filter to only log particular endpoints
 
 **Third-Party Services**
 

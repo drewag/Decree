@@ -144,14 +144,13 @@ private extension WebService {
             }
 
             let session = self.sessionOverride ?? URLSession.shared
-//            print(request.allHTTPHeaderFields)
-//            print(String(data: request.httpBody ?? Data(), encoding: .utf8))
+            self.log(request, for: endpoint)
             let task = session.dataTask(with: request) { data, response, error in
+                self.logResponse(data: data, response: response, error: error, for: endpoint)
                 if let error = error {
                     onComplete(.failure(error))
                     return
                 }
-//                print(String(data: data ?? Data(), encoding: .utf8))
                 guard let response = response else {
                     onComplete(.failure(ResponseError.noResponse))
                     return
@@ -395,5 +394,52 @@ private extension WebService {
         default:
             throw ResponseError.otherStatus(response.statusCode)
         }
+    }
+}
+
+// MARK: Logging
+
+private extension WebService {
+    func log<E: Endpoint>(_ request: URLRequest, for endpoint: E) {
+        Logger.shared.logInfo("""
+            --------------------------------------------------------------
+            Making Decree Request to \(E.Service.self).\(E.self)
+            \(request.logDescription)
+            --------------------------------------------------------------
+            """
+            , for: endpoint
+        )
+    }
+
+    func logResponse<E: Endpoint>(data: Data?, response: URLResponse?, error: Error?, for endpoint: E) {
+        var log = """
+            --------------------------------------------------------------
+            Received Decree Response from \(E.Service.self).\(E.self)
+
+            """
+
+        if let error = error {
+            log += "ERROR: \(error.localizedDescription)\n"
+        }
+
+        if let response = response {
+            log += response.logDescription
+        }
+        else {
+            log += "NO RESPONSE"
+        }
+
+        if let data = data {
+            if let string = String(data: data, encoding: .utf8) {
+                log += "\n\(string)"
+            }
+            else {
+                log += "\n\(data)"
+            }
+        }
+
+        log += "\n--------------------------------------------------------------"
+
+        Logger.shared.logInfo(log, for: endpoint)
     }
 }
