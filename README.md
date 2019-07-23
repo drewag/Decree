@@ -58,14 +58,11 @@ Features
 - Custom error response format
 - Custom standard response format
 
-**Third Party Service Support**
-These services have built-in WebService and Endpoint definitions.
-- [Amazon AWS S3](https://github.com/drewag/Decree/wiki/Amazon-AWS-S3)
-- [Google Analytics](https://github.com/drewag/Decree/wiki/Google-Analytics)
-- [FreshDesk](https://github.com/drewag/Decree/wiki/FreshDesk)
-- Apple App Store Receipt Validation
-
 **Virtually 100% Code Coverage**
+
+**Third-Party Services**
+
+We created a separate framework that defines services and endpoints for several third-party services. Check it out at [DecreeServices](https://github.com/drewag/DecreeServices).
 
 Examples
 ----------
@@ -174,7 +171,7 @@ That's all you need. You can then define as many endpoints as you like and use t
 
 ### Real World Examples
 
-To see real world examples, [check out how we declared our built in services](https://github.com/drewag/Decree/tree/master/Sources/Decree/Services) like S3.
+To see real world examples, check out how we declared services in [DecreeServices](https://github.com/drewag/DecreeServices/tree/master/Sources).
 
 Hopeful Features
 ------------

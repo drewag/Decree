@@ -14,6 +14,5 @@ Pod::Spec.new do |spec|
 
   spec.source_files       = 'Sources/Decree/**/*.swift'
 
-  spec.dependency 'CryptoSwift', '~> 1.0.0'
   spec.dependency 'XMLCoder', '~> 0.7.0'
 end
