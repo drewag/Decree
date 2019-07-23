@@ -3,6 +3,7 @@
 set -e
 set -o pipefail
 
+swift package resolve
 sudo xcode-select --switch /Applications/$1.app/Contents/Developer
 
 xcodebuild -version
