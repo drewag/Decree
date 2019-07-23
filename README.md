@@ -39,6 +39,7 @@ Features
 - JSON
 - URL Query
 - Form URL Encoded
+- Form Data Encoded
 - XML
 
 **Two Output formats**
