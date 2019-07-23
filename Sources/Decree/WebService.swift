@@ -110,6 +110,9 @@ extension WebService {
 }
 
 public enum ErrorKind {
+    /// A reponse error was able to be parsed from the response
     case response(ResponseError)
+
+    /// A response error was not parsed, hear is the underlying error
     case plain(Error)
 }
