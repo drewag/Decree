@@ -30,8 +30,8 @@ class FreshDeskTests: XCTestCase {
             subject: "Subject",
             description: "Description",
             attachments: [
-                File(name: "file1.txt", content: "one".data(using: .utf8)!, type: .text),
-                File(name: "file2.txt", content: "two".data(using: .utf8)!, type: .text),
+                File(name: "file1.txt", text: "one"),
+                File(name: "file2.txt", text: "two"),
             ]
         )
         FreshDesk.CreateTicket().makeRequest(with: ticket) { _ in }

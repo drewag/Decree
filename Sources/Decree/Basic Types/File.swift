@@ -26,9 +26,56 @@ public struct File: Encodable, Equatable {
     ///     - name: the name of the file (including extension)
     ///     - content: the content of the file
     ///     - type: the type of content
-    public init(name: String, content: Data, type: ContentType = .binary) {
+    public init(name: String, content: Data, type: ContentType) {
         self.name = name
         self.content = content
         self.type = type
+    }
+
+    /// Create a new text file
+    ///
+    /// - Parameters:
+    ///     - name: the name of the file (including extension)
+    ///     - text: the content of the file
+    public init(name: String, text: String) {
+        self.init(name: name, content: text.data(using: .utf8) ?? Data(), type: .text)
+    }
+
+    /// Create a new binary file
+    ///
+    /// - Parameters:
+    ///     - name: the name of the file (including extension)
+    ///     - binary: the content of the file
+    public init(name: String, binary: Data) {
+        self.init(name: name, content: binary, type: .binary)
+    }
+
+    /// Create a new XML file
+    ///
+    /// - Parameters:
+    ///     - name: the name of the file (including extension)
+    ///     - xml: the XML of the file
+    public init(name: String, xml: String) {
+        self.init(name: name, content: xml.data(using: .utf8) ?? Data(), type: .xml)
+    }
+
+    /// Create a new JSON file
+    ///
+    /// - Parameters:
+    ///     - name: the name of the file (including extension)
+    ///     - json: the JSON of the file
+    public init(name: String, json: String) {
+        self.init(name: name, content: json.data(using: .utf8) ?? Data(), type: .json)
+    }
+
+    /// Create a new json file
+    ///
+    /// - Parameters:
+    ///     - name: the name of the file (including extension)
+    ///     - object: the object to encode as JSON
+    public init<E: Encodable>(name: String, jsonObject: E) throws {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(jsonObject)
+        self.init(name: name, content: data, type: .json)
     }
 }

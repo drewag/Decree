@@ -12,8 +12,8 @@ class KeyValueEncoderTests: XCTestCase {
     func testEncodingObject() throws {
         let encoder = KeyValueEncoder(codingPath: [])
         try Object().encode(to: encoder)
-        let file1 = File(name: "test.txt", content: "test content".data(using: .utf8)!, type: .text)
-        let file2 = File(name: "test2.txt", content: "test content 2".data(using: .utf8)!, type: .text)
+        let file1 = File(name: "test.txt", text: "test content")
+        let file2 = File(name: "test2.txt", text: "test content 2")
 
         XCTAssertEqual(encoder.values.count, 48)
 
@@ -101,8 +101,8 @@ struct SingleValue<Value: Encodable>: Encodable {
     }
 }
 
-private let testFile1 = File(name: "test.txt", content: "test content".data(using: .utf8)!, type: .text)
-private let testFile2 = File(name: "test2.txt", content: "test content 2".data(using: .utf8)!, type: .text)
+private let testFile1 = File(name: "test.txt", text: "test content")
+private let testFile2 = File(name: "test2.txt", text: "test content 2")
 
 struct Object: Encodable {
     let null: String? = nil

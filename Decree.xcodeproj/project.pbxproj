@@ -26,6 +26,7 @@
 		494A00C322E663C600F2B18B /* FormDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A00C222E663C600F2B18B /* FormDataEncoder.swift */; };
 		494A026922E66EE600F2B18B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026822E66EE600F2B18B /* File.swift */; };
 		494A026E22E682EA00F2B18B /* FormDataEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */; };
+		494A027022E6949100F2B18B /* FileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A026F22E6949100F2B18B /* FileTests.swift */; };
 		OBJ_199 /* AEAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* AEAD.swift */; };
 		OBJ_200 /* AEADChaCha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* AEADChaCha20Poly1305.swift */; };
 		OBJ_201 /* AES.Cryptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* AES.Cryptors.swift */; };
@@ -243,6 +244,7 @@
 		494A00C222E663C600F2B18B /* FormDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataEncoder.swift; sourceTree = "<group>"; };
 		494A026822E66EE600F2B18B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataEncoderTests.swift; sourceTree = "<group>"; };
+		494A026F22E6949100F2B18B /* FileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTests.swift; sourceTree = "<group>"; };
 		"CryptoSwift::CryptoSwift::Product" /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CryptoSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -609,6 +611,7 @@
 				OBJ_55 /* StatusCodeValidationTests.swift */,
 				OBJ_56 /* XCTestManifests.swift */,
 				494A026D22E682EA00F2B18B /* FormDataEncoderTests.swift */,
+				494A026F22E6949100F2B18B /* FileTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -1109,6 +1112,7 @@
 				OBJ_346 /* RequestFlowTests.swift in Sources */,
 				OBJ_347 /* ResponseParsingTests.swift in Sources */,
 				OBJ_348 /* StatusCodeValidationTests.swift in Sources */,
+				494A027022E6949100F2B18B /* FileTests.swift in Sources */,
 				494A026E22E682EA00F2B18B /* FormDataEncoderTests.swift in Sources */,
 				OBJ_349 /* XCTestManifests.swift in Sources */,
 			);
