@@ -42,7 +42,6 @@
 		OBJ_128 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Session.swift */; };
 		OBJ_129 /* Endpoint+MakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Endpoint+MakeRequest.swift */; };
 		OBJ_130 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Endpoint.swift */; };
-		OBJ_131 /* Date+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Date+Testable.swift */; };
 		OBJ_132 /* FormDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* FormDataEncoder.swift */; };
 		OBJ_133 /* FormURLEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* FormURLEncoder.swift */; };
 		OBJ_134 /* KeyValueEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* KeyValueEncoder.swift */; };
@@ -177,7 +176,6 @@
 		OBJ_22 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Endpoint+MakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+MakeRequest.swift"; sourceTree = "<group>"; };
 		OBJ_24 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
-		OBJ_26 /* Date+Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Testable.swift"; sourceTree = "<group>"; };
 		OBJ_27 /* FormDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataEncoder.swift; sourceTree = "<group>"; };
 		OBJ_28 /* FormURLEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormURLEncoder.swift; sourceTree = "<group>"; };
 		OBJ_29 /* KeyValueEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueEncoder.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 			isa = PBXGroup;
 			children = (
 				494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */,
-				OBJ_26 /* Date+Testable.swift */,
 				OBJ_27 /* FormDataEncoder.swift */,
 				OBJ_28 /* FormURLEncoder.swift */,
 				OBJ_29 /* KeyValueEncoder.swift */,
@@ -634,7 +631,6 @@
 				494A034E22E7C68A00F2B18B /* URLResponse+Logging.swift in Sources */,
 				OBJ_129 /* Endpoint+MakeRequest.swift in Sources */,
 				OBJ_130 /* Endpoint.swift in Sources */,
-				OBJ_131 /* Date+Testable.swift in Sources */,
 				OBJ_132 /* FormDataEncoder.swift in Sources */,
 				OBJ_133 /* FormURLEncoder.swift in Sources */,
 				OBJ_134 /* KeyValueEncoder.swift in Sources */,
