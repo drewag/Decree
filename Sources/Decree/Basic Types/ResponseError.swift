@@ -14,42 +14,7 @@ public enum ResponseError: Error {
     case decoding(typeName: String, DecodingError)
     case parsing(message: String)
     case parsed(AnyErrorResponse)
-
-    case multipleChoices
-    case movedPermanently
-    case found
-    case seeOther
-    case notModified
-    case useProxy
-    case temporaryRedirect
-
-    case badRequest
-    case unauthorized
-    case paymentRequired
-    case forbidden
-    case notFound
-    case methodNotAllowed
-    case notAcceptable
-    case proxyAuthenticationRequired
-    case requestTimeout
-    case conflict
-    case gone
-    case lengthRequired
-    case preconditionFailed
-    case requestEntityTooLarge
-    case requestURITooLong
-    case unsupportedMediaType
-    case requestedRangeNotSatisfiable
-    case expectationFailed
-
-    case internalServerError
-    case notImplemented
-    case badGateway
-    case serviceUnavailable
-    case gatewayTimeout
-    case httpVersionNotSupported
-
-    case otherStatus(Int)
+    case http(HTTPStatus)
 
     case custom(String)
 }
@@ -67,75 +32,13 @@ extension ResponseError: CustomStringConvertible {
             return parsed.message
         case .parsing(let message):
             return "Error parsing response: \(message)"
-
-        case .multipleChoices:
-            return "MULTIPLE CHOICES"
-        case .movedPermanently:
-            return "MOVED PERMANENTLY"
-        case .found:
-            return "FOUND"
-        case .seeOther:
-            return "SEE OTHER"
-        case .notModified:
-            return "NOT MODIFIED"
-        case .useProxy:
-            return "USE PROXY"
-        case .temporaryRedirect:
-            return "TEMPORARY REDIRECT"
-
-        case .badRequest:
-            return "BAD REQUEST"
-        case .unauthorized:
-            return "UNAUTHORIZED"
-        case .paymentRequired:
-            return "PAYMENT REQUIRED"
-        case .forbidden:
-            return "FORBIDDEN"
-        case .notFound:
-            return "NOT FOUND"
-        case .methodNotAllowed:
-            return "METHOD NOT ALLOWED"
-        case .notAcceptable:
-            return "NOT ACCEPTABLE"
-        case .proxyAuthenticationRequired:
-            return "PROXY AUTHENTICATION REQUIRED"
-        case .requestTimeout:
-            return "REQUEST TIMEOUT"
-        case .conflict:
-            return "CONFLICT"
-        case .gone:
-            return "GONE"
-        case .lengthRequired:
-            return "LENGTH REQUIRED"
-        case .preconditionFailed:
-            return "PRECONDITION FAILED"
-        case .requestEntityTooLarge:
-            return "REQUEST ENTITY TOO LARGE"
-        case .requestURITooLong:
-            return "REQUEST URI TOO LONG"
-        case .unsupportedMediaType:
-            return "UNSUPPORTED MEDIA TYPE"
-        case .requestedRangeNotSatisfiable:
-            return "REQUESTED RANGE NOT SATISFIABLE"
-        case .expectationFailed:
-            return "EXPECTATION FAILED"
-
-        case .internalServerError:
-            return "INTERNAL ERROR"
-        case .notImplemented:
-            return "NOT IMPLEMENTED"
-        case .badGateway:
-            return "BAD GATEWAY"
-        case .serviceUnavailable:
-            return "SERVICE UNAVAILABLE"
-        case .gatewayTimeout:
-            return "GATEWAY TIMEOUT"
-        case .httpVersionNotSupported:
-            return "HTTP VERSION NOT SUPPORTED"
-
-        case .otherStatus(let status):
-            return "Unrecognized failure status: \(status)"
-
+        case .http(let status):
+            switch status {
+            case .other(let other):
+                return "Unrecognized failure HTTP status: \(other)"
+            default:
+                return "\(status.rawValue) \(status.description)"
+            }
         case .custom(let message):
             return message
         }

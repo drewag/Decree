@@ -326,73 +326,9 @@ private extension WebService {
         switch response.statusCode {
         case let x where x >= 200 && x < 300:
             break
-
-        case 300:
-            throw ResponseError.multipleChoices
-        case 301:
-            throw ResponseError.movedPermanently
-        case 302:
-            throw ResponseError.found
-        case 303:
-            throw ResponseError.seeOther
-        case 304:
-            throw ResponseError.notModified
-        case 305:
-            throw ResponseError.useProxy
-        case 307:
-            throw ResponseError.temporaryRedirect
-
-        case 400:
-            throw ResponseError.badRequest
-        case 401:
-            throw ResponseError.unauthorized
-        case 402:
-            throw ResponseError.paymentRequired
-        case 403:
-            throw ResponseError.forbidden
-        case 404:
-            throw ResponseError.notFound
-        case 405:
-            throw ResponseError.methodNotAllowed
-        case 406:
-            throw ResponseError.notAcceptable
-        case 407:
-            throw ResponseError.proxyAuthenticationRequired
-        case 408:
-            throw ResponseError.requestTimeout
-        case 409:
-            throw ResponseError.conflict
-        case 410:
-            throw ResponseError.gone
-        case 411:
-            throw ResponseError.lengthRequired
-        case 412:
-            throw ResponseError.preconditionFailed
-        case 413:
-            throw ResponseError.requestEntityTooLarge
-        case 414:
-            throw ResponseError.requestURITooLong
-        case 415:
-            throw ResponseError.unsupportedMediaType
-        case 416:
-            throw ResponseError.requestedRangeNotSatisfiable
-        case 417:
-            throw ResponseError.expectationFailed
-
-        case 500:
-            throw ResponseError.internalServerError
-        case 501:
-            throw ResponseError.notImplemented
-        case 502:
-            throw ResponseError.badGateway
-        case 503:
-            throw ResponseError.serviceUnavailable
-        case 504:
-            throw ResponseError.gatewayTimeout
-        case 505:
-            throw ResponseError.httpVersionNotSupported
         default:
-            throw ResponseError.otherStatus(response.statusCode)
+            let status = HTTPStatus(rawValue: response.statusCode)
+            throw ResponseError.http(status)
         }
     }
 }
