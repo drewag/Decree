@@ -64,26 +64,26 @@ class LoggingTests: MakeRequestTestCase {
         Logger.shared.level = .info(filter: nil)
 
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
-        let _ = try InOut().makeSynchronousRequest(with: .init(date: date))
+        let _ = try TextInOut().makeSynchronousRequest(with: "body content")
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.InOut
+                Making Decree Request to TestService.TextInOut
                 POST https://example.com/inout
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.InOut
+                Received Decree Response from TestService.TextInOut
                 200 OK
 
                 {"success": true, "date": -14182980}
@@ -97,26 +97,26 @@ class LoggingTests: MakeRequestTestCase {
         Logger.shared.level = .info(filter: nil)
 
         self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: ResponseError.custom("Some Error"))
-        let _ = try? InOut().makeSynchronousRequest(with: .init(date: date))
+        let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.InOut
+                Making Decree Request to TestService.TextInOut
                 POST https://example.com/inout
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.InOut
+                Received Decree Response from TestService.TextInOut
                 ERROR: Some Error
                 200 OK
 
@@ -131,26 +131,26 @@ class LoggingTests: MakeRequestTestCase {
         Logger.shared.level = .info(filter: nil)
 
         self.session.fixedOutput = (data: validOutData, response: TestResponse(statusCode: 402), error: nil)
-        let _ = try? InOut().makeSynchronousRequest(with: .init(date: date))
+        let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.InOut
+                Making Decree Request to TestService.TextInOut
                 POST https://example.com/inout
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.InOut
+                Received Decree Response from TestService.TextInOut
                 402 PAYMENT REQUIRED
 
                 {"success": true, "date": -14182980}
@@ -164,26 +164,26 @@ class LoggingTests: MakeRequestTestCase {
         Logger.shared.level = .info(filter: nil)
 
         self.session.fixedOutput = (data: nil, response: nil, error: nil)
-        let _ = try? InOut().makeSynchronousRequest(with: .init(date: date))
+        let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.InOut
+                Making Decree Request to TestService.TextInOut
                 POST https://example.com/inout
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.InOut
+                Received Decree Response from TestService.TextInOut
                 NO RESPONSE
                 --------------------------------------------------------------
                 """
@@ -195,27 +195,27 @@ class LoggingTests: MakeRequestTestCase {
         Logger.shared.level = .info(filter: "TestService")
 
         self.session.fixedOutput = (data: nil, response: nil, error: nil)
-        let _ = try? InOut().makeSynchronousRequest(with: .init(date: date))
+        let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
         let _ = try? NoStandardInOut().makeSynchronousRequest(with: .init(date: date))
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.InOut
+                Making Decree Request to TestService.TextInOut
                 POST https://example.com/inout
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.InOut
+                Received Decree Response from TestService.TextInOut
                 NO RESPONSE
                 --------------------------------------------------------------
                 """
@@ -224,11 +224,11 @@ class LoggingTests: MakeRequestTestCase {
     }
 
     func testLogEndpointFiltering() {
-        Logger.shared.level = .info(filter: "TestService.In")
+        Logger.shared.level = .info(filter: "TestService.TextIn")
 
         self.session.fixedOutput = (data: nil, response: nil, error: nil)
-        let _ = try? InOut().makeSynchronousRequest(with: .init(date: date))
-        let _ = try? In().makeSynchronousRequest(with: .init(date: date))
+        let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
+        let _ = try? TextIn().makeSynchronousRequest(with: "body content")
         let _ = try? Empty().makeSynchronousRequest()
         let _ = try? NoStandardInOut().makeSynchronousRequest(with: .init(date: date))
 
@@ -236,20 +236,20 @@ class LoggingTests: MakeRequestTestCase {
         if Logger.shared.logs.count == 2 {
             XCTAssertEqual(Logger.shared.logs[0], """
                 --------------------------------------------------------------
-                Making Decree Request to TestService.In
+                Making Decree Request to TestService.TextIn
                 PUT https://example.com/in
                 Accept: application/json
-                Content-Type: application/json
+                Content-Type: text/plain; charset=utf-8
                 Test: VALUE
 
-                {"date":-14182980,"string":"weird&=?<>characters","nullValue":null}
+                body content
                 --------------------------------------------------------------
                 """
             )
 
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
-                Received Decree Response from TestService.In
+                Received Decree Response from TestService.TextIn
                 NO RESPONSE
                 --------------------------------------------------------------
                 """

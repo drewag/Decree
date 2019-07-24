@@ -115,11 +115,31 @@ struct In: InEndpoint {
     let path = "in"
 }
 
+struct TextIn: InEndpoint {
+    typealias Service = TestService
+    static let method = Method.put
+
+    typealias Input = String
+
+    let path = "in"
+}
+
 struct InOut: InOutEndpoint {
     typealias Service = TestService
     static let method = Method.post
 
     typealias Input = TestInput
+
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
+struct TextInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let method = Method.post
+
+    typealias Input = String
 
     typealias Output = TestOutput
 

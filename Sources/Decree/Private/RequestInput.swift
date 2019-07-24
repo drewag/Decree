@@ -12,6 +12,7 @@ enum RequestInput {
     case json(Data)
     case xml(Data)
     case binary(Data)
+    case plainText(Data)
     case formURLEncoded(Data)
     case formData(Data)
     case urlQuery([URLQueryItem])

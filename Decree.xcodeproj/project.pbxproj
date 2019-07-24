@@ -25,7 +25,7 @@
 		494A034C22E7C22F00F2B18B /* URLRequest+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034B22E7C22F00F2B18B /* URLRequest+Logging.swift */; };
 		494A034E22E7C68A00F2B18B /* URLResponse+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034D22E7C68A00F2B18B /* URLResponse+Logging.swift */; };
 		494A035022E7CA8E00F2B18B /* HTTPStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */; };
-		494A035222E7CF8100F2B18B /* LoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A035122E7CF8100F2B18B /* LoggingTests.swift */; };
+		494A035222E7CF8100F2B18B /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A035122E7CF8100F2B18B /* LoggerTests.swift */; };
 		OBJ_116 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_117 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
 		OBJ_118 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* EmptyResult.swift */; };
@@ -150,7 +150,7 @@
 		494A034B22E7C22F00F2B18B /* URLRequest+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Logging.swift"; sourceTree = "<group>"; };
 		494A034D22E7C68A00F2B18B /* URLResponse+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+Logging.swift"; sourceTree = "<group>"; };
 		494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatus.swift; sourceTree = "<group>"; };
-		494A035122E7CF8100F2B18B /* LoggingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingTests.swift; sourceTree = "<group>"; };
+		494A035122E7CF8100F2B18B /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 				OBJ_53 /* ResponseParsingTests.swift */,
 				OBJ_54 /* StatusCodeValidationTests.swift */,
 				OBJ_55 /* XCTestManifests.swift */,
-				494A035122E7CF8100F2B18B /* LoggingTests.swift */,
+				494A035122E7CF8100F2B18B /* LoggerTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -342,7 +342,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -355,7 +355,6 @@
 				OBJ_109 /* README.md */,
 				OBJ_110 /* Decree.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_56 /* Dependencies */ = {
@@ -595,7 +594,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_103 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -668,7 +667,7 @@
 				OBJ_167 /* Result+Helpers.swift in Sources */,
 				OBJ_168 /* TestMinimalService.swift in Sources */,
 				OBJ_169 /* TestNoStandardsService.swift in Sources */,
-				494A035222E7CF8100F2B18B /* LoggingTests.swift in Sources */,
+				494A035222E7CF8100F2B18B /* LoggerTests.swift in Sources */,
 				OBJ_170 /* TestService.swift in Sources */,
 				OBJ_171 /* TestURLSession.swift in Sources */,
 				OBJ_172 /* KeyValueEncoderTests.swift in Sources */,

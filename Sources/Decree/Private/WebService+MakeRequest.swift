@@ -37,6 +37,10 @@ extension WebService {
             return .binary(input as! Data)
         }
 
+        guard Input.self != String.self else {
+            return .plainText((input as! String).data(using: .utf8) ?? Data())
+        }
+
         do {
             switch E.inputFormat {
             case .JSON:
@@ -239,6 +243,9 @@ private extension WebService {
         case .xml(let data):
             request.setValue("text/xml", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
+        case .plainText(let data):
+            request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            request.httpBody = data
         case .binary(let data):
             request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
             request.httpBody = data
@@ -288,7 +295,7 @@ private extension WebService {
         }
 
         switch input {
-        case .none, .json, .formURLEncoded, .xml, .binary, .formData:
+        case .none, .json, .formURLEncoded, .xml, .binary, .formData, .plainText:
             break
         case .urlQuery(let query):
             components.queryItems = query
