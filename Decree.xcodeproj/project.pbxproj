@@ -26,6 +26,7 @@
 		494A034E22E7C68A00F2B18B /* URLResponse+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034D22E7C68A00F2B18B /* URLResponse+Logging.swift */; };
 		494A035022E7CA8E00F2B18B /* HTTPStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */; };
 		494A035222E7CF8100F2B18B /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A035122E7CF8100F2B18B /* LoggerTests.swift */; };
+		494A083D22E83B5F00F2B18B /* HTTPStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */; };
 		OBJ_116 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_117 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
 		OBJ_118 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* EmptyResult.swift */; };
@@ -151,6 +152,7 @@
 		494A034D22E7C68A00F2B18B /* URLResponse+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+Logging.swift"; sourceTree = "<group>"; };
 		494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatus.swift; sourceTree = "<group>"; };
 		494A035122E7CF8100F2B18B /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusTests.swift; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				OBJ_54 /* StatusCodeValidationTests.swift */,
 				OBJ_55 /* XCTestManifests.swift */,
 				494A035122E7CF8100F2B18B /* LoggerTests.swift */,
+				494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -676,6 +679,7 @@
 				OBJ_175 /* ResponseParsingTests.swift in Sources */,
 				OBJ_176 /* StatusCodeValidationTests.swift in Sources */,
 				OBJ_177 /* XCTestManifests.swift in Sources */,
+				494A083D22E83B5F00F2B18B /* HTTPStatusTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
