@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Logger to control the printing of diagnostic information
 public struct Logger {
     public static var shared = Logger()
 
