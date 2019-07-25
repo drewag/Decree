@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Indicate how to handle an error
 public enum ErrorHandling {
     /// Propagate this error
     case error(DecreeError)

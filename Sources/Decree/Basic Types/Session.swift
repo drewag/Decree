@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Instance to make HTTP requests with
 public protocol Session {
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }

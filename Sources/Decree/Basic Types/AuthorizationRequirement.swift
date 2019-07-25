@@ -6,13 +6,14 @@
 //  Copyright © 2019 Drewag. All rights reserved.
 //
 
+/// Authorization requirement for an endpoint
 public enum AuthorizationRequirement {
-    // Never include authorization
+    /// Never include authorization
     case none
 
-    // Include authorization if present
+    /// Include authorization if present
     case optional
 
-    // Create error if not authorized
+    /// Create error if not authorized
     case required
 }

@@ -37,12 +37,6 @@ public protocol Endpoint {
     /// When in a title, it will be title cased
     /// When in descriptions, it will be lowercased
     static var operationName: String? {get}
-
-    /// **OPTIONAL** The HTTP status required to be considered successful
-    ///
-    /// If defined, the request will only be considered successfully if the
-    /// response has this status code.
-    static var successStatus: HTTPStatus? {get}
 }
 
 /// Requirements for endpoints with input

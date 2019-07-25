@@ -40,7 +40,6 @@
 		OBJ_124 /* NoBasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* NoBasicResponse.swift */; };
 		OBJ_125 /* OutputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* OutputFormat.swift */; };
 		OBJ_126 /* DecreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* DecreeError.swift */; };
-		OBJ_127 /* ResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ResponseError.swift */; };
 		OBJ_128 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Session.swift */; };
 		OBJ_129 /* Endpoint+MakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Endpoint+MakeRequest.swift */; };
 		OBJ_130 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Endpoint.swift */; };
@@ -176,7 +175,6 @@
 		OBJ_18 /* NoBasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBasicResponse.swift; sourceTree = "<group>"; };
 		OBJ_19 /* OutputFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputFormat.swift; sourceTree = "<group>"; };
 		OBJ_20 /* DecreeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecreeError.swift; sourceTree = "<group>"; };
-		OBJ_21 /* ResponseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseError.swift; sourceTree = "<group>"; };
 		OBJ_22 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Endpoint+MakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+MakeRequest.swift"; sourceTree = "<group>"; };
 		OBJ_24 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
@@ -479,7 +477,6 @@
 				OBJ_18 /* NoBasicResponse.swift */,
 				OBJ_19 /* OutputFormat.swift */,
 				OBJ_20 /* DecreeError.swift */,
-				OBJ_21 /* ResponseError.swift */,
 				OBJ_22 /* Session.swift */,
 			);
 			path = "Basic Types";
@@ -631,7 +628,6 @@
 				OBJ_124 /* NoBasicResponse.swift in Sources */,
 				OBJ_125 /* OutputFormat.swift in Sources */,
 				OBJ_126 /* DecreeError.swift in Sources */,
-				OBJ_127 /* ResponseError.swift in Sources */,
 				OBJ_128 /* Session.swift in Sources */,
 				494A034C22E7C22F00F2B18B /* URLRequest+Logging.swift in Sources */,
 				494A034E22E7C68A00F2B18B /* URLResponse+Logging.swift in Sources */,

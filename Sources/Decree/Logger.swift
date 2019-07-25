@@ -8,6 +8,12 @@
 import Foundation
 
 /// Logger to control the printing of diagnostic information
+///
+/// The log level defaults to *none* which won't print out anything.
+///
+/// Change the log level to *info* to log out raw requests and responses
+/// with the option to specify a filter to only print out particular
+/// endpoints
 public struct Logger {
     public static var shared = Logger()
 

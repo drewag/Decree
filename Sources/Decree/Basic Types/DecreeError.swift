@@ -7,6 +7,26 @@
 
 import Foundation
 
+/// Errors thrown and returned by Decree
+///
+/// They are designed to be user friendly while also exposing detailed daignostic information.
+///
+/// Each error includes the following.
+///
+/// # User Friendly
+/// - A **description** for a single, baisc, and user friendly description of what when wrong
+/// - A **title** for a very short description of what went wrong (appropriate for error alert titles)
+/// - An **alertMessage** for a message to be displayed in an aerror alert
+///
+/// If an error is determined to be an internal error, the user friendly properties include a message to
+/// the user about contacting support: 'An internal error has occured. If it continues, please contact
+/// support with the description "<description>"'
+///
+/// # Diagnostic
+/// - A **code** for progamatically analyzing the error that occured
+/// - A **reason** a medium length description of the reason for the error
+/// - A **description** a more detailed description of the reason for the error
+/// - A **debugDescription** for full description of the reason for the error
 public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugStringConvertible {
     /// Error codes
     ///
