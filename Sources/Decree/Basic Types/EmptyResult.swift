@@ -10,9 +10,9 @@ import Foundation
 /// Result type for endpoints without any output
 public enum EmptyResult {
     case success
-    case failure(Error)
+    case failure(DecreeError)
 
-    public var error: Error? {
+    public var error: DecreeError? {
         switch self {
         case .failure(let error):
             return error

@@ -33,7 +33,7 @@ struct TestService: WebService {
 
     func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {
         guard !errorConfiguring else {
-            throw RequestError.custom("error configuring")
+            throw E.error(reason: "error configuring")
         }
         request.addValue("VALUE", forHTTPHeaderField: "Test")
     }
@@ -59,7 +59,7 @@ struct TestService: WebService {
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
         guard statusCode != 201 else {
-            throw RequestError.custom("Bad status code: \(statusCode)")
+            throw E.error(reason: "Bad status code: \(statusCode)")
         }
         guard statusCode != 299 else {
             throw Redirect()
@@ -68,28 +68,30 @@ struct TestService: WebService {
 
     func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {
         guard response.success else {
-            throw RequestError.custom("unsuccessful")
+            throw E.error(reason: "unsuccessful")
         }
     }
 
-    func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling {
-        switch error {
-        case .plain(let plain) where plain is Redirect:
+    func handle<E: Endpoint>(_ error: DecreeError, response: URLResponse, from endpoint: E) -> ErrorHandling {
+        switch error.code {
+        case .other(let plain) where plain is Redirect:
             return .redirect(to: URL(string: "https://example.com/redirected")!)
         default:
-            return .none
+            return .error(error)
         }
     }
 }
 
 struct Empty: EmptyEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "Emptying"
 
     let path = "empty"
 }
 
 struct Out: OutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "Outing"
 
     typealias Output = TestOutput
 
@@ -98,6 +100,7 @@ struct Out: OutEndpoint {
 
 struct XMLOut: OutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "XMLOuting"
 
     typealias Output = TestOutput
 
@@ -108,6 +111,7 @@ struct XMLOut: OutEndpoint {
 
 struct In: InEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "Inning"
     static let method = Method.put
 
     typealias Input = TestInput
@@ -117,6 +121,7 @@ struct In: InEndpoint {
 
 struct TextIn: InEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "TextInning"
     static let method = Method.put
 
     typealias Input = String
@@ -126,6 +131,7 @@ struct TextIn: InEndpoint {
 
 struct InOut: InOutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "InOuting"
     static let method = Method.post
 
     typealias Input = TestInput
@@ -137,6 +143,7 @@ struct InOut: InOutEndpoint {
 
 struct TextInOut: InOutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "TextInOuting"
     static let method = Method.post
 
     typealias Input = String
@@ -148,6 +155,7 @@ struct TextInOut: InOutEndpoint {
 
 struct URLQueryIn: InEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "URLQueryInning"
     static let method = Method.put
 
     typealias Input = TestInput
@@ -158,6 +166,7 @@ struct URLQueryIn: InEndpoint {
 
 struct URLQueryInOut: InOutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "URLQueryInOuting"
     static let method = Method.post
 
     typealias Input = TestInput
@@ -170,6 +179,7 @@ struct URLQueryInOut: InOutEndpoint {
 
 struct FormIn: InEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "FormInning"
     static let method = Method.put
 
     typealias Input = TestInput
@@ -180,6 +190,7 @@ struct FormIn: InEndpoint {
 
 struct FormInOut: InOutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "FormInOuting"
     static let method = Method.post
 
     typealias Input = TestInput
@@ -192,6 +203,7 @@ struct FormInOut: InOutEndpoint {
 
 struct XMLIn: InEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "XMLInning"
     static let method = Method.put
 
     typealias Input = TestInput
@@ -202,6 +214,7 @@ struct XMLIn: InEndpoint {
 
 struct XMLInOut: InOutEndpoint {
     typealias Service = TestService
+    static let operationName: String? = "XMLInOuting"
     static let method = Method.post
 
     typealias Input = TestInput
@@ -210,6 +223,32 @@ struct XMLInOut: InOutEndpoint {
     typealias Output = TestOutput
 
     let path = "inout"
+}
+
+class OtherError: NSError {
+    let rawDescription: String
+
+    init(_ string: String) {
+        self.rawDescription = string
+
+        super.init(domain: "OtherErrorDomain", code: 7, userInfo: ["key1": "value1", "key2": "value2"])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override var description: String {
+        return self.rawDescription
+    }
+
+    override var localizedFailureReason: String? {
+        return "You did something wrong"
+    }
+
+    override var localizedRecoverySuggestion: String? {
+        return "Fix it dummy"
+    }
 }
 
 struct TestInput: Encodable {
@@ -230,7 +269,7 @@ struct TestInput: Encodable {
 
     func encode(to encoder: Swift.Encoder) throws {
         guard !otherError else {
-            throw RequestError.custom("other encoding error")
+            throw OtherError("other encoding error")
         }
 
         var container = encoder.container(keyedBy: CodingKeys.self)

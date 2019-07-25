@@ -96,7 +96,7 @@ class LoggingTests: MakeRequestTestCase {
     func testOutErrorLog() throws {
         Logger.shared.level = .info(filter: nil)
 
-        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: ResponseError.custom("Some Error"))
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: TextInOut.error(reason: "Some Error"))
         let _ = try? TextInOut().makeSynchronousRequest(with: "body content")
 
         XCTAssertEqual(Logger.shared.logs.count, 2)
@@ -117,7 +117,7 @@ class LoggingTests: MakeRequestTestCase {
             XCTAssertEqual(Logger.shared.logs[1], """
                 --------------------------------------------------------------
                 Received Decree Response from TestService.TextInOut
-                ERROR: Some Error
+                ERROR: Error textinouting: An internal error has occured. If it continues, please contact support with the description "Some Error"
                 200 OK
 
                 {"success": true, "date": -14182980}

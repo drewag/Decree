@@ -90,7 +90,7 @@ public protocol WebService {
     // MARK: Error Handling
 
     /// *OPTIONAL* Chance to automatically handle a response error
-    func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling
+    func handle<E: Endpoint>(_ error: DecreeError, response: URLResponse, from endpoint: E) -> ErrorHandling
 }
 
 
@@ -106,13 +106,5 @@ extension WebService {
     public func configure<E: Endpoint>(_ decoder: inout XMLDecoder, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {}
     public func validate<E: Endpoint>(_ response: BasicResponse, for endpoint: E) throws {}
-    public func handle<E: Endpoint>(_ error: ErrorKind, response: URLResponse, from endpoint: E) -> ErrorHandling { return .none }
-}
-
-public enum ErrorKind {
-    /// A reponse error was able to be parsed from the response
-    case response(ResponseError)
-
-    /// A response error was not parsed, hear is the underlying error
-    case plain(Error)
+    public func handle<E: Endpoint>(_ error: DecreeError, response: URLResponse, from endpoint: E) -> ErrorHandling { return .error(error) }
 }

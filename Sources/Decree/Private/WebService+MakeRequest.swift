@@ -20,7 +20,7 @@ extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
+    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         self.doMakeRequest(to: nil, for: endpoint, input: input, onComplete: onComplete)
     }
 
@@ -83,7 +83,7 @@ extension WebService {
             }
         }
         catch let error as EncodingError {
-            throw RequestError.encoding(input, error)
+            throw endpoint.error(.encoding(input, error))
         }
         catch {
             throw error
@@ -98,8 +98,8 @@ extension WebService {
     ///
     /// - Returns: decoded output
     func parse<Output: Decodable, E: Endpoint>(from data: Data?, for endpoint: E) throws -> Output {
-        guard let data = data else {
-            throw ResponseError.missingData
+        guard let data = data, !data.isEmpty else {
+            throw endpoint.error(.missingData)
         }
         guard Output.self != Data.self else {
             return data as! Output
@@ -117,7 +117,7 @@ extension WebService {
             }
         }
         catch let error as DecodingError {
-            throw ResponseError.decoding(typeName: "\(Output.self)", error)
+            throw endpoint.error(.decoding(typeName: "\(Output.self)", error))
         }
         catch {
             throw error
@@ -137,7 +137,7 @@ private extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
+    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         do {
             let request: URLRequest
             if let url = url {
@@ -152,11 +152,11 @@ private extension WebService {
             let task = session.dataTask(with: request) { data, response, error in
                 self.logResponse(data: data, response: response, error: error, for: endpoint)
                 if let error = error {
-                    onComplete(.failure(error))
+                    onComplete(.failure(DecreeError(other: error, for: endpoint)))
                     return
                 }
                 guard let response = response else {
-                    onComplete(.failure(ResponseError.noResponse))
+                    onComplete(.failure(endpoint.error(.noResponse)))
                     return
                 }
                 do {
@@ -177,32 +177,24 @@ private extension WebService {
             task.resume()
         }
         catch {
-            onComplete(.failure(error))
+            onComplete(.failure(DecreeError(other: error, for: endpoint)))
         }
     }
 
-    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, onComplete: @escaping (_ result: Result<Data?, Error>) -> ()) {
-        let errorKind: ErrorKind
+    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+        let decreeError: DecreeError
         if ErrorResponse.self != NoErrorResponse.self
             , let parsed: ErrorResponse = try? self.parse(from: data, for: endpoint)
         {
-            errorKind = .response(ResponseError.parsed(parsed))
-        }
-        else if (error as NSError).domain == "NSXMLParserErrorDomain", let code = XMLParser.ErrorCode(rawValue: (error as NSError).code) {
-            errorKind = .response(ResponseError.parsing(message: code.description))
+            decreeError = endpoint.error(.parsed(parsed))
         }
         else {
-            errorKind = .plain(error)
+            decreeError = DecreeError(other: error, for: endpoint)
         }
 
-        switch self.handle(errorKind, response: response, from: endpoint) {
-        case .none:
-            switch errorKind {
-            case .response(let error):
-                onComplete(.failure(error))
-            case .plain(let plain):
-                onComplete(.failure(plain))
-            }
+        switch self.handle(decreeError, response: response, from: endpoint) {
+        case .error(let new):
+            onComplete(.failure(new))
         case .redirect(let url):
             self.doMakeRequest(to: url, for: endpoint, input: input, onComplete: onComplete)
         }
@@ -268,9 +260,9 @@ private extension WebService {
         case .none:
             break
         case .optional:
-            try self.addAuthorization(to: &request, isRequired: false)
+            try self.addAuthorization(to: &request, isRequired: false, for: endpoint)
         case .required:
-            try self.addAuthorization(to: &request, isRequired: true)
+            try self.addAuthorization(to: &request, isRequired: true, for: endpoint)
         }
 
         try self.configure(&request, for: endpoint)
@@ -291,7 +283,7 @@ private extension WebService {
         }
 
         guard var components = URLComponents(url: withoutQuery, resolvingAgainstBaseURL: false) else {
-            throw RequestError.custom("invalid url generated")
+            throw endpoint.error(.custom("Invalid URL generated.", details: "The generate URL was '\(withoutQuery)'", isInternal: true))
         }
 
         switch input {
@@ -302,20 +294,20 @@ private extension WebService {
         }
 
         guard let url = components.url else {
-            throw RequestError.custom("invalid url components generated")
+            throw endpoint.error(.custom("Invalid URL components generated.", details: "The components were '\(components.debugDescription)'", isInternal: true))
         }
         return url
     }
 
-    func addAuthorization(to request: inout URLRequest, isRequired: Bool) throws {
+    func addAuthorization<E: Endpoint>(to request: inout URLRequest, isRequired: Bool, for endpoint: E) throws {
         switch self.authorization {
         case .none:
             if isRequired {
-                throw RequestError.unauthorized
+                throw endpoint.error(.unauthorized)
             }
         case let .basic(username, password):
             guard let base64Token = "\(username):\(password)".data(using: .utf8)?.base64EncodedString() else {
-                throw RequestError.custom("invalid username and/or password for basic auth")
+                throw endpoint.error(.custom("Invalid username and/or password for basic auth", details: "Username was '\(username)' and password was '\(password)'", isInternal: true))
             }
             request.setValue("Basic \(base64Token)", forHTTPHeaderField: "Authorization")
         case .bearer(let base64Token):
@@ -335,7 +327,7 @@ private extension WebService {
             break
         default:
             let status = HTTPStatus(rawValue: response.statusCode)
-            throw ResponseError.http(status)
+            throw endpoint.error(.http(status))
         }
     }
 }

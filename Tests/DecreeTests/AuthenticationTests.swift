@@ -56,7 +56,7 @@ class AuthenticationTests: MakeRequestTestCase {
         }
         switch result ?? .success {
         case .failure(let error):
-            XCTAssertEqual(error.localizedDescription, "Unauthorized")
+            XCTAssertEqual(error.localizedDescription, "Error making request: You are not logged in.")
         case .success:
             XCTFail("should not be successful")
         }

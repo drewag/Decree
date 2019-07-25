@@ -29,7 +29,7 @@ class RequestFlowTests: MakeRequestTestCase {
     }
 
     func testOutRequestFlow() {
-        var result: Result<Out.Output, Error>?
+        var result: Result<Out.Output, DecreeError>?
         Out().makeRequest() { r in
             result = r
         }
@@ -68,7 +68,7 @@ class RequestFlowTests: MakeRequestTestCase {
     }
 
     func testInOutRequestFlow() {
-        var result: Result<InOut.Output, Error>?
+        var result: Result<InOut.Output, DecreeError>?
         InOut().makeRequest(with: .init(date: date)) { r in
             result = r
         }
@@ -106,7 +106,7 @@ class RequestFlowTests: MakeRequestTestCase {
     }
 
     func testURLQueryInOutRequestFlow() {
-        var result: Result<InOut.Output, Error>?
+        var result: Result<InOut.Output, DecreeError>?
         URLQueryInOut().makeRequest(with: .init(date: date)) { r in
             result = r
         }
@@ -142,7 +142,7 @@ class RequestFlowTests: MakeRequestTestCase {
     }
 
     func testFormInOutRequestFlow() {
-        var result: Result<InOut.Output, Error>?
+        var result: Result<InOut.Output, DecreeError>?
         FormInOut().makeRequest(with: .init(date: date)) { r in
             result = r
         }
@@ -179,7 +179,7 @@ class RequestFlowTests: MakeRequestTestCase {
     }
 
     func testXMLInOutRequestFlow() {
-        var result: Result<InOut.Output, Error>?
+        var result: Result<InOut.Output, DecreeError>?
         XMLInOut().makeRequest(with: .init(date: date)) { r in
             result = r
         }

@@ -27,6 +27,8 @@
 		494A035022E7CA8E00F2B18B /* HTTPStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */; };
 		494A035222E7CF8100F2B18B /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A035122E7CF8100F2B18B /* LoggerTests.swift */; };
 		494A083D22E83B5F00F2B18B /* HTTPStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */; };
+		49A958E722E9388400546845 /* String+TitleCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A958E622E9388400546845 /* String+TitleCase.swift */; };
+		49A958E922E987E500546845 /* DecreeErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A958E822E987E500546845 /* DecreeErrorTests.swift */; };
 		OBJ_116 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_117 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
 		OBJ_118 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* EmptyResult.swift */; };
@@ -37,7 +39,7 @@
 		OBJ_123 /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Method.swift */; };
 		OBJ_124 /* NoBasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* NoBasicResponse.swift */; };
 		OBJ_125 /* OutputFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* OutputFormat.swift */; };
-		OBJ_126 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* RequestError.swift */; };
+		OBJ_126 /* DecreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* DecreeError.swift */; };
 		OBJ_127 /* ResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ResponseError.swift */; };
 		OBJ_128 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Session.swift */; };
 		OBJ_129 /* Endpoint+MakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Endpoint+MakeRequest.swift */; };
@@ -152,6 +154,8 @@
 		494A034F22E7CA8E00F2B18B /* HTTPStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatus.swift; sourceTree = "<group>"; };
 		494A035122E7CF8100F2B18B /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusTests.swift; sourceTree = "<group>"; };
+		49A958E622E9388400546845 /* String+TitleCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TitleCase.swift"; sourceTree = "<group>"; };
+		49A958E822E987E500546845 /* DecreeErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecreeErrorTests.swift; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
@@ -171,7 +175,7 @@
 		OBJ_17 /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
 		OBJ_18 /* NoBasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoBasicResponse.swift; sourceTree = "<group>"; };
 		OBJ_19 /* OutputFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputFormat.swift; sourceTree = "<group>"; };
-		OBJ_20 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		OBJ_20 /* DecreeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecreeError.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ResponseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseError.swift; sourceTree = "<group>"; };
 		OBJ_22 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		OBJ_23 /* Endpoint+MakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+MakeRequest.swift"; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				OBJ_33 /* WebService+MakeRequest.swift */,
 				494A034B22E7C22F00F2B18B /* URLRequest+Logging.swift */,
 				494A034D22E7C68A00F2B18B /* URLResponse+Logging.swift */,
+				49A958E622E9388400546845 /* String+TitleCase.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 				OBJ_55 /* XCTestManifests.swift */,
 				494A035122E7CF8100F2B18B /* LoggerTests.swift */,
 				494A083C22E83B5F00F2B18B /* HTTPStatusTests.swift */,
+				49A958E822E987E500546845 /* DecreeErrorTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -472,7 +478,7 @@
 				OBJ_17 /* Method.swift */,
 				OBJ_18 /* NoBasicResponse.swift */,
 				OBJ_19 /* OutputFormat.swift */,
-				OBJ_20 /* RequestError.swift */,
+				OBJ_20 /* DecreeError.swift */,
 				OBJ_21 /* ResponseError.swift */,
 				OBJ_22 /* Session.swift */,
 			);
@@ -624,13 +630,14 @@
 				OBJ_123 /* Method.swift in Sources */,
 				OBJ_124 /* NoBasicResponse.swift in Sources */,
 				OBJ_125 /* OutputFormat.swift in Sources */,
-				OBJ_126 /* RequestError.swift in Sources */,
+				OBJ_126 /* DecreeError.swift in Sources */,
 				OBJ_127 /* ResponseError.swift in Sources */,
 				OBJ_128 /* Session.swift in Sources */,
 				494A034C22E7C22F00F2B18B /* URLRequest+Logging.swift in Sources */,
 				494A034E22E7C68A00F2B18B /* URLResponse+Logging.swift in Sources */,
 				OBJ_129 /* Endpoint+MakeRequest.swift in Sources */,
 				OBJ_130 /* Endpoint.swift in Sources */,
+				49A958E722E9388400546845 /* String+TitleCase.swift in Sources */,
 				OBJ_132 /* FormDataEncoder.swift in Sources */,
 				OBJ_133 /* FormURLEncoder.swift in Sources */,
 				OBJ_134 /* KeyValueEncoder.swift in Sources */,
@@ -658,6 +665,7 @@
 			files = (
 				OBJ_160 /* AuthenticationTests.swift in Sources */,
 				OBJ_161 /* EmptyResultTests.swift in Sources */,
+				49A958E922E987E500546845 /* DecreeErrorTests.swift in Sources */,
 				OBJ_162 /* FileTests.swift in Sources */,
 				OBJ_163 /* FormDataEncoderTests.swift in Sources */,
 				OBJ_164 /* AuthenticatedService.swift in Sources */,

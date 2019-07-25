@@ -30,6 +30,19 @@ public protocol Endpoint {
     ///
     /// Defaults to JSON
     static var outputFormat: OutputFormat {get}
+
+    /// **OPTIONAL** What this endpoint is doing e.g. "logging in"
+    ///
+    /// If defined, this will be used to improve error descriptions
+    /// When in a title, it will be title cased
+    /// When in descriptions, it will be lowercased
+    static var operationName: String? {get}
+
+    /// **OPTIONAL** The HTTP status required to be considered successful
+    ///
+    /// If defined, the request will only be considered successfully if the
+    /// response has this status code.
+    static var successStatus: HTTPStatus? {get}
 }
 
 /// Requirements for endpoints with input
@@ -74,6 +87,22 @@ extension Endpoint {
 
     /// Default to JSON input
     public static var outputFormat: OutputFormat { return .JSON }
+
+    /// Default to no operation name
+    public static var operationName: String? { return nil }
+
+    /// Create a Decree error
+    ///
+    /// - Parameters:
+    ///     - reason: Medium length description of the reason for the error
+    ///     - details: Optional detailed description of the reason for the error
+    ///     - isInternal: false if this error was caused by the end user. Defaults to true
+    ///
+    /// If isInternal is true, the message will include a request to report the bug if
+    /// it continues to occur.
+    public static func error(reason: String, details: String? = nil, isInternal: Bool = true) -> DecreeError {
+        return DecreeError(.custom(reason, details: details, isInternal: isInternal), operationName: self.operationName)
+    }
 }
 
 extension EndpointWithInput {
