@@ -96,7 +96,7 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
 
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")})
-        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { print($0); XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"The operation couldn’t be completed. (OtherErrorDomain error 7.)\"")})
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { print($0); XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"other encoding error\"")})
         XCTAssertThrowsError(try In().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
     }
 
@@ -132,7 +132,7 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertEqual(try InOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")})
-        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"The operation couldn’t be completed. (OtherErrorDomain error 7.)\"")})
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other encoding error\"")})
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
     }
 
@@ -168,7 +168,7 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertEqual(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, -14182980)
 
         XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")})
-        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"The operation couldn’t be completed. (OtherErrorDomain error 7.)\"")})
+        XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"other encoding error\"")})
         XCTAssertThrowsError(try NoStandardInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
     }
 
@@ -204,7 +204,7 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertEqual(try MinimalInOut().makeSynchronousRequest(with: .init(date: date)).date.timeIntervalSince1970, 964124220.0)
 
         XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: nil)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")})
-        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"The operation couldn’t be completed. (OtherErrorDomain error 7.)\"")})
+        XCTAssertThrowsError(try MinimalInOut().makeSynchronousRequest(with: .init(date: date, otherError: true)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: An internal error has occured. If it continues, please contact support with the description \"other encoding error\"")})
     }
 
     func testXMLOut() {

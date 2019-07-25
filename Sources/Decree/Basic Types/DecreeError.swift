@@ -108,7 +108,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         case .urlError(let code):
             return self.reason(forUrlErrorCode: code)
         case .other(let error):
-            return error.localizedDescription
+            return "\(error)"
         case .custom(let message, _, _):
             return message
         }

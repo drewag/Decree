@@ -610,7 +610,7 @@ class DecreeErrorTests: XCTestCase {
 
     func testOtherErrors() {
         let error = DecreeError(.other(OtherError("other error")), operationName: nil)
-        XCTAssertEqual(error.reason, "The operation couldn’t be completed. (OtherErrorDomain error 7.)")
+        XCTAssertEqual(error.reason, "other error")
         XCTAssertEqual(error.details, """
             OtherErrorDomain 7
             Failure Reason: You did something wrong
