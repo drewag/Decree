@@ -159,6 +159,42 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
     }
 
+    func testFormDataInRequestFlow() {
+        var result: EmptyResult?
+        FormDataIn().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980.0\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "multipart/form-data; charset=utf-8; boundary=__DECREE_BOUNDARY__")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in")
+        self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+        XCTAssertNil(result?.error)
+    }
+
+    func testFormDataInOutRequestFlow() {
+        var result: Result<InOut.Output, DecreeError>?
+        FormDataInOut().makeRequest(with: .init(date: date)) { r in
+            result = r
+        }
+        XCTAssertNil(result)
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980.0\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "multipart/form-data; charset=utf-8; boundary=__DECREE_BOUNDARY__")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout")
+        self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
+        XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
+    }
+
     func testXMLInRequestFlow() {
         var result: EmptyResult?
         XMLIn().makeRequest(with: .init(date: date)) { r in

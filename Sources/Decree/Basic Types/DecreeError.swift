@@ -413,10 +413,10 @@ extension DecreeError {
         case NSURLErrorZeroByteResource:
             return "A server reported that a URL has a non-zero content length, but terminated the network connection gracefully without sending any data."
         default:
-            if #available(iOS 9.0, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
+            if #available(iOS 9.0, macOS 10.11, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
                 return "App Transport Security disallowed a connection because there is no secure network connection."
             }
-            if #available(iOS 10.3, *), code == NSURLErrorFileOutsideSafeArea {
+            if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
                 return "An internal file operation failed."
             }
             return nil
@@ -518,10 +518,10 @@ extension DecreeError {
         case NSURLErrorZeroByteResource:
             return true
         default:
-            if #available(iOS 9.0, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
+            if #available(iOS 9.0, macOS 10.11, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
                 return true
             }
-            if #available(iOS 10.3, *), code == NSURLErrorFileOutsideSafeArea {
+            if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
                 return true
             }
             return true

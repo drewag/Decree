@@ -427,7 +427,7 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.details, "A response to a connection request couldn’t be parsed.")
         XCTAssertEqual(error.isInternal, true)
 
-        if #available(iOS 9.0, *) {
+        if #available(iOS 9.0, macOS 10.11, *) {
             underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorAppTransportSecurityRequiresSecureConnection, userInfo: nil)
             error = DecreeError(other: underlyingError, for: Empty())
             XCTAssertEqual(error.reason, "NSURLError -1022")
@@ -459,7 +459,7 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.details, "The length of the resource data exceeded the maximum allowed.")
         XCTAssertEqual(error.isInternal, true)
 
-        if #available(iOS 10.3, *) {
+        if #available(iOS 10.3, macOS 10.12.4, *) {
             underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorFileOutsideSafeArea, userInfo: nil)
             error = DecreeError(other: underlyingError, for: Empty())
             XCTAssertEqual(error.reason, "NSURLError -1104")

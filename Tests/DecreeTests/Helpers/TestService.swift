@@ -201,6 +201,30 @@ struct FormInOut: InOutEndpoint {
     let path = "inout"
 }
 
+struct FormDataIn: InEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "FormInning"
+    static let method = Method.put
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.formData
+
+    let path = "in"
+}
+
+struct FormDataInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "FormInOuting"
+    static let method = Method.post
+
+    typealias Input = TestInput
+    static let inputFormat = InputFormat.formData
+
+    typealias Output = TestOutput
+
+    let path = "inout"
+}
+
 struct XMLIn: InEndpoint {
     typealias Service = TestService
     static let operationName: String? = "XMLInning"
