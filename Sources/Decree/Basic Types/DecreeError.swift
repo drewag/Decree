@@ -416,9 +416,11 @@ extension DecreeError {
             if #available(iOS 9.0, macOS 10.11, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
                 return "App Transport Security disallowed a connection because there is no secure network connection."
             }
-            if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
-                return "An internal file operation failed."
-            }
+            #if os(iOS) || os(macOS)
+                if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
+                    return "An internal file operation failed."
+                }
+            #endif
             return nil
         }
     }
@@ -521,9 +523,11 @@ extension DecreeError {
             if #available(iOS 9.0, macOS 10.11, *), code == NSURLErrorAppTransportSecurityRequiresSecureConnection {
                 return true
             }
-            if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
-                return true
-            }
+            #if os(iOS) || os(macOS)
+                if #available(iOS 10.3, macOS 10.12.4, *), code == NSURLErrorFileOutsideSafeArea {
+                    return true
+                }
+            #endif
             return true
         }
     }

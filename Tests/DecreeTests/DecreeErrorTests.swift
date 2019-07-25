@@ -459,14 +459,15 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.details, "The length of the resource data exceeded the maximum allowed.")
         XCTAssertEqual(error.isInternal, true)
 
-        if #available(iOS 10.3, macOS 10.12.4, *) {
-            underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorFileOutsideSafeArea, userInfo: nil)
-            error = DecreeError(other: underlyingError, for: Empty())
-            XCTAssertEqual(error.reason, "NSURLError -1104")
-            XCTAssertEqual(error.details, "An internal file operation failed.")
-            XCTAssertEqual(error.isInternal, true)
-        }
-
+        #if os(iOS) || os(macOS)
+            if #available(iOS 10.3, macOS 10.12.4, *) {
+                underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorFileOutsideSafeArea, userInfo: nil)
+                error = DecreeError(other: underlyingError, for: Empty())
+                XCTAssertEqual(error.reason, "NSURLError -1104")
+                XCTAssertEqual(error.details, "An internal file operation failed.")
+                XCTAssertEqual(error.isInternal, true)
+            }
+        #endif
 
         underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorSecureConnectionFailed, userInfo: nil)
         error = DecreeError(other: underlyingError, for: Empty())
@@ -476,7 +477,7 @@ class DecreeErrorTests: XCTestCase {
 
         underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorServerCertificateHasBadDate, userInfo: nil)
         error = DecreeError(other: underlyingError, for: Empty())
-        XCTAssertEqual(error.reason, "NSURLError -1201")
+        XCTAssertEqual(error.reason, "NSURLError \(NSURLErrorServerCertificateHasBadDate)")
         XCTAssertEqual(error.details, "A server certificate is expired, or is not yet valid.")
         XCTAssertEqual(error.isInternal, true)
 
@@ -506,7 +507,7 @@ class DecreeErrorTests: XCTestCase {
 
         underlyingError = NSError(domain: NSURLErrorDomain, code: NSURLErrorClientCertificateRequired, userInfo: nil)
         error = DecreeError(other: underlyingError, for: Empty())
-        XCTAssertEqual(error.reason, "NSURLError -1206")
+        XCTAssertEqual(error.reason, "NSURLError \(NSURLErrorClientCertificateRequired)")
         XCTAssertEqual(error.details, "A client certificate was required to authenticate an SSL connection during a connection request.")
         XCTAssertEqual(error.isInternal, true)
 
