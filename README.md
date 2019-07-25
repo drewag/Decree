@@ -33,12 +33,18 @@ Features
 --------
 
 **Four types of Endpoints**
+
+These [protocols](https://github.com/drewag/Decree/wiki/Declaring-Endpoints#endpoint-types) declare if an endpoint has input and/or output.
+
 - `EmptyEndpoint` (no input or output)
 - `InEndpoint` (only input)
 - `OutEndpoint` (only output)
 - `InOutEndpoint` (input and output)
 
 **Five Input formats**
+
+These [formats](https://github.com/drewag/Decree/wiki/Declaring-Endpoints#input-format) are used to encode the endpoint's input using the Swift [Encodable](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types) protocol.
+
 - JSON
 - URL Query
 - Form URL Encoded
@@ -46,15 +52,24 @@ Features
 - XML
 
 **Two Output formats**
+
+These [formats](https://github.com/drewag/Decree/wiki/Declaring-Endpoints#output-format) are used to initialize the endpoint's output using the Swift [Decodable](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types) protocol.
+
 - JSON
 - XML
 
 **Three types of Authorization**
-- Basic
-- Bearer
-- Custom
+
+Allows setting [authorization](https://github.com/drewag/Decree/wiki/Declaring-Web-Services#authorization) to be used for all endpoints in a web service. Each endpoint can then specify an [authorization requirement](https://github.com/drewag/Decree/wiki/Declaring-Endpoints#authorization-requirement).
+
+- [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication)
+- [Bearer](https://swagger.io/docs/specification/authentication/bearer-authentication)
+- Custom - Custom HTTP header key and value
 
 **Configurable**
+
+You can *optionally* perform [advanced configuration](https://github.com/drewag/Decree/wiki/Declaring-Web-Services#configuration) to the processing of a request and response.
+
 - Customize URLRequest (e.g. custom headers)
 - Customize JSON encoders and decoders
 - Custom response validation
@@ -63,9 +78,15 @@ Features
 
 **Virtually 100% Code Coverage**
 
+The vast majority of our code is covered by unit tests to ensure reliability.
+
 **Request and Response Logging**
-- Option to enable logging out of requests and response for debugging
+- Option to [enable logging out of requests and response](https://github.com/drewag/Decree/wiki/Debugging-Helpers) for debugging
 - Option to specify filter to only log particular endpoints
+
+**Thorough Error Reporting**
+
+The [errors thrown and returned by Decree](https://github.com/drewag/Decree/wiki/Debugging-Helpers#errors) are designed to be user friendly while also exposing detailed diagnostic information.
 
 **Third-Party Services**
 

@@ -14,7 +14,7 @@ public enum Authorization {
     /// [Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication)
     case basic(username: String, password: String)
 
-    /// [Bearer Auth](https://swagger.io/docs/specification/authentication/bearer-authentication/)
+    /// [Bearer Auth](https://swagger.io/docs/specification/authentication/bearer-authentication)
     case bearer(base64Token: String)
 
     /// Define a custom [HTTP header](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) for authorization

@@ -9,7 +9,7 @@ import Foundation
 
 /// Errors thrown and returned by Decree
 ///
-/// They are designed to be user friendly while also exposing detailed daignostic information.
+/// They are designed to be user friendly while also exposing detailed diagnostic information.
 ///
 /// Each error includes the following.
 ///
