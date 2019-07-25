@@ -204,9 +204,7 @@ To see real world examples, check out how we declared services in [DecreeService
 Hopeful Features
 ------------
 
-It would be great to develop the following additional features
-
-- File download and uploading
+Features we are hoping to implement are added as [issues with the enhancement tag](https://github.com/drewag/Decree/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement). If you have any feature requests, please don't hesitate to create a new issue.
 
 Contributing
 ---------
