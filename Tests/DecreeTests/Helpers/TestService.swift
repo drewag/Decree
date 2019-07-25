@@ -255,7 +255,7 @@ class OtherError: NSError {
     init(_ string: String) {
         self.rawDescription = string
 
-        super.init(domain: "OtherErrorDomain", code: 7, userInfo: ["key1": "value1", "key2": "value2"])
+        super.init(domain: "OtherErrorDomain", code: 7, userInfo: ["key1": "value1"])
     }
 
     required init?(coder aDecoder: NSCoder) {

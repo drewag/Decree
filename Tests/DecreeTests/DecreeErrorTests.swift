@@ -617,7 +617,6 @@ class DecreeErrorTests: XCTestCase {
             Recovery Suggestion: Fix it dummy
             User Info:
                 key1: value1
-                key2: value2
             """
         )
         XCTAssertEqual(error.isInternal, true)
