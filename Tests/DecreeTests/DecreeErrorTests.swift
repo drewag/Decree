@@ -627,20 +627,24 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.alertMessage, #"An internal error has occured. If it continues, please contact support with the description "custom""#)
         XCTAssertEqual(error.description, #"Error making request: An internal error has occured. If it continues, please contact support with the description "custom""#)
         XCTAssertEqual(error.details, nil)
+        XCTAssertEqual(error.debugDescription, #"Error making request: An internal error has occured. If it continues, please contact support with the description "custom""#)
 
         error = DecreeError(.custom("custom", details: nil, isInternal: false), operationName: nil)
         XCTAssertEqual(error.alertMessage, "custom")
         XCTAssertEqual(error.description, #"Error making request: custom"#)
         XCTAssertEqual(error.details, nil)
+        XCTAssertEqual(error.debugDescription, #"Error making request: custom"#)
 
         error = DecreeError(.custom("custom", details: "some details", isInternal: false), operationName: nil)
         XCTAssertEqual(error.alertMessage, "custom")
         XCTAssertEqual(error.description, #"Error making request: custom"#)
         XCTAssertEqual(error.details, "some details")
+        XCTAssertEqual(error.debugDescription, #"Error making request: custom\#nsome details"#)
 
         error = DecreeError(.custom("custom", details: "some details", isInternal: false), operationName: nil)
         XCTAssertEqual(error.alertMessage, "custom")
         XCTAssertEqual(error.description, #"Error making request: custom"#)
         XCTAssertEqual(error.details, "some details")
+        XCTAssertEqual(error.debugDescription, #"Error making request: custom\#nsome details"#)
     }
 }

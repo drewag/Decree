@@ -8,28 +8,51 @@
 import Foundation
 
 public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugStringConvertible {
+    /// Error codes
+    ///
+    /// Check `description` and `details` on error for detailed information about each code
     public enum Code {
-        // Requests
+        // MARK: Requests
 
+        /// Failure to encode
         case encoding(Encodable, EncodingError)
+
+        /// The endpoint required authorization but there was none
         case unauthorized
 
-        // Responses
+        // MARK: Responses
 
+        /// No response was returned
         case noResponse
+
+        /// No data was returned
         case missingData
+
+        /// Failure to decode
         case decoding(typeName: String, DecodingError)
+
+        /// The endpoints ErrorResponse was successfully parsed
         case parsed(AnyErrorResponse)
+
+        /// A bad HTTP status was returned
         case http(HTTPStatus)
+
+        /// An NSURLError was thrown
         case urlError(code: Int)
 
-        // Other
+        // MARK: Other
 
+        /// A different Error was thrown
         case other(Error)
+
+        /// A custom error was thrown
         case custom(String, details: String?, isInternal: Bool)
     }
 
+    /// Classificaiton for the type of error
     public let code: Code
+
+    /// What operation was being attempted when this error was thrown
     public let operationName: String?
 
     /// Short name for the error (good for alert tiels)

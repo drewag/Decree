@@ -91,7 +91,10 @@ extension Endpoint {
     /// Default to no operation name
     public static var operationName: String? { return nil }
 
-    /// Create a Decree error
+    /// Defaults to undefined
+    public static var successStatus: HTTPStatus? { return nil }
+
+    /// Create a custom Decree error
     ///
     /// - Parameters:
     ///     - reason: Medium length description of the reason for the error

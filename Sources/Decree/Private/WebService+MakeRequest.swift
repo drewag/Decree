@@ -79,7 +79,6 @@ extension WebService {
                 try input.encode(to: encoder)
                 let data = FormDataEncoder.encode(encoder.values)
                 return .formData(data)
-
             }
         }
         catch let error as EncodingError {
