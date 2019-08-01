@@ -12,8 +12,8 @@ extension EmptyEndpoint {
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter onComplete: Callback when the request is complete
-    public func makeRequest(to service: Service = Service.shared, onComplete: @escaping (_ result: EmptyResult) -> ()) {
-        service.makeRequest(to: self, input: .none) { result in
+    public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
+        service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
             switch result {
             case .failure(let error):
                 onComplete(.failure(error))
@@ -29,7 +29,7 @@ extension EmptyEndpoint {
     public func makeSynchronousRequest(to service: Service = Service.shared) throws {
         let semephore = DispatchSemaphore(value: 0)
         var result: EmptyResult?
-        self.makeRequest(to: service) { output in
+        self.makeRequest(to: service, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }
@@ -49,10 +49,10 @@ extension InEndpoint {
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
     /// - Parameter onComplete: Callback when the request is complete
-    public func makeRequest(to service: Service = Service.shared, with input: Input, onComplete: @escaping (_ result: EmptyResult) -> ()) {
+    public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         do {
             let input = try service.encode(input: input, for: self)
-            service.makeRequest(to: self, input: input) { result in
+            service.makeRequest(to: self, input: input, callbackQueue: callbackQueue) { result in
                 switch result {
                 case .failure(let error):
                     onComplete(.failure(error))
@@ -73,7 +73,7 @@ extension InEndpoint {
     public func makeSynchronousRequest(to service: Service = Service.shared, with input: Input) throws {
         let semephore = DispatchSemaphore(value: 0)
         var result: EmptyResult?
-        self.makeRequest(to: service, with: input) { output in
+        self.makeRequest(to: service, with: input, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }
@@ -92,8 +92,8 @@ extension OutEndpoint {
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
-    public func makeRequest(to service: Service = Service.shared, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
-        service.makeRequest(to: self, input: .none) { result in
+    public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
+        service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
             switch result {
             case .failure(let error):
                 onComplete(.failure(error))
@@ -116,7 +116,7 @@ extension OutEndpoint {
     public func makeSynchronousRequest(to service: Service = Service.shared) throws -> Output {
         let semephore = DispatchSemaphore(value: 0)
         var result: Result<Output, DecreeError>?
-        self.makeRequest(to: service) { output in
+        self.makeRequest(to: service, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }
@@ -136,10 +136,10 @@ extension InOutEndpoint {
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
-    public func makeRequest(to service: Service = Service.shared, with input: Input, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
+    public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
         do {
             let input = try service.encode(input: input, for: self)
-            service.makeRequest(to: self, input: input) { result in
+            service.makeRequest(to: self, input: input, callbackQueue: callbackQueue) { result in
                 switch result {
                 case .failure(let error):
                     onComplete(.failure(error))
@@ -167,7 +167,7 @@ extension InOutEndpoint {
     public func makeSynchronousRequest(to service: Service = Service.shared, with input: Input) throws -> Output {
         let semephore = DispatchSemaphore(value: 0)
         var result: Result<Output, DecreeError>?
-        self.makeRequest(to: service, with: input) { output in
+        self.makeRequest(to: service, with: input, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }

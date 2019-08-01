@@ -20,8 +20,8 @@ extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
-        self.doMakeRequest(to: nil, for: endpoint, input: input, onComplete: onComplete)
+    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+        self.doMakeRequest(to: nil, for: endpoint, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
     }
 
     /// JSON encode the given input to data
@@ -136,7 +136,7 @@ private extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         do {
             let request: URLRequest
             if let url = url {
@@ -149,28 +149,39 @@ private extension WebService {
             let session = self.sessionOverride ?? URLSession.shared
             self.log(request, for: endpoint)
             let task = session.dataTask(with: request) { data, response, error in
-                self.logResponse(data: data, response: response, error: error, for: endpoint)
-                if let error = error {
-                    onComplete(.failure(DecreeError(other: error, for: endpoint)))
-                    return
-                }
-                guard let response = response else {
-                    onComplete(.failure(endpoint.error(.noResponse)))
-                    return
-                }
-                do {
-                    try self.automaticValidate(response, for: endpoint)
-                    try self.validate(response, for: endpoint)
-
-                    if !(BasicResponse.self is NoBasicResponse.Type) {
-                        let basicResponse: BasicResponse = try self.parse(from: data, for: endpoint)
-                        try self.validate(basicResponse, for: endpoint)
+                func handle() {
+                    self.logResponse(data: data, response: response, error: error, for: endpoint)
+                    if let error = error {
+                        onComplete(.failure(DecreeError(other: error, for: endpoint)))
+                        return
                     }
+                    guard let response = response else {
+                        onComplete(.failure(endpoint.error(.noResponse)))
+                        return
+                    }
+                    do {
+                        try self.automaticValidate(response, for: endpoint)
+                        try self.validate(response, for: endpoint)
 
-                    onComplete(.success(data))
+                        if !(BasicResponse.self is NoBasicResponse.Type) {
+                            let basicResponse: BasicResponse = try self.parse(from: data, for: endpoint)
+                            try self.validate(basicResponse, for: endpoint)
+                        }
+
+                        onComplete(.success(data))
+                    }
+                    catch {
+                        self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, callbackQueue: callbackQueue, onComplete: onComplete)
+                    }
                 }
-                catch {
-                    self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, onComplete: onComplete)
+
+                if let queue = callbackQueue {
+                    queue.async {
+                        handle()
+                    }
+                }
+                else {
+                    handle()
                 }
             }
             task.resume()
@@ -180,12 +191,12 @@ private extension WebService {
         }
     }
 
-    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         let decreeError: DecreeError
         if ErrorResponse.self != NoErrorResponse.self
             , let parsed: ErrorResponse = try? self.parse(from: data, for: endpoint)
         {
-            decreeError = endpoint.error(.parsed(parsed))
+            decreeError = endpoint.error(.parsed(parsed, original: error))
         }
         else {
             decreeError = DecreeError(other: error, for: endpoint)
@@ -195,7 +206,7 @@ private extension WebService {
         case .error(let new):
             onComplete(.failure(new))
         case .redirect(let url):
-            self.doMakeRequest(to: url, for: endpoint, input: input, onComplete: onComplete)
+            self.doMakeRequest(to: url, for: endpoint, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
         }
     }
 

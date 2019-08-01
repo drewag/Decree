@@ -7,11 +7,12 @@
 
 import XCTest
 import Decree
+import ObjectiveC
 
 class RequestFlowTests: MakeRequestTestCase {
     func testEmptyRequestFlow() {
         var result: EmptyResult?
-        Empty().makeRequest() { r in
+        Empty().makeRequest(callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -30,7 +31,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testOutRequestFlow() {
         var result: Result<Out.Output, DecreeError>?
-        Out().makeRequest() { r in
+        Out().makeRequest(callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -48,7 +49,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testInRequestFlow() {
         var result: EmptyResult?
-        In().makeRequest(with: .init(date: date)) { r in
+        In().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -69,7 +70,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testInOutRequestFlow() {
         var result: Result<InOut.Output, DecreeError>?
-        InOut().makeRequest(with: .init(date: date)) { r in
+        InOut().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -89,7 +90,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testURLQueryInRequestFlow() {
         var result: EmptyResult?
-        URLQueryIn().makeRequest(with: .init(date: date)) { r in
+        URLQueryIn().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -107,7 +108,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testURLQueryInOutRequestFlow() {
         var result: Result<InOut.Output, DecreeError>?
-        URLQueryInOut().makeRequest(with: .init(date: date)) { r in
+        URLQueryInOut().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -125,7 +126,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testFormInRequestFlow() {
         var result: EmptyResult?
-        FormIn().makeRequest(with: .init(date: date)) { r in
+        FormIn().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -143,7 +144,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testFormInOutRequestFlow() {
         var result: Result<InOut.Output, DecreeError>?
-        FormInOut().makeRequest(with: .init(date: date)) { r in
+        FormInOut().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -161,7 +162,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testFormDataInRequestFlow() {
         var result: EmptyResult?
-        FormDataIn().makeRequest(with: .init(date: date)) { r in
+        FormDataIn().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -179,7 +180,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testFormDataInOutRequestFlow() {
         var result: Result<InOut.Output, DecreeError>?
-        FormDataInOut().makeRequest(with: .init(date: date)) { r in
+        FormDataInOut().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -197,7 +198,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testXMLInRequestFlow() {
         var result: EmptyResult?
-        XMLIn().makeRequest(with: .init(date: date)) { r in
+        XMLIn().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -216,7 +217,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testXMLInOutRequestFlow() {
         var result: Result<InOut.Output, DecreeError>?
-        XMLInOut().makeRequest(with: .init(date: date)) { r in
+        XMLInOut().makeRequest(with: .init(date: date), callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -235,7 +236,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
     func testRedirectFlow() {
         var result: EmptyResult?
-        Empty().makeRequest() { r in
+        Empty().makeRequest(callbackQueue: nil) { r in
             result = r
         }
         XCTAssertNil(result)
@@ -254,6 +255,29 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[1].request.allHTTPHeaderFields?["Test"], "VALUE")
         XCTAssertEqual(self.session.startedTasks[1].request.url?.absoluteString, "https://example.com/redirected")
         self.session.startedTasks[1].complete(successData, TestResponse(), nil)
+        XCTAssertNotNil(result)
+        XCTAssertNil(result?.error)
+    }
+
+    func testOperationQueue() {
+        let queue = DispatchQueue(label: "test")
+        var result: EmptyResult?
+        Empty().makeRequest(callbackQueue: queue) { r in
+            result = r
+        }
+
+        XCTAssertEqual(self.session.startedTasks.count, 1)
+        XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "GET")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody, nil)
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], nil)
+        XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/empty")
+        self.session.startedTasks[0].complete(successData, TestResponse(), nil)
+
+        XCTAssertNil(result)
+        queue.sync {}
+
         XCTAssertNotNil(result)
         XCTAssertNil(result?.error)
     }

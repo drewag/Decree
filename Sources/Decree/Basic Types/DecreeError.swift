@@ -52,7 +52,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         case decoding(typeName: String, DecodingError)
 
         /// The endpoints ErrorResponse was successfully parsed
-        case parsed(AnyErrorResponse)
+        case parsed(AnyErrorResponse, original: Error)
 
         /// A bad HTTP status was returned
         case http(HTTPStatus)
@@ -107,7 +107,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return "No data returned."
         case .decoding(let typeName, _):
             return "Failed to decode \(typeName)."
-        case .parsed(let parsed):
+        case .parsed(let parsed, _):
             return parsed.message
         case .http(let status):
             switch status {
@@ -243,7 +243,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return true
         case .noResponse, .missingData, .decoding:
             return true
-        case .parsed(let parsed):
+        case .parsed(let parsed, _):
             return parsed.isInternal
         case .http(let status):
             switch status {
