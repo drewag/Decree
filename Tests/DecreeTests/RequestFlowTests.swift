@@ -7,7 +7,6 @@
 
 import XCTest
 import Decree
-import ObjectiveC
 
 class RequestFlowTests: MakeRequestTestCase {
     func testEmptyRequestFlow() {
