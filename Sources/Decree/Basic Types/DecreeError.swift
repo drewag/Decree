@@ -235,7 +235,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
     ///
     /// If true, the message will include a request to report the bug if
     /// it continues to occur.
-    var isInternal: Bool {
+    public var isInternal: Bool {
         switch self.code {
         case .unauthorized:
             return false
