@@ -138,9 +138,31 @@ class DecreeErrorTests: XCTestCase {
     }
 
     func testParsedErrors() {
-        let error = DecreeError(.parsed(TestService.ErrorResponse(message: "some message")), operationName: nil)
+        var error = DecreeError(.parsed(TestService.ErrorResponse(message: "some message"), original: OtherError("other")), operationName: nil)
         XCTAssertEqual(error.reason, "some message")
-        XCTAssertEqual(error.details, "ErrorResponse(message: \"some message\")")
+        XCTAssertEqual(error.details, """
+            Parsed: ErrorResponse(message: \"some message\")
+            Original: other
+            """)
+        XCTAssertEqual(error.isInternal, true)
+
+        var original = DecreeError(.http(.multipleChoices), operationName: nil)
+        error = DecreeError(.parsed(TestService.ErrorResponse(message: "some message"), original: original), operationName: nil)
+        XCTAssertEqual(error.reason, "some message")
+        XCTAssertEqual(error.details, """
+            Parsed: ErrorResponse(message: "some message")
+            Original: HTTP error: 300 MULTIPLE CHOICES
+            """)
+        XCTAssertEqual(error.isInternal, true)
+
+        original = DecreeError(.http(.forbidden), operationName: nil)
+        error = DecreeError(.parsed(TestService.ErrorResponse(message: "some message"), original: original), operationName: nil)
+        XCTAssertEqual(error.reason, "some message")
+        XCTAssertEqual(error.details, """
+            Parsed: ErrorResponse(message: "some message")
+            Original: You are not authorized.
+            HTTP error: 403 FORBIDDEN
+            """)
         XCTAssertEqual(error.isInternal, true)
     }
 

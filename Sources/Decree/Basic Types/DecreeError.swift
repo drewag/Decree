@@ -192,8 +192,28 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
 
             details += "\n\nDebugging: To see raw requests and responses, turn on logging with `Logger.shared.level = .info(filter: nil)`."
             return details
-        case .parsed(let parsed):
-            return "\(parsed)"
+        case .parsed(let parsed, let original):
+            if let original = original as? DecreeError {
+                if let details = original.details {
+                    return """
+                        Parsed: \(parsed)
+                        Original: \(original.reason)
+                        \(details)
+                        """
+                }
+                else {
+                    return """
+                        Parsed: \(parsed)
+                        Original: \(original.reason)
+                        """
+                }
+            }
+            else {
+                return """
+                    Parsed: \(parsed)
+                    Original: \(original)
+                    """
+            }
         case .http(let status):
             switch status {
             // Specifics
