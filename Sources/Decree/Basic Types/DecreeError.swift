@@ -51,7 +51,9 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         /// Failure to decode
         case decoding(typeName: String, DecodingError)
 
-        /// The endpoints ErrorResponse was successfully parsed
+        /// The endpoint's ErrorResponse was successfully parsed.
+        /// Also includes the original error thrown to cause the parsing
+        /// of ErrorResponse.
         case parsed(AnyErrorResponse, original: Error)
 
         /// A bad HTTP status was returned

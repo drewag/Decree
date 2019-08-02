@@ -19,6 +19,7 @@ extension WebService {
     ///
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
+    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on the default queue from URLSession
     /// - Parameter onComplete: callback for when the request completes with the data returned
     func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         self.doMakeRequest(to: nil, for: endpoint, input: input, callbackQueue: callbackQueue, onComplete: onComplete)

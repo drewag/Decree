@@ -10,7 +10,10 @@ import Foundation
 extension EmptyEndpoint {
     /// Make asynchronous request to this endpoint
     ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
     /// - Parameter service: service to make the request to
+    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
@@ -24,6 +27,8 @@ extension EmptyEndpoint {
     }
 
     /// Make synchronous request to this endpoint
+    ///
+    /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
     /// - Parameter service: service to make the request to
     public func makeSynchronousRequest(to service: Service = Service.shared) throws {
@@ -46,8 +51,11 @@ extension EmptyEndpoint {
 extension InEndpoint {
     /// Make asynchronous request to this endpoint
     ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
+    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         do {
@@ -67,6 +75,8 @@ extension InEndpoint {
     }
 
     /// Make synchronous request to this endpoint
+    ///
+    /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
@@ -90,7 +100,10 @@ extension InEndpoint {
 extension OutEndpoint {
     /// Make asynchronous request to this endpoint
     ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
     /// - Parameter service: service to make the request to
+    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
         service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
@@ -109,6 +122,8 @@ extension OutEndpoint {
     }
 
     /// Make synchronous request to this endpoint
+    ///
+    /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
     /// - Parameter service: service to make the request to
     ///
@@ -133,8 +148,11 @@ extension OutEndpoint {
 extension InOutEndpoint {
     /// Make Asynchronous Request to this endpoint
     ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
+    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
         do {
@@ -159,6 +177,8 @@ extension InOutEndpoint {
     }
 
     /// Make Asynchronous Request to this endpoint
+    ///
+    /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
