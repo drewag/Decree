@@ -5,7 +5,7 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/apple/swift-package-manager)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/CryptoSwift.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/CryptoSwift)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
-[![Build Status](https://dev.azure.com/accounts-microsoft/Drewag/_apis/build/status/drewag.Decree?branchName=master)](https://dev.azure.com/accounts-microsoft/Decree/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/accounts-microsoft/Drewag/_apis/build/status/drewag.Decree?branchName=master)](https://dev.azure.com/accounts-microsoft/Drewag/_build/latest?definitionId=1&branchName=master)
 
 [![Twitter @drewag](https://img.shields.io/badge/Twitter-@drewag-blue.svg?style=flat)](http://twitter.com/drewag)
 [![Blog drewag.me](https://img.shields.io/badge/Blog-drewag.me-blue.svg?style=flat)](http://drewag.me)
