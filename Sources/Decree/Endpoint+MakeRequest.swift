@@ -48,10 +48,13 @@ extension EmptyEndpoint {
         }
     }
 }
-extension InEndpoint {
+
+extension InEndpoint where Input: Encodable {
     /// Make asynchronous request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The Input must be Encodable
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
@@ -78,6 +81,8 @@ extension InEndpoint {
     ///
     /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
+    /// **Important**: The Input must be Encodable
+    ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
     public func makeSynchronousRequest(to service: Service = Service.shared, with input: Input) throws {
@@ -97,10 +102,13 @@ extension InEndpoint {
         }
     }
 }
-extension OutEndpoint {
+
+extension OutEndpoint where Output: Decodable {
     /// Make asynchronous request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The Output must be Decodable
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
@@ -125,6 +133,8 @@ extension OutEndpoint {
     ///
     /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
+    /// **Important**: The Output must be Decodable
+    ///
     /// - Parameter service: service to make the request to
     ///
     /// - Returns: endpoint's output
@@ -145,10 +155,13 @@ extension OutEndpoint {
         }
     }
 }
-extension InOutEndpoint {
+
+extension InOutEndpoint where Input: Encodable, Output: Decodable {
     /// Make Asynchronous Request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The Input must be Encodable and the Output must be Decodable
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
@@ -179,6 +192,8 @@ extension InOutEndpoint {
     /// Make Asynchronous Request to this endpoint
     ///
     /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
+    ///
+    /// **Important**: The Input must be Encodable and the Output must be Decodable
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint

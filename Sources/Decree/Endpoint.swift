@@ -44,7 +44,10 @@ public protocol Endpoint {
 /// Do not implment this protocol directly. Instead, implement
 /// EmptyEndpoint, InEndpoint, OutEndpoint, or InOutEndpoint
 public protocol EndpointWithInput: Endpoint {
-    associatedtype Input: Encodable
+    /// Content passed to service when a request is made
+    ///
+    /// Must be Encodable for makingRequests, must be Decodable for receivingRequests
+    associatedtype Input
 
     /// **OPTIONAL** The format for uploading the input
     ///
@@ -57,7 +60,10 @@ public protocol EndpointWithInput: Endpoint {
 /// Do not implment this protocol directly. Instead, implement
 /// EmptyEndpoint, InEndpoint, OutEndpoint, or InOutEndpoint
 public protocol EndpointWithOutput: Endpoint {
-    associatedtype Output: Decodable
+    /// Content returned to client when a request is made
+    ///
+    /// Must be Decodable for makingRequests, must be Encodable for receivingRequests
+    associatedtype Output
 }
 
 /// Endpoint without input or output
