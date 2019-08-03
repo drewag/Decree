@@ -69,6 +69,9 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
 
         /// A custom error was thrown
         case custom(String, details: String?, isInternal: Bool)
+
+        /// The response body was an invalid string when the Output was set to a String
+        case invalidOutputString
     }
 
     /// Classificaiton for the type of error
@@ -133,6 +136,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return "\(error)"
         case .custom(let message, _, _):
             return message
+        case .invalidOutputString:
+            return "The response body was invalid text."
         }
     }
 
@@ -250,6 +255,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return output
         case .custom(_, let description, _):
             return description
+        case .invalidOutputString:
+            return nil
         }
     }
 
@@ -283,6 +290,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return true
         case .custom(_, _, let isInternal):
             return isInternal
+        case .invalidOutputString:
+            return true
         }
     }
 

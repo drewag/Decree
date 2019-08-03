@@ -104,6 +104,12 @@ extension WebService {
         guard Output.self != Data.self else {
             return data as! Output
         }
+        guard Output.self != String.self else {
+            guard let string = String(data: data, encoding: .utf8) else {
+                throw DecreeError(.invalidOutputString, operationName: E.operationName)
+            }
+            return string as! Output
+        }
         do {
             switch E.outputFormat {
             case .JSON:

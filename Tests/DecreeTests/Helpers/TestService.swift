@@ -98,6 +98,24 @@ struct Out: OutEndpoint {
     let path = "out"
 }
 
+struct TextOut: OutEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "Outing"
+
+    typealias Output = String
+
+    let path = "out"
+}
+
+struct DataOut: OutEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "Outing"
+
+    typealias Output = Data
+
+    let path = "out"
+}
+
 struct XMLOut: OutEndpoint {
     typealias Service = TestService
     static let operationName: String? = "XMLOuting"
@@ -129,6 +147,16 @@ struct TextIn: InEndpoint {
     let path = "in"
 }
 
+struct DataIn: InEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "TextInning"
+    static let method = Method.put
+
+    typealias Input = Data
+
+    let path = "in"
+}
+
 struct InOut: InOutEndpoint {
     typealias Service = TestService
     static let operationName: String? = "InOuting"
@@ -148,7 +176,19 @@ struct TextInOut: InOutEndpoint {
 
     typealias Input = String
 
-    typealias Output = TestOutput
+    typealias Output = String
+
+    let path = "inout"
+}
+
+struct DataInOut: InOutEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "TextInOuting"
+    static let method = Method.post
+
+    typealias Input = Data
+
+    typealias Output = Data
 
     let path = "inout"
 }

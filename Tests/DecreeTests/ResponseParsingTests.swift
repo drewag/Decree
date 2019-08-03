@@ -240,4 +240,169 @@ class ResponseParsingTests: MakeRequestTestCase {
         XCTAssertThrowsError(try XMLOut().makeSynchronousRequest(to: .sharedErrorConfiguring), "", { XCTAssertEqual($0.localizedDescription, "Error xmlouting: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
     }
 
+    func testTextOut() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: Out.error(reason:"custom"))
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try TextOut().makeSynchronousRequest(), "{\"success\": true, \"date\": -14182980}")
+        XCTAssertThrowsError(try TextOut().makeSynchronousRequest(to: .sharedErrorConfiguring), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
+
+    func testTextIn() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: TextIn.error(reason:"custom"))
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
+        XCTAssertNoThrow(try TextIn().makeSynchronousRequest(with: "text"))
+
+        XCTAssertThrowsError(try TextIn().makeSynchronousRequest(to: .sharedErrorConfiguring, with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
+
+    func testTextInOut() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: TextInOut.error(reason:"custom"))
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try TextInOut().makeSynchronousRequest(with: "text"), "{\"success\": true, \"date\": -14182980}")
+
+        XCTAssertThrowsError(try TextInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: "text"), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
+
+    func testDataOut() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: DataOut.error(reason:"custom"))
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try DataOut().makeSynchronousRequest().string, "{\"success\": true, \"date\": -14182980}")
+        XCTAssertThrowsError(try DataOut().makeSynchronousRequest(to: .sharedErrorConfiguring), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
+
+    func testDataIn() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: DataIn.error(reason:"custom"))
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: successData, response: TestResponse(), error: nil)
+        XCTAssertNoThrow(try DataIn().makeSynchronousRequest(with: "text".data(using: .utf8)!))
+
+        XCTAssertThrowsError(try DataIn().makeSynchronousRequest(to: .sharedErrorConfiguring, with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinning: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
+
+    func testDataInOut() {
+        self.session.fixedOutput = (data: nil, response: nil, error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No response returned.\"")})
+
+        self.session.fixedOutput = (data: nil, response: nil, error: DataInOut.error(reason:"custom"))
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"custom\"")})
+
+        self.session.fixedOutput = (data: nil, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(statusCode: 201), error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"Bad status code: 201\"")})
+
+        self.session.fixedOutput = (data: Data(), response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"No data returned.\"")})
+
+        self.session.fixedOutput = (data: failData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"unsuccessful\"")})
+
+        self.session.fixedOutput = (data: errorMessageData, response: TestResponse(), error: nil)
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"parsed error\"")})
+
+        self.session.fixedOutput = (data: validOutData, response: TestResponse(), error: nil)
+        XCTAssertEqual(try DataInOut().makeSynchronousRequest(with: "text".data(using: .utf8)!).string, "{\"success\": true, \"date\": -14182980}")
+
+        XCTAssertThrowsError(try DataInOut().makeSynchronousRequest(to: .sharedErrorConfiguring, with: "text".data(using: .utf8)!), "", { XCTAssertEqual($0.localizedDescription, "Error textinouting: An internal error has occured. If it continues, please contact support with the description \"error configuring\"")})
+    }
 }
