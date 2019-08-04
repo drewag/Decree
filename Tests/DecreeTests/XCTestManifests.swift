@@ -114,6 +114,7 @@ extension RequestFlowTests {
         ("testFormInRequestFlow", testFormInRequestFlow),
         ("testInOutRequestFlow", testInOutRequestFlow),
         ("testInRequestFlow", testInRequestFlow),
+        ("testOperationQueue", testOperationQueue),
         ("testOutRequestFlow", testOutRequestFlow),
         ("testRedirectFlow", testRedirectFlow),
         ("testURLQueryInOutRequestFlow", testURLQueryInOutRequestFlow),
@@ -128,12 +129,18 @@ extension ResponseParsingTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__ResponseParsingTests = [
+        ("testDataIn", testDataIn),
+        ("testDataInOut", testDataInOut),
+        ("testDataOut", testDataOut),
         ("testEmpty", testEmpty),
         ("testIgnoringBasicAndErrorResponses", testIgnoringBasicAndErrorResponses),
         ("testIn", testIn),
         ("testInOut", testInOut),
         ("testMinimalInOutRequest", testMinimalInOutRequest),
         ("testOut", testOut),
+        ("testTextIn", testTextIn),
+        ("testTextInOut", testTextInOut),
+        ("testTextOut", testTextOut),
         ("testXMLOut", testXMLOut),
     ]
 }
