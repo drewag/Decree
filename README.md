@@ -10,7 +10,7 @@
 [![Twitter @drewag](https://img.shields.io/badge/Twitter-@drewag-blue.svg?style=flat)](http://twitter.com/drewag)
 [![Blog drewag.me](https://img.shields.io/badge/Blog-drewag.me-blue.svg?style=flat)](http://drewag.me)
 
-*Make HTTP requests in a clear and type safe way by declaratively defining web services and endpoints on **iOS**, **macOS**, and **Linux***
+*Make HTTP requests in a clear and type safe way by declaring web services and endpoints on **iOS**, **macOS**, and **Linux***
 
 When it comes to making URL requests with Swift, you largely have two options: use the URLSession APIs in Foundation or use some heavy handed framework.
 
