@@ -14,7 +14,7 @@ struct TestMinimalService: WebService {
     typealias ErrorResponse = NoErrorResponse
 
     static let shared = TestMinimalService()
-    let sessionOverride: Session? = TestURLSession.test
+    var sessionOverride: Session? = TestURLSession.test
 
     let baseURL = URL(string: "https://example.com")!
 }

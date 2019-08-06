@@ -62,6 +62,9 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         /// An NSURLError was thrown
         case urlError(code: Int)
 
+        /// The response body was an invalid string when the Output was set to a String
+        case invalidOutputString
+
         // MARK: Other
 
         /// A different Error was thrown
@@ -70,8 +73,19 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         /// A custom error was thrown
         case custom(String, details: String?, isInternal: Bool)
 
-        /// The response body was an invalid string when the Output was set to a String
-        case invalidOutputString
+        // MARK: Mocking
+
+        /// A request was made to an endpoint during mocking that was not expected
+        case unexpectedEndpoint(String)
+
+        /// A request was made to an endpoint when a different endpoint was expected
+        case incorrectExpecation(expected: String, actual: String)
+
+        /// A request was made to the wrong path
+        case incorrectExpectationPath(expected: String, actual: String, endpoint: String)
+
+        /// A request was made with unexpected input
+        case unexpectedInput(expected: Any, actual: Any, endpoint: String)
     }
 
     /// Classificaiton for the type of error
@@ -138,6 +152,14 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return message
         case .invalidOutputString:
             return "The response body was invalid text."
+        case .unexpectedEndpoint(let endpoint):
+            return "A request was made to ‘\(endpoint)’ during mocking that was not expected."
+        case .incorrectExpecation(let expected, let actual):
+            return "A request was made to ‘\(actual)’ when ‘\(expected)’ was expected."
+        case .incorrectExpectationPath(_, _, let endpoint):
+            return "A request was made to the wrong path of ‘\(endpoint)’."
+        case .unexpectedInput(_, _, let endpoint):
+            return "A request was made to ‘\(endpoint)’ with unexpected input."
         }
     }
 
@@ -257,6 +279,14 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return description
         case .invalidOutputString:
             return nil
+        case .unexpectedEndpoint:
+            return nil
+        case .incorrectExpecation:
+            return nil
+        case .incorrectExpectationPath(let expected, let actual, _):
+            return "Path was ‘\(actual)’ but expected ‘\(expected)‘."
+        case .unexpectedInput(let expected, let actual, _):
+            return "Got ‘\(actual)’ but expected ‘\(expected)’."
         }
     }
 
@@ -292,10 +322,17 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return isInternal
         case .invalidOutputString:
             return true
+        case .unexpectedEndpoint, .incorrectExpecation, .incorrectExpectationPath, .unexpectedInput:
+            return false
         }
     }
 
-    init(_ code: Code, operationName: String?) {
+    /// Create a DecreeError
+    ///
+    /// - Parameters:
+    ///     - code: The code designation for this error
+    ///     - operationName: Optional name for what was being attempted when error was created
+    public init(_ code: Code, operationName: String? = nil) {
         self.code = code
         self.operationName = operationName
     }

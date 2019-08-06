@@ -50,6 +50,11 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.reason, "No data returned.")
         XCTAssertEqual(error.details, "The data task did not return an error, but it also didn\'t return any data.")
         XCTAssertEqual(error.isInternal, true)
+
+        error = DecreeError(.invalidOutputString, operationName: nil)
+        XCTAssertEqual(error.reason, "The response body was invalid text.")
+        XCTAssertNil(error.details)
+        XCTAssertEqual(error.isInternal, true)
     }
 
     func testEncodingErrors() {
@@ -668,5 +673,39 @@ class DecreeErrorTests: XCTestCase {
         XCTAssertEqual(error.description, #"Error making request: custom"#)
         XCTAssertEqual(error.details, "some details")
         XCTAssertEqual(error.debugDescription, #"Error making request: custom\#nsome details"#)
+    }
+
+    func testMockingErrors() {
+        var error = DecreeError(.unexpectedEndpoint("SomeEndpoint"), operationName: nil)
+        XCTAssertEqual(error.alertMessage, "A request was made to ‘SomeEndpoint’ during mocking that was not expected.")
+        XCTAssertEqual(error.description, "Error making request: A request was made to ‘SomeEndpoint’ during mocking that was not expected.")
+        XCTAssertEqual(error.details, nil)
+        XCTAssertEqual(error.debugDescription, "Error making request: A request was made to ‘SomeEndpoint’ during mocking that was not expected.")
+
+        error = DecreeError(.incorrectExpecation(expected: "Right", actual: "Wrong"), operationName: nil)
+        XCTAssertEqual(error.alertMessage, "A request was made to ‘Wrong’ when ‘Right’ was expected.")
+        XCTAssertEqual(error.description, "Error making request: A request was made to ‘Wrong’ when ‘Right’ was expected.")
+        XCTAssertEqual(error.details, nil)
+        XCTAssertEqual(error.debugDescription, "Error making request: A request was made to ‘Wrong’ when ‘Right’ was expected.")
+
+        error = DecreeError(.incorrectExpectationPath(expected: "Right/Path", actual: "Wrong/Path", endpoint: "SomeEndpoint"), operationName: nil)
+        XCTAssertEqual(error.alertMessage, "A request was made to the wrong path of ‘SomeEndpoint’.")
+        XCTAssertEqual(error.description, "Error making request: A request was made to the wrong path of ‘SomeEndpoint’.")
+        XCTAssertEqual(error.details, "Path was ‘Wrong/Path’ but expected ‘Right/Path‘.")
+        XCTAssertEqual(error.debugDescription, """
+            Error making request: A request was made to the wrong path of ‘SomeEndpoint’.
+            Path was ‘Wrong/Path’ but expected ‘Right/Path‘.
+            """
+        )
+
+        error = DecreeError(.unexpectedInput(expected: "Right", actual: "Wrong", endpoint: "SomeEndpoint"), operationName: nil)
+        XCTAssertEqual(error.alertMessage, "A request was made to ‘SomeEndpoint’ with unexpected input.")
+        XCTAssertEqual(error.description, "Error making request: A request was made to ‘SomeEndpoint’ with unexpected input.")
+        XCTAssertEqual(error.details, "Got ‘Wrong’ but expected ‘Right’.")
+        XCTAssertEqual(error.debugDescription, """
+            Error making request: A request was made to ‘SomeEndpoint’ with unexpected input.
+            Got ‘Wrong’ but expected ‘Right’.
+            """
+        )
     }
 }

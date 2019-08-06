@@ -14,7 +14,7 @@ struct AuthenticatedService: WebService {
     typealias ErrorResponse = NoErrorResponse
 
     static var shared = AuthenticatedService()
-    let sessionOverride: Session? = TestURLSession.test
+    var sessionOverride: Session? = TestURLSession.test
 
     var authorization = Authorization.none
 

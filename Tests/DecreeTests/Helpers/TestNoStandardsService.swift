@@ -22,7 +22,7 @@ struct TestNoStandardsService: WebService {
         self.errorConfiguring = errorConfiguring
     }
 
-    let sessionOverride: Session? = TestURLSession.test
+    var sessionOverride: Session? = TestURLSession.test
     let baseURL = URL(string: "https://example.com")!
 
     func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {

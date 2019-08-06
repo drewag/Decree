@@ -88,6 +88,10 @@ The vast majority of our code is covered by unit tests to ensure reliability.
 
 The [errors thrown and returned by Decree](https://github.com/drewag/Decree/wiki/Debugging-Helpers#errors) are designed to be user friendly while also exposing detailed diagnostic information.
 
+**Mocking**
+
+Allows [mocking request responses](https://github.com/drewag/Decree/wiki/Mocking) for easy automated testing.
+
 **Third-Party Services**
 
 We created a separate framework that defines services and endpoints for several third-party services. Check it out at [DecreeServices](https://github.com/drewag/DecreeServices).

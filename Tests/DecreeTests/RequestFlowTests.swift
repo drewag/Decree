@@ -258,8 +258,9 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertNil(result?.error)
     }
 
-    func testOperationQueue() {
+    func testOperationQueueWithSuccess() {
         let queue = DispatchQueue(label: "test")
+        queue.suspend()
         var result: EmptyResult?
         Empty().makeRequest(callbackQueue: queue) { r in
             result = r
@@ -275,9 +276,46 @@ class RequestFlowTests: MakeRequestTestCase {
         self.session.startedTasks[0].complete(successData, TestResponse(), nil)
 
         XCTAssertNil(result)
+        queue.resume()
         queue.sync {}
 
         XCTAssertNotNil(result)
         XCTAssertNil(result?.error)
+    }
+
+    func testOperationQueueWithInvalidInputForIn() {
+        let queue = DispatchQueue(label: "test")
+        queue.suspend()
+        var result: EmptyResult?
+        In().makeRequest(with: .init(date: nil), callbackQueue: queue) { r in
+            result = r
+        }
+
+        XCTAssertEqual(self.session.startedTasks.count, 0)
+
+        XCTAssertNil(result)
+        queue.resume()
+        queue.sync {}
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.error?.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")
+    }
+
+    func testOperationQueueWithInvalidInputForInOut() {
+        let queue = DispatchQueue(label: "test")
+        queue.suspend()
+        var result: Result<InOut.Output, DecreeError>?
+        InOut().makeRequest(with: .init(date: nil), callbackQueue: queue) { r in
+            result = r
+        }
+
+        XCTAssertEqual(self.session.startedTasks.count, 0)
+
+        XCTAssertNil(result)
+        queue.resume()
+        queue.sync {}
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.error?.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"Failed to encode TestInput(date: nil, string: \"weird&=?<>characters\", otherError: false).\"")
     }
 }

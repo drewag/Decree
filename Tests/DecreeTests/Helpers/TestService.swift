@@ -18,7 +18,7 @@ struct TestService: WebService {
         let message: String
     }
 
-    static let shared = TestService(errorConfiguring: false)
+    static var shared = TestService(errorConfiguring: false)
     static let sharedErrorConfiguring = TestService(errorConfiguring: true)
 
     let errorConfiguring: Bool
@@ -28,7 +28,7 @@ struct TestService: WebService {
     }
 
 
-    let sessionOverride: Session? = TestURLSession.test
+    var sessionOverride: Session? = TestURLSession.test
     let baseURL = URL(string: "https://example.com")!
 
     func configure<E: Endpoint>(_ request: inout URLRequest, for endpoint: E) throws {
@@ -87,6 +87,13 @@ struct Empty: EmptyEndpoint {
     static let operationName: String? = "Emptying"
 
     let path = "empty"
+}
+
+struct EmptyVariablePath: EmptyEndpoint {
+    typealias Service = TestService
+    static let operationName: String? = "Emptying"
+
+    let path: String
 }
 
 struct Out: OutEndpoint {

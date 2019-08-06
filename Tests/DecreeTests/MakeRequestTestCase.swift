@@ -29,6 +29,7 @@ class MakeRequestTestCase: XCTestCase {
     }
 
     override func setUp() {
+        TestService.shared.sessionOverride = TestURLSession.test
         self.session.fixedOutput = nil
         self.session.startedTasks.removeAll()
     }

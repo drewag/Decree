@@ -16,6 +16,11 @@ extension EmptyEndpoint {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock {
+            mock.handle(for: self, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+
         service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
             switch result {
             case .failure(let error):
@@ -61,6 +66,11 @@ extension InEndpoint where Input: Encodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock {
+            mock.handle(for: self, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+        
         do {
             let input = try service.encode(input: input, for: self)
             service.makeRequest(to: self, input: input, callbackQueue: callbackQueue) { result in
@@ -116,6 +126,11 @@ extension OutEndpoint where Output: Decodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock {
+            mock.handle(for: self, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+
         service.makeRequest(to: self, input: .none, callbackQueue: callbackQueue) { result in
             switch result {
             case .failure(let error):
@@ -170,6 +185,11 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock {
+            mock.handle(for: self, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+
         do {
             let input = try service.encode(input: input, for: self)
             service.makeRequest(to: self, input: input, callbackQueue: callbackQueue) { result in

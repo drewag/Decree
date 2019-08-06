@@ -50,15 +50,6 @@ class AuthenticationTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks.last!.request.allHTTPHeaderFields?["Key"], "value")
 
         AuthenticatedService.shared.authorization = .none
-        var result: EmptyResult?
-        RequiredAuthEmpty().makeRequest() { r in
-            result = r
-        }
-        switch result ?? .success {
-        case .failure(let error):
-            XCTAssertEqual(error.localizedDescription, "Error making request: You are not logged in.")
-        case .success:
-            XCTFail("should not be successful")
-        }
+        XCTAssertThrowsError(try RequiredAuthEmpty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.")})
     }
 }

@@ -48,7 +48,7 @@ public protocol WebService {
     /// **OPTIONAL** URL session to use for requests
     ///
     /// Defaults to `URLSession.shared`
-    var sessionOverride: Session? {get}
+    var sessionOverride: Session? {get set}
 
     /// Base URL for all requests to this service
     ///
@@ -92,7 +92,6 @@ public protocol WebService {
     /// *OPTIONAL* Chance to automatically handle a response error
     func handle<E: Endpoint>(_ error: DecreeError, response: URLResponse, from endpoint: E) -> ErrorHandling
 }
-
 
 extension WebService {
     /// Default to having no authorization
