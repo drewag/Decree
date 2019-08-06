@@ -182,7 +182,7 @@ class MockingTests: XCTestCase {
             """
         )})
         XCTAssertThrowsError(try WebServiceMock.validate(expected: ["one": 1, "two": 2], actual: ["one": 1], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).reason, """
-            Error Emptying: A request was made to ‘Empty’ with unexpected input.
+            A request was made to ‘Empty’ with unexpected input.
             """
         )})
 
