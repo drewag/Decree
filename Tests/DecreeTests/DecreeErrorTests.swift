@@ -698,13 +698,13 @@ class DecreeErrorTests: XCTestCase {
             """
         )
 
-        error = DecreeError(.unexpectedInput(expected: "Right", actual: "Wrong", endpoint: "SomeEndpoint"), operationName: nil)
+        error = DecreeError(.unexpectedInput(expected: "Right", actual: "Wrong", valuePath: "Some.0.Path", endpoint: "SomeEndpoint"), operationName: nil)
         XCTAssertEqual(error.alertMessage, "A request was made to ‘SomeEndpoint’ with unexpected input.")
         XCTAssertEqual(error.description, "Error making request: A request was made to ‘SomeEndpoint’ with unexpected input.")
-        XCTAssertEqual(error.details, "Got ‘Wrong’ but expected ‘Right’.")
+        XCTAssertEqual(error.details, "Got ‘Wrong’ but expected ‘Right’. A difference was found at the path ‘Some.0.Path‘.")
         XCTAssertEqual(error.debugDescription, """
             Error making request: A request was made to ‘SomeEndpoint’ with unexpected input.
-            Got ‘Wrong’ but expected ‘Right’.
+            Got ‘Wrong’ but expected ‘Right’. A difference was found at the path ‘Some.0.Path‘.
             """
         )
     }

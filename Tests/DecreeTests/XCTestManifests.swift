@@ -111,6 +111,7 @@ extension MockingTests {
         ("testEmptyMocking", testEmptyMocking),
         ("testInMocking", testInMocking),
         ("testInOutMocking", testInOutMocking),
+        ("testInputEqualityTests", testInputEqualityTests),
         ("testMockingWithPath", testMockingWithPath),
         ("testOutMocking", testOutMocking),
         ("testStartMockingAgain", testStartMockingAgain),

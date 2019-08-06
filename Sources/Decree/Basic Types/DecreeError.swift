@@ -85,7 +85,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         case incorrectExpectationPath(expected: String, actual: String, endpoint: String)
 
         /// A request was made with unexpected input
-        case unexpectedInput(expected: Any, actual: Any, endpoint: String)
+        case unexpectedInput(expected: Any, actual: Any, valuePath: String, endpoint: String)
     }
 
     /// Classificaiton for the type of error
@@ -158,7 +158,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return "A request was made to ‘\(actual)’ when ‘\(expected)’ was expected."
         case .incorrectExpectationPath(_, _, let endpoint):
             return "A request was made to the wrong path of ‘\(endpoint)’."
-        case .unexpectedInput(_, _, let endpoint):
+        case .unexpectedInput(_, _, _, let endpoint):
             return "A request was made to ‘\(endpoint)’ with unexpected input."
         }
     }
@@ -285,8 +285,13 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return nil
         case .incorrectExpectationPath(let expected, let actual, _):
             return "Path was ‘\(actual)’ but expected ‘\(expected)‘."
-        case .unexpectedInput(let expected, let actual, _):
-            return "Got ‘\(actual)’ but expected ‘\(expected)’."
+        case .unexpectedInput(let expected, let actual, let path, _):
+            if path.isEmpty {
+                return "Got ‘\(actual)’ but expected ‘\(expected)’. A difference was found at the root."
+            }
+            else {
+                return "Got ‘\(actual)’ but expected ‘\(expected)’. A difference was found at the path ‘\(path)‘."
+            }
         }
     }
 
