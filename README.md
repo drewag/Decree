@@ -90,7 +90,7 @@ The [errors thrown and returned by Decree](https://github.com/drewag/Decree/wiki
 
 **Mocking**
 
-Allows [mocking request responses](https://github.com/drewag/Decree/wiki/Mocking) for easy automated testing.
+Allows [mocking endpoint responses](https://github.com/drewag/Decree/wiki/Mocking) for easy automated testing.
 
 **Third-Party Services**
 
