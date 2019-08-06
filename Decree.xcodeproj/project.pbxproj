@@ -25,6 +25,8 @@
 		498F7C0822F93C68003D530C /* WebServiceMock+HandleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F7C0722F93C68003D530C /* WebServiceMock+HandleRequest.swift */; };
 		498F7C0A22F941C5003D530C /* DispatchQueue+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F7C0922F941C5003D530C /* DispatchQueue+Async.swift */; };
 		498F7C1022F94D93003D530C /* MockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F7C0F22F94D93003D530C /* MockingTests.swift */; };
+		498F7C1222FA085C003D530C /* WebService+AllRequestHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F7C1122FA085C003D530C /* WebService+AllRequestHandling.swift */; };
+		498F7C1422FA08A7003D530C /* AllRequestHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F7C1322FA08A7003D530C /* AllRequestHandlingTests.swift */; };
 		OBJ_130 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_131 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
 		OBJ_132 /* DecreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* DecreeError.swift */; };
@@ -162,6 +164,8 @@
 		498F7C0722F93C68003D530C /* WebServiceMock+HandleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebServiceMock+HandleRequest.swift"; sourceTree = "<group>"; };
 		498F7C0922F941C5003D530C /* DispatchQueue+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Async.swift"; sourceTree = "<group>"; };
 		498F7C0F22F94D93003D530C /* MockingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockingTests.swift; sourceTree = "<group>"; };
+		498F7C1122FA085C003D530C /* WebService+AllRequestHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebService+AllRequestHandling.swift"; sourceTree = "<group>"; };
+		498F7C1322FA08A7003D530C /* AllRequestHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRequestHandlingTests.swift; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
@@ -299,7 +303,9 @@
 		498F7C0622F93C3F003D530C /* Mocking */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_38 /* WebService+Mocking.swift */,
 				OBJ_30 /* WebServiceMock.swift */,
+				498F7C1122FA085C003D530C /* WebService+AllRequestHandling.swift */,
 			);
 			path = Mocking;
 			sourceTree = "<group>";
@@ -378,6 +384,7 @@
 				OBJ_62 /* StatusCodeValidationTests.swift */,
 				OBJ_63 /* XCTestManifests.swift */,
 				498F7C0F22F94D93003D530C /* MockingTests.swift */,
+				498F7C1322FA08A7003D530C /* AllRequestHandlingTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -499,7 +506,6 @@
 				OBJ_23 /* Endpoint.swift */,
 				OBJ_24 /* Logger.swift */,
 				OBJ_25 /* Private */,
-				OBJ_38 /* WebService+Mocking.swift */,
 				OBJ_39 /* WebService.swift */,
 			);
 			name = Decree;
@@ -678,6 +684,7 @@
 				OBJ_143 /* Endpoint.swift in Sources */,
 				OBJ_144 /* Logger.swift in Sources */,
 				OBJ_145 /* FormDataEncoder.swift in Sources */,
+				498F7C1222FA085C003D530C /* WebService+AllRequestHandling.swift in Sources */,
 				498F7C0A22F941C5003D530C /* DispatchQueue+Async.swift in Sources */,
 				OBJ_146 /* FormURLEncoder.swift in Sources */,
 				OBJ_147 /* HTTPStatus.swift in Sources */,
@@ -718,6 +725,7 @@
 				OBJ_187 /* Decodable+Helpers.swift in Sources */,
 				OBJ_188 /* Result+Helpers.swift in Sources */,
 				OBJ_189 /* TestMinimalService.swift in Sources */,
+				498F7C1422FA08A7003D530C /* AllRequestHandlingTests.swift in Sources */,
 				OBJ_190 /* TestNoStandardsService.swift in Sources */,
 				498F7C1022F94D93003D530C /* MockingTests.swift in Sources */,
 				OBJ_191 /* TestService.swift in Sources */,

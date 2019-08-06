@@ -8,6 +8,8 @@
 import Foundation
 import XMLCoder
 
+var AllRequestsHandlers = [(service: Any, handler: WebService.AllRequestsHandler)]()
+
 extension WebService {
     /// Make request to any endpoint
     ///
@@ -131,6 +133,20 @@ extension WebService {
     }
 }
 
+private extension Session {
+    func execute<S: WebService>(_ request: URLRequest, for webService: S, onComplete: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        for handlerSpec in AllRequestsHandlers {
+            if handlerSpec.service is S.Type {
+                let (data, response, error) = handlerSpec.handler(request)
+                onComplete(data, response, error)
+                return
+            }
+        }
+        let task = self.dataTask(with: request, completionHandler: onComplete)
+        task.resume()
+    }
+}
+
 private extension WebService {
     /// Make request to any endpoint
     ///
@@ -155,7 +171,7 @@ private extension WebService {
 
             let session = self.sessionOverride ?? URLSession.shared
             self.log(request, for: endpoint)
-            let task = session.dataTask(with: request) { data, response, error in
+            session.execute(request, for: self) { data, response, error in
                 callbackQueue.async {
                     self.logResponse(data: data, response: response, error: error, for: endpoint)
                     if let error = error {
@@ -182,7 +198,6 @@ private extension WebService {
                     }
                 }
             }
-            task.resume()
         }
         catch {
             callbackQueue.async {
