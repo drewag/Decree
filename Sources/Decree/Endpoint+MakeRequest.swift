@@ -73,7 +73,9 @@ extension InEndpoint where Input: Encodable {
             }
         }
         catch {
-            onComplete(.failure(DecreeError(other: error, for: self)))
+            callbackQueue.async {
+                onComplete(.failure(DecreeError(other: error, for: self)))
+            }
         }
     }
 
@@ -185,7 +187,9 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
             }
         }
         catch {
-            onComplete(.failure(DecreeError(other: error, for: self)))
+            callbackQueue.async {
+                onComplete(.failure(DecreeError(other: error, for: self)))
+            }
         }
     }
 

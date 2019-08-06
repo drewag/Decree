@@ -156,7 +156,7 @@ private extension WebService {
             let session = self.sessionOverride ?? URLSession.shared
             self.log(request, for: endpoint)
             let task = session.dataTask(with: request) { data, response, error in
-                func handle() {
+                callbackQueue.async {
                     self.logResponse(data: data, response: response, error: error, for: endpoint)
                     if let error = error {
                         onComplete(.failure(DecreeError(other: error, for: endpoint)))
@@ -181,20 +181,13 @@ private extension WebService {
                         self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, callbackQueue: callbackQueue, onComplete: onComplete)
                     }
                 }
-
-                if let queue = callbackQueue {
-                    queue.async {
-                        handle()
-                    }
-                }
-                else {
-                    handle()
-                }
             }
             task.resume()
         }
         catch {
-            onComplete(.failure(DecreeError(other: error, for: endpoint)))
+            callbackQueue.async {
+                onComplete(.failure(DecreeError(other: error, for: endpoint)))
+            }
         }
     }
 
