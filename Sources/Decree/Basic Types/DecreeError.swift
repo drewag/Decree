@@ -146,6 +146,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             }
         case .urlError(let code):
             return self.reason(forUrlErrorCode: code)
+        case .other(let error as DecreeErrorDescribable):
+            return error.reason
         case .other(let error):
             return "\(error)"
         case .custom(let message, _, _):
@@ -255,6 +257,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             }
         case .urlError(let code):
             return self.details(forUrlErrorCode: code)
+        case .other(let error as DecreeErrorDescribable):
+            return error.details
         case .other(let error):
             let nsError = error as NSError
             var output = "\(nsError.domain) \(nsError.code)"
@@ -321,6 +325,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             }
         case .urlError(let code):
             return self.isInternal(forUrlErrorCode: code)
+        case .other(let error as DecreeErrorDescribable):
+            return error.isInternal
         case .other:
             return true
         case .custom(_, _, let isInternal):

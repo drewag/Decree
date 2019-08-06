@@ -636,7 +636,7 @@ class DecreeErrorTests: XCTestCase {
     }
 
     func testOtherErrors() {
-        let error = DecreeError(.other(OtherError("other error")), operationName: nil)
+        var error = DecreeError(.other(OtherError("other error")), operationName: nil)
         XCTAssertEqual(error.reason, "other error")
         XCTAssertEqual(error.details, """
             OtherErrorDomain 7
@@ -647,6 +647,11 @@ class DecreeErrorTests: XCTestCase {
             """
         )
         XCTAssertEqual(error.isInternal, true)
+
+        error = DecreeError(.other(OtherDecreeError()))
+        XCTAssertEqual(error.reason, "some reason")
+        XCTAssertEqual(error.details, "some details")
+        XCTAssertEqual(error.isInternal, false)
     }
 
     func testCustomErrors() {
@@ -708,4 +713,10 @@ class DecreeErrorTests: XCTestCase {
             """
         )
     }
+}
+
+struct OtherDecreeError: Error, DecreeErrorDescribable {
+    let reason: String = "some reason"
+    let details: String? = "some details"
+    let isInternal: Bool = false
 }
