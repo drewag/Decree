@@ -12,7 +12,7 @@ import Foundation
 ///
 /// An expectation must be added for every request that is going to be made to the service.
 /// If a request comes in that was not expected, it will throw an error.
-public class WebServiceMock: Session {
+public class WebServiceMock<S: WebService>: Session {
     var expectations = [AnyExpectation]()
 
     public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
@@ -26,7 +26,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return when the expectation is met
-    public func expect<E: EmptyEndpoint>(_ endpoint: E, andReturn result: EmptyResult) {
+    public func expect<E: EmptyEndpoint>(_ endpoint: E, andReturn result: EmptyResult) where E.Service == S {
         self.expectations.append(EmptyExpectation(type: E.self, path: endpoint.path, returning: result))
     }
 
@@ -39,7 +39,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
-    public func expect<E: InEndpoint>(_ endpoint: E, recieving input: E.Input) where E.Input: Encodable {
+    public func expect<E: InEndpoint>(_ endpoint: E, recieving input: E.Input) where E.Input: Encodable, E.Service == S {
         self.expectations.append(FixedInputExpectation(type: E.self, path: endpoint.path, recieving: input))
     }
 
@@ -59,7 +59,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expect<E: InEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) {
+    public func expect<E: InEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) where E.Service == S {
         self.expectations.append(ValidatingInputExpectation(type: E.self, path: endpoint.path, validate: validate))
     }
 
@@ -70,7 +70,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return if the expectation is met
-    public func expect<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<E.Output, DecreeError>) {
+    public func expect<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<E.Output, DecreeError>) where E.Service == S {
         self.expectations.append(OutputExpecation(type: E.self, path: endpoint.path, result: result))
     }
 
@@ -84,7 +84,7 @@ public class WebServiceMock: Session {
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
     ///     - result: The result to return if the expectation is met
-    public func expect<E: InOutEndpoint>(_ endpoint: E, recieving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable {
+    public func expect<E: InOutEndpoint>(_ endpoint: E, recieving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
         self.expectations.append(FixedInputAndOutputExpectation(type: E.self, path: endpoint.path, recieving: input, result: result))
     }
 
@@ -95,7 +95,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - error: Error to the throw if the expectation is met
-    public func expect<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) {
+    public func expect<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) where E.Service == S {
         self.expectations.append(ErrorExpectation(type: E.self, path: endpoint.path, error: error))
     }
 
@@ -105,7 +105,7 @@ public class WebServiceMock: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expect<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) {
+    public func expect<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) where E.Service == S {
         self.expectations.append(ValidatingInputAndOutputExpectation(type: E.self, path: endpoint.path, validate: validate))
     }
 }

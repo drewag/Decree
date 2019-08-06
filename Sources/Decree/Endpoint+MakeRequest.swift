@@ -16,7 +16,7 @@ extension EmptyEndpoint {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
-        if let mock = service.sessionOverride as? WebServiceMock {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
             mock.handle(for: self, callbackQueue: callbackQueue, onComplete: onComplete)
             return
         }
@@ -66,7 +66,7 @@ extension InEndpoint where Input: Encodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: EmptyResult) -> ()) {
-        if let mock = service.sessionOverride as? WebServiceMock {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
             mock.handle(for: self, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
             return
         }
@@ -126,7 +126,7 @@ extension OutEndpoint where Output: Decodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
-        if let mock = service.sessionOverride as? WebServiceMock {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
             mock.handle(for: self, callbackQueue: callbackQueue, onComplete: onComplete)
             return
         }
@@ -185,7 +185,7 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
-        if let mock = service.sessionOverride as? WebServiceMock {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
             mock.handle(for: self, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
             return
         }
