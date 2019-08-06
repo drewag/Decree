@@ -6,7 +6,7 @@
 //
 
 /// Protocol to improve the reporting of your own errors
-protocol DecreeErrorDescribable {
+public protocol DecreeErrorDescribable {
     var reason: String {get}
     var details: String? {get}
     var isInternal: Bool {get}
