@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name          = 'Decree'
-  spec.version       = '3.2.0'
+  spec.version       = '4.0.0'
   spec.license       = { :type => 'MIT', :file => "LICENSE" }
   spec.homepage      = 'https://github.com/drewag/Decree'
   spec.authors       = { 'Andrew J. Wagner' => 'https://drewag.me' }
