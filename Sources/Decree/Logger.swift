@@ -48,9 +48,7 @@ public struct Logger {
                 self.logs.append(string)
             }
             else {
-                DispatchQueue.main.async {
-                    print(string)
-                }
+                print(string)
             }
         }
     }
