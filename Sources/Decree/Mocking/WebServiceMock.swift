@@ -35,7 +35,7 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
-    public func expect<E: InEndpoint>(_ endpoint: E, recieving input: E.Input) where E.Input: Encodable, E.Service == S {
+    public func expect<E: InEndpoint>(_ endpoint: E, receiving input: E.Input) where E.Input: Encodable, E.Service == S {
         self.add(FixedInputInExpectation<E>(path: endpoint.path, expectedInput: input))
     }
 
@@ -80,7 +80,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
     ///     - result: The result to return if the expectation is met
-    public func expect<E: InOutEndpoint>(_ endpoint: E, recieving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
+    public func expect<E: InOutEndpoint>(_ endpoint: E, receiving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
         self.add(FixedInputInOutExpectation<E>(path: endpoint.path, expectedInput: input, returning: result))
     }
 

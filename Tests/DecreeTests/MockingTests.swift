@@ -33,10 +33,10 @@ class MockingTests: XCTestCase {
         self.mock.expect(Out(), andReturn: .success(TestOutput(date: date)))
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘Out’ was expected.") })
 
-        self.mock.expect(In(), recieving: .init(date: date))
+        self.mock.expect(In(), receiving: .init(date: date))
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘In’ was expected.") })
 
-        self.mock.expect(InOut(), recieving: .init(date: date), andReturn: .success(.init(date: date)))
+        self.mock.expect(InOut(), receiving: .init(date: date), andReturn: .success(.init(date: date)))
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘InOut’ was expected.") })
 
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ during mocking that was not expected.") })
@@ -45,10 +45,10 @@ class MockingTests: XCTestCase {
     func testInMocking() {
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: A request was made to ‘In’ during mocking that was not expected.") })
 
-        self.mock.expect(In(), recieving: .init(date: date))
+        self.mock.expect(In(), receiving: .init(date: date))
         XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
 
-        self.mock.expect(In(), recieving: .init(date: otherDate))
+        self.mock.expect(In(), receiving: .init(date: otherDate))
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: A request was made to ‘In’ with unexpected input.") })
 
         self.mock.expect(In(), throwingError: DecreeError(.unauthorized))
@@ -87,13 +87,13 @@ class MockingTests: XCTestCase {
     func testInOutMocking() throws {
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ during mocking that was not expected.") })
 
-        self.mock.expect(InOut(), recieving: .init(date: date), andReturn: .success(.init(date: date)))
+        self.mock.expect(InOut(), receiving: .init(date: date), andReturn: .success(.init(date: date)))
         XCTAssertEqual(try InOut().makeSynchronousRequest(with: .init(date: date)).date, date)
 
-        self.mock.expect(InOut(), recieving: .init(date: date), andReturn: .failure(DecreeError(.unauthorized)))
+        self.mock.expect(InOut(), receiving: .init(date: date), andReturn: .failure(DecreeError(.unauthorized)))
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
 
-        self.mock.expect(InOut(), recieving: .init(date: otherDate), andReturn: .success(.init(date: date)))
+        self.mock.expect(InOut(), receiving: .init(date: otherDate), andReturn: .success(.init(date: date)))
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ with unexpected input.") })
 
         self.mock.expect(InOut(), throwingError: DecreeError(.unauthorized))
