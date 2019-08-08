@@ -15,10 +15,6 @@ import Foundation
 public class WebServiceMock<S: WebService>: Session {
     var expectations = [AnyExpectation]()
 
-    public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        fatalError("Should not get called. It is special-cased.")
-    }
-
     // MARK: Emtpy Endpoints
 
     /// Add expectation for an empty endpoint returning a specific result
@@ -27,7 +23,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return when the expectation is met
     public func expect<E: EmptyEndpoint>(_ endpoint: E, andReturn result: EmptyResult) where E.Service == S {
-        self.expectations.append(EmptyExpectation(type: E.self, path: endpoint.path, returning: result))
+        self.add(EmptyExpectation<E>(path: endpoint.path, returning: result))
     }
 
     // MARK: In Endpoints
@@ -40,7 +36,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
     public func expect<E: InEndpoint>(_ endpoint: E, recieving input: E.Input) where E.Input: Encodable, E.Service == S {
-        self.expectations.append(FixedInputExpectation(type: E.self, path: endpoint.path, recieving: input))
+        self.add(FixedInputInExpectation<E>(path: endpoint.path, expectedInput: input))
     }
 
     /// Add expectation for an in endpoint that will throw an error
@@ -51,7 +47,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - error: Error to the throw if the expectation is met
     public func expect<E: InEndpoint>(_ endpoint: E, throwingError error: DecreeError) {
-        self.expectations.append(ErrorExpectation(type: E.self, path: endpoint.path, error: error))
+        self.add(InExpectation<E>(path: endpoint.path, returning: .failure(error)))
     }
 
     /// Add expectation for an in endpoint with custom validation
@@ -60,7 +56,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
     public func expect<E: InEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) where E.Service == S {
-        self.expectations.append(ValidatingInputExpectation(type: E.self, path: endpoint.path, validate: validate))
+        self.add(CustomInExpectation<E>(path: endpoint.path, validate: validate))
     }
 
     // MARK: Out Endpoints
@@ -71,7 +67,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return if the expectation is met
     public func expect<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<E.Output, DecreeError>) where E.Service == S {
-        self.expectations.append(OutputExpecation(type: E.self, path: endpoint.path, result: result))
+        self.add(OutExpectation<E>(path: endpoint.path, returning: result))
     }
 
     // MARK: In/Out Endpoints
@@ -85,7 +81,7 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - input: The input to expect
     ///     - result: The result to return if the expectation is met
     public func expect<E: InOutEndpoint>(_ endpoint: E, recieving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
-        self.expectations.append(FixedInputAndOutputExpectation(type: E.self, path: endpoint.path, recieving: input, result: result))
+        self.add(FixedInputInOutExpectation<E>(path: endpoint.path, expectedInput: input, returning: result))
     }
 
     /// Add expectation for an in-out endpoint that will throw an error
@@ -96,9 +92,8 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - error: Error to the throw if the expectation is met
     public func expect<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) where E.Service == S {
-        self.expectations.append(ErrorExpectation(type: E.self, path: endpoint.path, error: error))
+        self.add(InOutExpectation<E>(path: endpoint.path, returning: .failure(error)))
     }
-
 
     /// Add expectation for an in-out endpoint with custom validation
     ///
@@ -106,6 +101,31 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
     public func expect<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) where E.Service == S {
-        self.expectations.append(ValidatingInputAndOutputExpectation(type: E.self, path: endpoint.path, validate: validate))
+        self.add(CustomInOutExpectation<E>(path: endpoint.path, validate: validate))
+    }
+
+    // MARK: Custom
+
+    /// Add a custom expectation
+    ///
+    /// **For advanced uses only**
+    public func add(_ expectation: AnyExpectation) {
+        self.expectations.append(expectation)
+    }
+
+    /// Get the next expectation
+    ///
+    /// **For advanced uses only**
+    ///
+    /// - Parameter endpoint: the endpoint to use for error reporting
+    public func nextExpectation<E: Endpoint>(for endpoint: E) throws -> AnyExpectation {
+        guard !self.expectations.isEmpty else {
+            throw DecreeError(.unexpectedEndpoint(String(describing: E.self)), operationName: E.operationName)
+        }
+        return self.expectations.removeFirst()
+    }
+
+    public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        fatalError("Should not get called. It is special-cased.")
     }
 }

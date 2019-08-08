@@ -33,6 +33,12 @@ class MockingTests: XCTestCase {
         self.mock.expect(Out(), andReturn: .success(TestOutput(date: date)))
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘Out’ was expected.") })
 
+        self.mock.expect(In(), recieving: .init(date: date))
+        XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘In’ was expected.") })
+
+        self.mock.expect(InOut(), recieving: .init(date: date), andReturn: .success(.init(date: date)))
+        XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘InOut’ was expected.") })
+
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ during mocking that was not expected.") })
     }
 
@@ -127,78 +133,80 @@ class MockingTests: XCTestCase {
     }
 
     func testInputEqualityTests() throws {
+        let expectation = EmptyExpectation<Empty>(path: "", returning: .success)
+
         // Strings
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: "string", actual: "string", for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: "string1", actual: "string2", for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: "string", actual: "string", for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: "string1", actual: "string2", for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘string2’ but expected ‘string1’. A difference was found at the root.
             """
         )})
 
         // Data
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: "string".data(using: .utf8)!, actual: "string".data(using: .utf8)!, for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: "string1".data(using: .utf8)!, actual: "string2".data(using: .utf8)!, for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: "string".data(using: .utf8)!, actual: "string".data(using: .utf8)!, for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: "string1".data(using: .utf8)!, actual: "string2".data(using: .utf8)!, for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘7 bytes’ but expected ‘7 bytes’. A difference was found at the root.
             """
         )})
 
         // Number in JSON
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: [1], actual: [1], for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: [1,2], actual: [1,9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: [1], actual: [1], for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: [1,2], actual: [1,9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘[1, 9]’ but expected ‘[1, 2]’. A difference was found at the path ‘1‘.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: [1.1,2.2], actual: [1.1,9.9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertThrowsError(try expectation.validate(expected: [1.1,2.2], actual: [1.1,9.9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘[1.1, 9.9]’ but expected ‘[1.1, 2.2]’. A difference was found at the path ‘1‘.
             """
         )})
 
         // Null in JSON
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: ["one",nil], actual: ["one",nil], for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one",nil], actual: ["one","two"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: ["one",nil], actual: ["one",nil], for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: ["one",nil], actual: ["one","two"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘[Optional("one"), Optional("two")]’ but expected ‘[Optional("one"), nil]’. A difference was found at the path ‘1‘.
             """
         )})
 
         // Dictionary
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: ["one": 1], actual: ["one": 1], for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one": 1], actual: ["one": 9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: ["one": 1], actual: ["one": 1], for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: ["one": 1], actual: ["one": 9], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘["one": 9]’ but expected ‘["one": 1]’. A difference was found at the path ‘one‘.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one": 1], actual: ["two": 1], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertThrowsError(try expectation.validate(expected: ["one": 1], actual: ["two": 1], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘["two": 1]’ but expected ‘["one": 1]’. A difference was found at the path ‘one‘.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: [["one": 1]], actual: [["two": 1]], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertThrowsError(try expectation.validate(expected: [["one": 1]], actual: [["two": 1]], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘[["two": 1]]’ but expected ‘[["one": 1]]’. A difference was found at the path ‘0.one‘.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one": 1, "two": 2], actual: ["one": 1], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).reason, """
+        XCTAssertThrowsError(try expectation.validate(expected: ["one": 1, "two": 2], actual: ["one": 1], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).reason, """
             A request was made to ‘Empty’ with unexpected input.
             """
         )})
 
         // Array
-        XCTAssertNoThrow(try WebServiceMock<TestService>.validate(expected: ["one","two"], actual: ["one","two"], for: Empty()))
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one","two"], actual: ["one","two","three"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertNoThrow(try expectation.validate(expected: ["one","two"], actual: ["one","two"], for: Empty()))
+        XCTAssertThrowsError(try expectation.validate(expected: ["one","two"], actual: ["one","two","three"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘["one", "two", "three"]’ but expected ‘["one", "two"]’. A difference was found at the root.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["one","two"], actual: ["one","other"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertThrowsError(try expectation.validate(expected: ["one","two"], actual: ["one","other"], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘["one", "other"]’ but expected ‘["one", "two"]’. A difference was found at the path ‘1‘.
             """
         )})
-        XCTAssertThrowsError(try WebServiceMock<TestService>.validate(expected: ["array": ["one","two"]], actual: ["array": ["one","other"]], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
+        XCTAssertThrowsError(try expectation.validate(expected: ["array": ["one","two"]], actual: ["array": ["one","other"]], for: Empty()), "", { XCTAssertEqual(($0 as! DecreeError).debugDescription, """
             Error Emptying: A request was made to ‘Empty’ with unexpected input.
             Got ‘["array": ["one", "other"]]’ but expected ‘["array": ["one", "two"]]’. A difference was found at the path ‘array.1‘.
             """
