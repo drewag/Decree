@@ -40,6 +40,28 @@ class MockingTests: XCTestCase {
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ when ‘InOut’ was expected.") })
 
         XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: A request was made to ‘Empty’ during mocking that was not expected.") })
+
+        let pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: Empty.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "empty")
+                pathCalled.fulfill()
+            },
+            andReturn: .success
+        )
+        XCTAssertNoThrow(try Empty().makeSynchronousRequest())
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: Empty.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            andReturn: .success
+        )
+        XCTAssertThrowsError(try Empty().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error emptying: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
     func testInMocking() {
@@ -67,6 +89,78 @@ class MockingTests: XCTestCase {
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: A request was made to ‘In’ when ‘Out’ was expected.") })
 
         XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: A request was made to ‘In’ during mocking that was not expected.") })
+
+        var pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "in")
+                pathCalled.fulfill()
+            },
+            receiving: .init(date: date)
+        )
+        XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            receiving: .init(date: date)
+        )
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "in")
+                pathCalled.fulfill()
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "in")
+                pathCalled.fulfill()
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success
+            }
+        )
+        XCTAssertNoThrow(try In().makeSynchronousRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: In.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success
+            }
+        )
+        XCTAssertThrowsError(try In().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inning: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
     func testOutMocking() throws {
@@ -82,6 +176,28 @@ class MockingTests: XCTestCase {
         XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: A request was made to ‘Out’ when ‘Empty’ was expected.") })
 
         XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: A request was made to ‘Out’ during mocking that was not expected.") })
+
+        let pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: Out.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "out")
+                pathCalled.fulfill()
+            },
+            andReturn: .success(TestOutput(date: date))
+        )
+        XCTAssertNoThrow(try Out().makeSynchronousRequest())
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: Out.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            andReturn: .success(TestOutput(date: date))
+        )
+        XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
     func testInOutMocking() throws {
@@ -118,6 +234,80 @@ class MockingTests: XCTestCase {
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ when ‘Out’ was expected.") })
 
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ during mocking that was not expected.") })
+
+        var pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            receiving: .init(date: date),
+            andReturn: .success(.init(date: date))
+        )
+        XCTAssertNoThrow(try InOut().makeSynchronousRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            receiving: .init(date: date),
+            andReturn: .success(.init(date: date))
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success(TestOutput(date: self.date))
+            }
+        )
+        XCTAssertNoThrow(try InOut().makeSynchronousRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpoint(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success(TestOutput(date: self.date))
+            }
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
     func testMockingWithPath() throws {
@@ -133,7 +323,7 @@ class MockingTests: XCTestCase {
     }
 
     func testInputEqualityTests() throws {
-        let expectation = EmptyExpectation<Empty>(path: "", returning: .success)
+        let expectation = EmptyExpectation<Empty>(pathValidation: { _ in }, returning: .success)
 
         // Strings
         XCTAssertNoThrow(try expectation.validate(expected: "string", actual: "string", for: Empty()))
