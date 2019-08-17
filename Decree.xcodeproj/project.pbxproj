@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		49D65AF922FBC5AB00C79BC6 /* Expectations+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D65AF822FBC5AB00C79BC6 /* Expectations+Validation.swift */; };
+		49D65AF922FBC5AB00C79BC6 /* Expectations+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */; };
 		OBJ_138 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_139 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
 		OBJ_140 /* DecreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* DecreeError.swift */; };
@@ -162,7 +162,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		49D65AF822FBC5AB00C79BC6 /* Expectations+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expectations+Validation.swift"; sourceTree = "<group>"; };
+		49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expectations+Private.swift"; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 				OBJ_42 /* URLResponse+Logging.swift */,
 				OBJ_43 /* WebService+MakeRequest.swift */,
 				OBJ_44 /* WebServiceMock+HandleRequest.swift */,
-				49D65AF822FBC5AB00C79BC6 /* Expectations+Validation.swift */,
+				49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -411,7 +411,7 @@
 			path = Tests/DecreeTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -425,7 +425,6 @@
 				OBJ_131 /* README.md */,
 				OBJ_132 /* Decree.podspec */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_55 /* Helpers */ = {
@@ -653,7 +652,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_124 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -682,7 +681,7 @@
 				OBJ_144 /* ErrorResponse.swift in Sources */,
 				OBJ_145 /* File.swift in Sources */,
 				OBJ_146 /* InputFormat.swift in Sources */,
-				49D65AF922FBC5AB00C79BC6 /* Expectations+Validation.swift in Sources */,
+				49D65AF922FBC5AB00C79BC6 /* Expectations+Private.swift in Sources */,
 				OBJ_147 /* Method.swift in Sources */,
 				OBJ_148 /* NoBasicResponse.swift in Sources */,
 				OBJ_149 /* OutputFormat.swift in Sources */,

@@ -24,8 +24,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return when the expectation is met
-    public func expect<E: EmptyEndpoint>(_ endpoint: E, andReturn result: EmptyResult) where E.Service == S {
-        self.add(EmptyExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: result))
+    @discardableResult
+    public func expect<E: EmptyEndpoint>(_ endpoint: E, andReturn result: EmptyResult) -> EmptyExpectation<E> where E.Service == S {
+        return self.add(EmptyExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: result))
     }
 
     /// Add expectation for an empty endpoint type returning a specific result
@@ -36,8 +37,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - result: The result to return when the expectation is met
-    public func expectEndpoint<E: EmptyEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, andReturn result: EmptyResult) where E.Service == S {
-        self.add(EmptyExpectation<E>(pathValidation: validatingPath, returning: result))
+    @discardableResult
+    public func expectEndpoint<E: EmptyEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, andReturn result: EmptyResult) -> EmptyExpectation<E> where E.Service == S {
+        return self.add(EmptyExpectation<E>(pathValidation: validatingPath, returning: result))
     }
 
     // -------------------------------------------------------------------------------------------
@@ -51,8 +53,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
-    public func expect<E: InEndpoint>(_ endpoint: E, receiving input: E.Input) where E.Input: Encodable, E.Service == S {
-        self.add(FixedInputInExpectation<E>(pathValidation: endpoint.fixedPathValidation, expectedInput: input))
+    @discardableResult
+    public func expect<E: InEndpoint>(_ endpoint: E, receiving input: E.Input) -> FixedInputInExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInExpectation<E>(pathValidation: endpoint.fixedPathValidation, expectedInput: input))
     }
 
     /// Add expectation for an in endpoint type with a specific input
@@ -63,8 +66,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - input: The input to expect
-    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, receiving input: E.Input) where E.Input: Encodable, E.Service == S {
-        self.add(FixedInputInExpectation<E>(pathValidation: validatingPath, expectedInput: input))
+    @discardableResult
+    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, receiving input: E.Input) -> FixedInputInExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInExpectation<E>(pathValidation: validatingPath, expectedInput: input))
     }
 
     /// Add expectation for an in endpoint that will throw an error
@@ -74,8 +78,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - error: Error to the throw if the expectation is met
-    public func expect<E: InEndpoint>(_ endpoint: E, throwingError error: DecreeError) where E.Service == S {
-        self.add(InExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: .failure(error)))
+    @discardableResult
+    public func expect<E: InEndpoint>(_ endpoint: E, throwingError error: DecreeError) -> InExpectation<E> where E.Service == S {
+        return self.add(InExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: .failure(error)))
     }
 
     /// Add expectation for an in endpoint type that will throw an error
@@ -86,8 +91,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - error: Error to the throw if the expectation is met
-    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, throwingError error: DecreeError) where E.Service == S {
-        self.add(InExpectation<E>(pathValidation: validatingPath, returning: .failure(error)))
+    @discardableResult
+    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, throwingError error: DecreeError) -> InExpectation<E> where E.Service == S {
+        return self.add(InExpectation<E>(pathValidation: validatingPath, returning: .failure(error)))
     }
 
     /// Add expectation for an in endpoint with custom validation
@@ -95,8 +101,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expect<E: InEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) where E.Service == S {
-        self.add(CustomInExpectation<E>(pathValidation: endpoint.fixedPathValidation, validate: validate))
+    @discardableResult
+    public func expect<E: InEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) -> CustomInExpectation<E> where E.Service == S {
+        return self.add(CustomInExpectation<E>(pathValidation: endpoint.fixedPathValidation, validate: validate))
     }
 
     /// Add expectation for an in endpoint with custom validation
@@ -105,8 +112,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) where E.Service == S {
-        self.add(CustomInExpectation<E>(pathValidation: validatingPath, validate: validate))
+    @discardableResult
+    public func expectEndpoint<E: InEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, validatingInput validate: @escaping (E.Input) throws -> (EmptyResult)) -> CustomInExpectation<E> where E.Service == S {
+        return self.add(CustomInExpectation<E>(pathValidation: validatingPath, validate: validate))
     }
 
     // -------------------------------------------------------------------------------------------
@@ -118,8 +126,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - result: The result to return if the expectation is met
-    public func expect<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<E.Output, DecreeError>) where E.Service == S {
-        self.add(OutExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: result))
+    @discardableResult
+    public func expect<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<E.Output, DecreeError>) -> OutExpectation<E> where E.Service == S {
+        return self.add(OutExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: result))
     }
 
     /// Add expectation for an out endpoint type returning a specific result
@@ -128,8 +137,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - result: The result to return when the expectation is met
-    public func expectEndpoint<E: OutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, andReturn result: Result<E.Output, DecreeError>) where E.Service == S {
-        self.add(OutExpectation<E>(pathValidation: validatingPath, returning: result))
+    @discardableResult
+    public func expectEndpoint<E: OutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, andReturn result: Result<E.Output, DecreeError>) -> OutExpectation<E> where E.Service == S {
+        return self.add(OutExpectation<E>(pathValidation: validatingPath, returning: result))
     }
 
     // -------------------------------------------------------------------------------------------
@@ -144,8 +154,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - endpoint: The endpoint to expect
     ///     - input: The input to expect
     ///     - result: The result to return if the expectation is met
-    public func expect<E: InOutEndpoint>(_ endpoint: E, receiving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
-        self.add(FixedInputInOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, expectedInput: input, returning: result))
+    @discardableResult
+    public func expect<E: InOutEndpoint>(_ endpoint: E, receiving input: E.Input, andReturn result: Result<E.Output, DecreeError>) -> FixedInputInOutExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, expectedInput: input, returning: result))
     }
 
     /// Add expectation for an in-out endpoint with a specific input and result
@@ -157,8 +168,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - input: The input to expect
     ///     - result: The result to return if the expectation is met
-    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, receiving input: E.Input, andReturn result: Result<E.Output, DecreeError>) where E.Input: Encodable, E.Service == S {
-        self.add(FixedInputInOutExpectation<E>(pathValidation: validatingPath, expectedInput: input, returning: result))
+    @discardableResult
+    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, receiving input: E.Input, andReturn result: Result<E.Output, DecreeError>) -> FixedInputInOutExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInOutExpectation<E>(pathValidation: validatingPath, expectedInput: input, returning: result))
     }
 
     /// Add expectation for an in-out endpoint that will throw an error
@@ -168,8 +180,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - error: Error to the throw if the expectation is met
-    public func expect<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) where E.Service == S {
-        self.add(InOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: .failure(error)))
+    @discardableResult
+    public func expect<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) -> InOutExpectation<E> where E.Service == S {
+        return self.add(InOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: .failure(error)))
     }
 
     /// Add expectation for an in-out endpoint that will throw an error
@@ -180,8 +193,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - error: Error to the throw if the expectation is met
-    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, throwingError error: DecreeError) where E.Service == S {
-        self.add(InOutExpectation<E>(pathValidation: validatingPath, returning: .failure(error)))
+    @discardableResult
+    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, throwingError error: DecreeError) -> InOutExpectation<E> where E.Service == S {
+        return self.add(InOutExpectation<E>(pathValidation: validatingPath, returning: .failure(error)))
     }
 
     /// Add expectation for an in-out endpoint with custom validation
@@ -189,8 +203,9 @@ public class WebServiceMock<S: WebService>: Session {
     /// - Parameters:
     ///     - endpoint: The endpoint to expect
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expect<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) where E.Service == S {
-        self.add(CustomInOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, validate: validate))
+    @discardableResult
+    public func expect<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) -> CustomInOutExpectation<E> where E.Service == S {
+        return self.add(CustomInOutExpectation<E>(pathValidation: endpoint.fixedPathValidation, validate: validate))
     }
 
     /// Add expectation for an in-out endpoint with custom validation
@@ -199,8 +214,9 @@ public class WebServiceMock<S: WebService>: Session {
     ///     - type: The type of endpoint to expect
     ///     - validatingPath: Closure to validate the path of the endpoint is correct
     ///     - validate: A closure to validate the input and return a result to return for the request
-    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) where E.Service == S {
-        self.add(CustomInOutExpectation<E>(pathValidation: validatingPath, validate: validate))
+    @discardableResult
+    public func expectEndpoint<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, validatingInput validate: @escaping (E.Input) throws -> (Result<E.Output, DecreeError>)) -> CustomInOutExpectation<E> where E.Service == S {
+        return self.add(CustomInOutExpectation<E>(pathValidation: validatingPath, validate: validate))
     }
 
     // -------------------------------------------------------------------------------------------
@@ -210,8 +226,10 @@ public class WebServiceMock<S: WebService>: Session {
     /// Add a custom expectation
     ///
     /// **For advanced uses only**
-    public func add(_ expectation: AnyExpectation) {
+    @discardableResult
+    public func add<E: AnyExpectation>(_ expectation: E) -> E {
         self.expectations.append(expectation)
+        return expectation
     }
 
     /// Get the next expectation

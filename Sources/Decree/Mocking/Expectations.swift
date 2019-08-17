@@ -18,6 +18,16 @@ public protocol AnyExpectation {
     static var typeName: String {get}
 
     var pathValidation: PathValidation {get}
+    var waiting: DispatchSemaphore {get}
+}
+
+extension AnyExpectation {
+    /// Wait until the expecation has been met
+    ///
+    /// Only use for asynchronous requests
+    public func wait(timeout: TimeInterval) -> DispatchTimeoutResult {
+        return self.waiting.wait(timeout: .now() + timeout)
+    }
 }
 
 // MARK: Core
@@ -30,6 +40,7 @@ public protocol AnyExpectation {
 open class EmptyExpectation<E: EmptyEndpoint>: AnyExpectation {
     public let pathValidation: PathValidation
     public var returning: EmptyResult
+    public var waiting = DispatchSemaphore(value: 0)
 
     public static var typeName: String {
         return "\(E.self)"
@@ -51,6 +62,7 @@ open class EmptyExpectation<E: EmptyEndpoint>: AnyExpectation {
 open class InExpectation<E: InEndpoint>: AnyExpectation {
     public let pathValidation: PathValidation
     public var returning: EmptyResult
+    public var waiting = DispatchSemaphore(value: 0)
 
     public static var typeName: String {
         return "\(E.self)"
@@ -72,6 +84,7 @@ open class InExpectation<E: InEndpoint>: AnyExpectation {
 open class OutExpectation<E: OutEndpoint>: AnyExpectation {
     public let pathValidation: PathValidation
     public var returning: Result<E.Output, DecreeError>
+    public var waiting = DispatchSemaphore(value: 0)
 
     public static var typeName: String {
         return "\(E.self)"
@@ -93,6 +106,7 @@ open class OutExpectation<E: OutEndpoint>: AnyExpectation {
 open class InOutExpectation<E: InOutEndpoint>: AnyExpectation {
     public let pathValidation: PathValidation
     public var returning: Result<E.Output, DecreeError>
+    public var waiting = DispatchSemaphore(value: 0)
 
     public static var typeName: String {
         return "\(E.self)"

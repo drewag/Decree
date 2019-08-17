@@ -124,6 +124,7 @@ extension MockingTests {
         ("testMockingWithPath", testMockingWithPath),
         ("testOutMocking", testOutMocking),
         ("testStartMockingAgain", testStartMockingAgain),
+        ("testWaiting", testWaiting),
     ]
 }
 

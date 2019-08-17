@@ -17,6 +17,7 @@ extension WebServiceMock {
                     try expectation.validate(path: endpoint.path, for: endpoint)
                     try expectation.validate(endpoint)
                     onComplete(expectation.returning)
+                    expectation.fulfill()
                 default:
                     throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
                 }
@@ -36,6 +37,7 @@ extension WebServiceMock {
                     try expectation.validate(path: endpoint.path, for: endpoint)
                     try expectation.validate(endpoint, input: input)
                     onComplete(expectation.returning)
+                    expectation.fulfill()
                 default:
                     throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
                 }
@@ -55,6 +57,7 @@ extension WebServiceMock {
                     try expectation.validate(path: endpoint.path, for: endpoint)
                     try expectation.validate(endpoint)
                     onComplete(expectation.returning)
+                    expectation.fulfill()
                 default:
                     throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
                 }
@@ -74,6 +77,7 @@ extension WebServiceMock {
                     try expectation.validate(path: endpoint.path, for: endpoint)
                     try expectation.validate(endpoint, input: input)
                     onComplete(expectation.returning)
+                    expectation.fulfill()
                 default:
                     throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
                 }

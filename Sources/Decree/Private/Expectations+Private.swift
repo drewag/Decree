@@ -8,6 +8,10 @@
 import Foundation
 
 extension AnyExpectation {
+    func fulfill() {
+        self.waiting.signal()
+    }
+
     func valuePathDifferentBetween(_ lhs: Any, and rhs: Any, path: String) -> String? {
         if let lhs = lhs as? [String:Any] {
             guard let rhs = rhs as? [String:Any] else {

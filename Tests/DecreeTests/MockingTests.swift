@@ -402,4 +402,44 @@ class MockingTests: XCTestCase {
             """
         )})
     }
+
+    func testWaiting() {
+        let queue = DispatchQueue(label: "back")
+
+        var callbackCalled = false
+        var expectation: AnyExpectation = self.mock.expect(Empty(), andReturn: .success)
+        Empty().makeRequest(callbackQueue: queue) { _ in
+            callbackCalled = true
+        }
+        XCTAssertFalse(callbackCalled)
+        XCTAssertEqual(expectation.wait(timeout: 5), .success)
+        XCTAssertTrue(callbackCalled)
+
+        callbackCalled = false
+        expectation = self.mock.expect(In(), receiving: .init(date: date))
+        In().makeRequest(with: .init(date: date), callbackQueue: queue) { _ in
+            callbackCalled = true
+        }
+        XCTAssertFalse(callbackCalled)
+        XCTAssertEqual(expectation.wait(timeout: 5), .success)
+        XCTAssertTrue(callbackCalled)
+
+        callbackCalled = false
+        expectation = self.mock.expect(Out(), andReturn: .success(.init(date: date)))
+        Out().makeRequest(callbackQueue: queue) { _ in
+            callbackCalled = true
+        }
+        XCTAssertFalse(callbackCalled)
+        XCTAssertEqual(expectation.wait(timeout: 5), .success)
+        XCTAssertTrue(callbackCalled)
+
+        callbackCalled = false
+        expectation = self.mock.expect(InOut(), receiving: .init(date: date), andReturn: .success(.init(date: date)))
+        InOut().makeRequest(with: .init(date: date), callbackQueue: queue) { _ in
+            callbackCalled = true
+        }
+        XCTAssertFalse(callbackCalled)
+        XCTAssertEqual(expectation.wait(timeout: 5), .success)
+        XCTAssertTrue(callbackCalled)
+    }
 }
