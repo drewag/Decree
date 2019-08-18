@@ -411,7 +411,6 @@ class MockingTests: XCTestCase {
         Empty().makeRequest(callbackQueue: queue) { _ in
             callbackCalled = true
         }
-        XCTAssertFalse(callbackCalled)
         XCTAssertEqual(expectation.wait(timeout: 5), .success)
         XCTAssertTrue(callbackCalled)
 
@@ -420,7 +419,6 @@ class MockingTests: XCTestCase {
         In().makeRequest(with: .init(date: date), callbackQueue: queue) { _ in
             callbackCalled = true
         }
-        XCTAssertFalse(callbackCalled)
         XCTAssertEqual(expectation.wait(timeout: 5), .success)
         XCTAssertTrue(callbackCalled)
 
@@ -429,7 +427,6 @@ class MockingTests: XCTestCase {
         Out().makeRequest(callbackQueue: queue) { _ in
             callbackCalled = true
         }
-        XCTAssertFalse(callbackCalled)
         XCTAssertEqual(expectation.wait(timeout: 5), .success)
         XCTAssertTrue(callbackCalled)
 
@@ -438,7 +435,6 @@ class MockingTests: XCTestCase {
         InOut().makeRequest(with: .init(date: date), callbackQueue: queue) { _ in
             callbackCalled = true
         }
-        XCTAssertFalse(callbackCalled)
         XCTAssertEqual(expectation.wait(timeout: 5), .success)
         XCTAssertTrue(callbackCalled)
     }
