@@ -9,7 +9,7 @@ import XCTest
 import Decree
 
 class ProgressTests: MakeRequestTestCase {
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     func testEmptyProgress() {
         #if canImport(ObjectiveC)
             var progress: Double = 1
@@ -40,7 +40,7 @@ class ProgressTests: MakeRequestTestCase {
         #endif
     }
 
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     func testOutRequestFlow() {
         #if canImport(ObjectiveC)
             var progress: Double = 1
@@ -69,7 +69,7 @@ class ProgressTests: MakeRequestTestCase {
         #endif
     }
 
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     func testInRequestFlow() {
         #if canImport(ObjectiveC)
             var progress: Double = 1
@@ -100,7 +100,7 @@ class ProgressTests: MakeRequestTestCase {
         #endif
     }
 
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     func testInOutRequestFlow() {
         #if canImport(ObjectiveC)
             var progress: Double = 1

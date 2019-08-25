@@ -8,7 +8,7 @@
 import Foundation
 
 #if canImport(ObjectiveC)
-@available(iOS 11.0, OSX 10.13, *)
+@available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
 class ProgressObserver: NSObject {
     @objc dynamic var subject: URLSessionTask
     var observation: NSKeyValueObservation?

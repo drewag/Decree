@@ -209,7 +209,7 @@ private extension WebService {
                 }
             }
             #if canImport(ObjectiveC)
-                if #available(iOS 11.0, OSX 10.13, *) {
+                if #available(iOS 11.0, OSX 10.13, tvOS 11.0, *) {
                     if let task = task, let onProgress = onProgress {
                         let observer = ProgressObserver(for: task, callbackQueue: callbackQueue, onChange: onProgress)
                         persistUntilComplete?.append(observer)

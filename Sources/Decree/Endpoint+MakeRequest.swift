@@ -15,7 +15,7 @@ extension EmptyEndpoint {
     /// - Parameter service: service to make the request to
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         self._makeRequest(to: service, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
@@ -65,7 +65,7 @@ extension InEndpoint where Input: Encodable {
     /// - Parameter input: data to pass to endpoint
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         self._makeRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
@@ -120,7 +120,7 @@ extension OutEndpoint where Output: Decodable {
     /// - Parameter service: service to make the request to
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
         self._makeRequest(to: service, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
@@ -176,7 +176,7 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
     /// - Parameter input: data to pass to endpoint
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
-    @available(iOS 11.0, OSX 10.13, *)
+    @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
         self._makeRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
