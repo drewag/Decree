@@ -13,14 +13,22 @@ class TestURLSession: Session {
 
     class StartedTask {
         let request: URLRequest
-        let progress: TestProgress
         let complete: (Data?, URLResponse?, Error?) -> Void
 
-        init(request: URLRequest, progress: TestProgress, complete: @escaping (Data?, URLResponse?, Error?) -> Void) {
-            self.request = request
-            self.complete = complete
-            self.progress = progress
-        }
+        #if canImport(ObjectiveC)
+            let progress: TestProgress
+
+            init(request: URLRequest, progress: TestProgress, complete: @escaping (Data?, URLResponse?, Error?) -> Void) {
+                self.request = request
+                self.complete = complete
+                self.progress = progress
+            }
+        #else
+            init(request: URLRequest, complete: @escaping (Data?, URLResponse?, Error?) -> Void) {
+                self.request = request
+                self.complete = complete
+            }
+        #endif
     }
 
     var startedTasks = [StartedTask]()
@@ -31,6 +39,7 @@ class TestURLSession: Session {
     }
 }
 
+#if canImport(ObjectiveC)
 class TestProgress: Progress {
     var _factionCompleted: Double = 0 {
         willSet {
@@ -47,18 +56,25 @@ class TestProgress: Progress {
         }
     }
 }
+#endif
 
 private class TestURLSessionDataTask: URLSessionDataTask {
     let session: TestURLSession
     let task: TestURLSession.StartedTask
+    #if canImport(ObjectiveC)
     let _progress = TestProgress()
     override var progress: Progress {
         return self._progress
     }
+    #endif
 
     init(session: TestURLSession, request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         self.session = session
-        self.task = .init(request: request, progress: self._progress, complete: completionHandler)
+        #if canImport(ObjectiveC)
+            self.task = .init(request: request, progress: self._progress, complete: completionHandler)
+        #else
+            self.task = .init(request: request, complete: completionHandler)
+        #endif
     }
 
     override func resume() {

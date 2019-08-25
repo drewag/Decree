@@ -208,12 +208,14 @@ private extension WebService {
                     }
                 }
             }
-            if #available(iOS 11.0, OSX 10.13, *) {
-                if let task = task, let onProgress = onProgress {
-                    let observer = ProgressObserver(for: task, callbackQueue: callbackQueue, onChange: onProgress)
-                    persistUntilComplete?.append(observer)
+            #if canImport(ObjectiveC)
+                if #available(iOS 11.0, OSX 10.13, *) {
+                    if let task = task, let onProgress = onProgress {
+                        let observer = ProgressObserver(for: task, callbackQueue: callbackQueue, onChange: onProgress)
+                        persistUntilComplete?.append(observer)
+                    }
                 }
-            }
+            #endif
         }
         catch {
             callbackQueue.async {
