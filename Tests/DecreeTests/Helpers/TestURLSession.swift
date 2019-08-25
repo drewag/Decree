@@ -46,7 +46,6 @@ class TestProgress: Progress {
             self.willChangeValue(for: \.fractionCompleted)
         }
         didSet {
-            print(self._factionCompleted)
             self.didChangeValue(for: \.fractionCompleted)
         }
     }
