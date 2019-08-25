@@ -23,8 +23,8 @@ extension WebService {
     /// - Parameter body: http body the request
     /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on the default queue from URLSession
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
-        self.doMakeRequest(to: nil, for: endpoint, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
+    func makeRequest<E: Endpoint>(to endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+        self.doMakeRequest(to: nil, for: endpoint, input: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
 
     /// JSON encode the given input to data
@@ -134,16 +134,17 @@ extension WebService {
 }
 
 private extension Session {
-    func execute<S: WebService>(_ request: URLRequest, for webService: S, onComplete: @escaping (Data?, URLResponse?, Error?) -> ()) {
+    func execute<S: WebService>(_ request: URLRequest, for webService: S, onComplete: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask? {
         for handlerSpec in AllRequestsHandlers {
             if handlerSpec.service is S.Type {
                 let (data, response, error) = handlerSpec.handler(request)
                 onComplete(data, response, error)
-                return
+                return nil
             }
         }
         let task = self.dataTask(with: request, completionHandler: onComplete)
         task.resume()
+        return task
     }
 }
 
@@ -159,7 +160,16 @@ private extension WebService {
     /// - Parameter endpoint: the endpoint for the request
     /// - Parameter body: http body the request
     /// - Parameter onComplete: callback for when the request completes with the data returned
-    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+    func doMakeRequest<E: Endpoint>(to url: URL?, for endpoint: E, input: RequestInput, callbackQueue: DispatchQueue?, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+        var persistUntilComplete: [AnyObject]? = [AnyObject]()
+        func completionHandler(_ result: Result<Data?, DecreeError>) {
+            onProgress?(1)
+            onComplete(result)
+            persistUntilComplete = nil
+        }
+        callbackQueue.async {
+            onProgress?(0)
+        }
         do {
             let request: URLRequest
             if let url = url {
@@ -171,15 +181,15 @@ private extension WebService {
 
             let session = self.sessionOverride ?? URLSession.shared
             self.log(request, for: endpoint)
-            session.execute(request, for: self) { data, response, error in
+            let task = session.execute(request, for: self) { data, response, error in
                 callbackQueue.async {
                     self.logResponse(data: data, response: response, error: error, for: endpoint)
                     if let error = error {
-                        onComplete(.failure(DecreeError(other: error, for: endpoint)))
+                        completionHandler(.failure(DecreeError(other: error, for: endpoint)))
                         return
                     }
                     guard let response = response else {
-                        onComplete(.failure(endpoint.error(.noResponse)))
+                        completionHandler(.failure(endpoint.error(.noResponse)))
                         return
                     }
                     do {
@@ -191,22 +201,33 @@ private extension WebService {
                             try self.validate(basicResponse, for: endpoint)
                         }
 
-                        onComplete(.success(data))
+                        completionHandler(.success(data))
                     }
                     catch {
-                        self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, callbackQueue: callbackQueue, onComplete: onComplete)
+                        self.handle(error, withResponse: response, data: data, endpoint: endpoint, withInput: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: completionHandler)
                     }
+                }
+            }
+            if #available(iOS 11.0, OSX 10.13, *) {
+                if let task = task, let onProgress = onProgress {
+                    let observer = ProgressObserver(for: task, callbackQueue: callbackQueue, onChange: onProgress)
+                    persistUntilComplete?.append(observer)
                 }
             }
         }
         catch {
             callbackQueue.async {
-                onComplete(.failure(DecreeError(other: error, for: endpoint)))
+                completionHandler(.failure(DecreeError(other: error, for: endpoint)))
             }
         }
     }
 
-    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
+//    func copy(_ session: Session) -> Session {
+//        let copy = URLSession(configuration: session.configuration, delegate: session.delegate, delegateQueue: session.delegateQueue)
+//        return copy
+//    }
+
+    func handle<E: Endpoint>(_ error: Error, withResponse response: URLResponse, data: Data?, endpoint: E, withInput input: RequestInput, callbackQueue: DispatchQueue?, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Data?, DecreeError>) -> ()) {
         let decreeError: DecreeError
         if ErrorResponse.self != NoErrorResponse.self
             , let parsed: ErrorResponse = try? self.parse(from: data, for: endpoint)
@@ -221,7 +242,7 @@ private extension WebService {
         case .error(let new):
             onComplete(.failure(new))
         case .redirect(let url):
-            self.doMakeRequest(to: url, for: endpoint, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
+            self.doMakeRequest(to: url, for: endpoint, input: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
         }
     }
 

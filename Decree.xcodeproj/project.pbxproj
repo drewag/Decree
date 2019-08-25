@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		490F52AF231110D6005C3FEA /* ProgressObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52AE231110D6005C3FEA /* ProgressObserver.swift */; };
+		490F52B123112104005C3FEA /* Endpoint+PrivateMakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */; };
+		490F52B32311F579005C3FEA /* ProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52B22311F579005C3FEA /* ProgressTests.swift */; };
 		49D65AF922FBC5AB00C79BC6 /* Expectations+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */; };
 		OBJ_138 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_139 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
@@ -162,8 +165,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		490F52AE231110D6005C3FEA /* ProgressObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressObserver.swift; sourceTree = "<group>"; };
+		490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+PrivateMakeRequest.swift"; sourceTree = "<group>"; };
+		490F52B22311F579005C3FEA /* ProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTests.swift; sourceTree = "<group>"; };
 		49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expectations+Private.swift"; sourceTree = "<group>"; };
-		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		OBJ_100 /* XMLKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLKey.swift; sourceTree = "<group>"; };
@@ -375,6 +381,8 @@
 				OBJ_43 /* WebService+MakeRequest.swift */,
 				OBJ_44 /* WebServiceMock+HandleRequest.swift */,
 				49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */,
+				490F52AE231110D6005C3FEA /* ProgressObserver.swift */,
+				490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -406,6 +414,7 @@
 				OBJ_69 /* ResponseParsingTests.swift */,
 				OBJ_70 /* StatusCodeValidationTests.swift */,
 				OBJ_71 /* XCTestManifests.swift */,
+				490F52B22311F579005C3FEA /* ProgressTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -704,7 +713,9 @@
 				OBJ_166 /* String+TitleCase.swift in Sources */,
 				OBJ_167 /* URLRequest+Logging.swift in Sources */,
 				OBJ_168 /* URLResponse+Logging.swift in Sources */,
+				490F52AF231110D6005C3FEA /* ProgressObserver.swift in Sources */,
 				OBJ_169 /* WebService+MakeRequest.swift in Sources */,
+				490F52B123112104005C3FEA /* Endpoint+PrivateMakeRequest.swift in Sources */,
 				OBJ_170 /* WebServiceMock+HandleRequest.swift in Sources */,
 				OBJ_171 /* WebService.swift in Sources */,
 			);
@@ -728,6 +739,7 @@
 				OBJ_195 /* EmptyResultTests.swift in Sources */,
 				OBJ_196 /* FileTests.swift in Sources */,
 				OBJ_197 /* FormDataEncoderTests.swift in Sources */,
+				490F52B32311F579005C3FEA /* ProgressTests.swift in Sources */,
 				OBJ_198 /* HTTPStatusTests.swift in Sources */,
 				OBJ_199 /* AuthenticatedService.swift in Sources */,
 				OBJ_200 /* Data+Helpers.swift in Sources */,

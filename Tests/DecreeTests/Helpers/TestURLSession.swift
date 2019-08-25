@@ -13,11 +13,13 @@ class TestURLSession: Session {
 
     class StartedTask {
         let request: URLRequest
+        let progress: TestProgress
         let complete: (Data?, URLResponse?, Error?) -> Void
 
-        init(request: URLRequest, complete: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        init(request: URLRequest, progress: TestProgress, complete: @escaping (Data?, URLResponse?, Error?) -> Void) {
             self.request = request
             self.complete = complete
+            self.progress = progress
         }
     }
 
@@ -29,13 +31,34 @@ class TestURLSession: Session {
     }
 }
 
+class TestProgress: Progress {
+    var _factionCompleted: Double = 0 {
+        willSet {
+            self.willChangeValue(for: \.fractionCompleted)
+        }
+        didSet {
+            print(self._factionCompleted)
+            self.didChangeValue(for: \.fractionCompleted)
+        }
+    }
+    override var fractionCompleted: Double {
+        get {
+            return self._factionCompleted
+        }
+    }
+}
+
 private class TestURLSessionDataTask: URLSessionDataTask {
     let session: TestURLSession
     let task: TestURLSession.StartedTask
+    let _progress = TestProgress()
+    override var progress: Progress {
+        return self._progress
+    }
 
     init(session: TestURLSession, request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         self.session = session
-        self.task = .init(request: request, complete: completionHandler)
+        self.task = .init(request: request, progress: self._progress, complete: completionHandler)
     }
 
     override func resume() {

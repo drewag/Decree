@@ -45,7 +45,7 @@ public protocol WebService {
     /// The default web service to use for requests
     static var shared: Self {get}
 
-    /// **OPTIONAL** URL session to use for requests
+    /// URL session to use for requests
     ///
     /// Defaults to `URLSession.shared`
     var sessionOverride: Session? {get set}

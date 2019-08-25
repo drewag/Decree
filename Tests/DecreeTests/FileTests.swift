@@ -45,6 +45,22 @@ class FileTests: XCTestCase {
         XCTAssertEqual(file.name, "test.json")
         XCTAssertEqual(file.content, #"{"root":"content"}"#.data(using: .utf8)!)
         XCTAssertEqual(file.type, .json)
-
     }
+}
+
+struct DownloadService: WebService {
+    typealias BasicResponse = NoBasicResponse
+    typealias ErrorResponse = NoErrorResponse
+
+    static let shared = DownloadService()
+    var sessionOverride: Session?
+
+    let baseURL = URL(string: "https://drewag.me/assets/img")!
+}
+
+struct Download: OutEndpoint {
+    typealias Service = DownloadService
+    typealias Output = Data
+
+    let path: String = "profile.jpg"
 }

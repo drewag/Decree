@@ -14,6 +14,15 @@ import Foundation
 /// If a request comes in that was not expected, it will throw an error.
 public class WebServiceMock<S: WebService>: Session {
     var expectations = [AnyExpectation]()
+//    public var configuration: URLSessionConfiguration
+//    public var delegate: URLSessionDelegate?
+//    public var delegateQueue: OperationQueue
+
+//    public init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
+//        self.configuration = configuration
+//        self.delegate = delegate
+////        self.delegateQueue = delegateQueues
+//    }
 
     // -------------------------------------------------------------------------------------------
     // MARK: Emtpy Endpoints
