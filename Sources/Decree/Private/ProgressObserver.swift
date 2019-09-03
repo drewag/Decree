@@ -13,21 +13,29 @@ class ProgressObserver: NSObject {
     @objc dynamic var subject: URLSessionTask
     var observation: NSKeyValueObservation?
     let callbackQueue: DispatchQueue?
+    let onChange: (Double) -> ()
 
     init(for subject: URLSessionTask, callbackQueue: DispatchQueue?, onChange: @escaping (Double) -> ()) {
         self.subject = subject
         self.callbackQueue = callbackQueue
+        self.onChange = onChange
 
         super.init()
 
-        self.observation = self.observe(\.subject.progress.fractionCompleted, options: [.initial, .new], changeHandler: { [unowned self] object, change in
-            guard let value = change.newValue else {
-                return
-            }
-            self.callbackQueue.async {
-                onChange(value as Double)
-            }
-        })
+        subject.progress.addObserver(self, forKeyPath: "fractionCompleted", options: [.initial, .new], context: nil)
+    }
+
+    deinit {
+        self.subject.progress.removeObserver(self, forKeyPath: "fractionCompleted")
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let value = change?[NSKeyValueChangeKey.newKey] else {
+            return
+        }
+        self.callbackQueue.async {
+            self.onChange(value as! Double)
+        }
     }
 }
 #endif
