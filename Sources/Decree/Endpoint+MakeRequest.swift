@@ -8,6 +8,7 @@
 import Foundation
 
 extension EmptyEndpoint {
+#if canImport(ObjectiveC)
     /// Make asynchronous request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
@@ -19,6 +20,7 @@ extension EmptyEndpoint {
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         self._makeRequest(to: service, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
+#endif
 
     /// Make asynchronous request to this endpoint
     ///
@@ -55,6 +57,7 @@ extension EmptyEndpoint {
 }
 
 extension InEndpoint where Input: Encodable {
+#if canImport(ObjectiveC)
     /// Make asynchronous request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
@@ -69,6 +72,7 @@ extension InEndpoint where Input: Encodable {
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
         self._makeRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
+#endif
 
     /// Make asynchronous request to this endpoint
     ///
@@ -111,6 +115,7 @@ extension InEndpoint where Input: Encodable {
 }
 
 extension OutEndpoint where Output: Decodable {
+#if canImport(ObjectiveC)
     /// Make asynchronous request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
@@ -124,6 +129,7 @@ extension OutEndpoint where Output: Decodable {
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
         self._makeRequest(to: service, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
+#endif
 
     /// Make asynchronous request to this endpoint
     ///
@@ -166,6 +172,7 @@ extension OutEndpoint where Output: Decodable {
 }
 
 extension InOutEndpoint where Input: Encodable, Output: Decodable {
+#if canImport(ObjectiveC)
     /// Make Asynchronous Request to this endpoint
     ///
     /// This is generally most appropriate in front-ends so that the interface remains reactive
@@ -180,6 +187,7 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
         self._makeRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
     }
+#endif
 
     /// Make Asynchronous Request to this endpoint
     ///
