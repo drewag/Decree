@@ -22,20 +22,14 @@ class ProgressObserver: NSObject {
 
         super.init()
 
-        subject.progress.addObserver(self, forKeyPath: "fractionCompleted", options: [.initial, .new], context: nil)
-    }
-
-    deinit {
-        self.subject.progress.removeObserver(self, forKeyPath: "fractionCompleted")
-    }
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard let value = change?[NSKeyValueChangeKey.newKey] else {
-            return
-        }
-        self.callbackQueue.async {
-            self.onChange(value as! Double)
-        }
+        self.observation = self.subject.progress.observe(\.fractionCompleted, options: [.initial, .new], changeHandler: { [unowned self] object, change in
+            guard let value = change.newValue else {
+                return
+            }
+            self.callbackQueue.async {
+                onChange(value as Double)
+            }
+        })
     }
 }
 #endif
