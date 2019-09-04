@@ -149,6 +149,7 @@ extension ProgressTests {
     // to regenerate.
     static let __allTests__ProgressTests = [
         ("testEmptyProgress", testEmptyProgress),
+        ("testInOutDownloadRequestFlow", testInOutDownloadRequestFlow),
         ("testInOutRequestFlow", testInOutRequestFlow),
         ("testInRequestFlow", testInRequestFlow),
         ("testOutDownloadRequestFlow", testOutDownloadRequestFlow),
