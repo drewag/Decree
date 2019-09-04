@@ -141,7 +141,7 @@ private class TestURLSessionDownloadTask: URLSessionDownloadTask {
         #if canImport(ObjectiveC)
             self.task = .init(request: request, progress: self._progress, complete: completionHandler)
         #else
-            self.task = .init(request: request, complete: completion)
+            self.task = .init(request: request, complete: completionHandler)
         #endif
     }
 

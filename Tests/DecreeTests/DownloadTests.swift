@@ -100,7 +100,7 @@ extension OutEndpoint {
     func makeSynchronousDownloadRequest(to service: Service = Service.shared) throws -> URL {
         let semephore = DispatchSemaphore(value: 0)
         var result: Result<URL, DecreeError>?
-        self.makeDownloadRequest(to: service, callbackQueue: nil, onProgress: nil) { output in
+        self.makeDownloadRequest(to: service, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }
@@ -119,7 +119,7 @@ extension InOutEndpoint where Input: Encodable {
     func makeSynchronousDownloadRequest(to service: Service = Service.shared, with input: Input) throws -> URL {
         let semephore = DispatchSemaphore(value: 0)
         var result: Result<URL, DecreeError>?
-        self.makeDownloadRequest(to: service, with: input, callbackQueue: nil, onProgress: nil) { output in
+        self.makeDownloadRequest(to: service, with: input, callbackQueue: nil) { output in
             result = output
             semephore.signal()
         }
