@@ -32,5 +32,7 @@ class MakeRequestTestCase: XCTestCase {
         TestService.shared.sessionOverride = TestURLSession.test
         self.session.fixedOutput = nil
         self.session.startedTasks.removeAll()
+        self.session.fixedDownloadOutput = nil
+        self.session.startedDownloadTasks.removeAll()
     }
 }

@@ -14,15 +14,6 @@ import Foundation
 /// If a request comes in that was not expected, it will throw an error.
 public class WebServiceMock<S: WebService>: Session {
     var expectations = [AnyExpectation]()
-//    public var configuration: URLSessionConfiguration
-//    public var delegate: URLSessionDelegate?
-//    public var delegateQueue: OperationQueue
-
-//    public init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
-//        self.configuration = configuration
-//        self.delegate = delegate
-////        self.delegateQueue = delegateQueues
-//    }
 
     // -------------------------------------------------------------------------------------------
     // MARK: Emtpy Endpoints
@@ -151,6 +142,27 @@ public class WebServiceMock<S: WebService>: Session {
         return self.add(OutExpectation<E>(pathValidation: validatingPath, returning: result))
     }
 
+    /// Add expectation for a download from an out endpoint returning a specific result
+    ///
+    /// - Parameters:
+    ///     - endpoint: The endpoint to expect
+    ///     - result: The result to return if the expectation is met
+    @discardableResult
+    public func expectDownload<E: OutEndpoint>(_ endpoint: E, andReturn result: Result<URL, DecreeError>) -> OutDownloadExpectation<E> where E.Service == S {
+        return self.add(OutDownloadExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: result))
+    }
+
+    /// Add expectation for a download from an out endpoint type returning a specific result
+    ///
+    /// - Parameters:
+    ///     - type: The type of endpoint to expect
+    ///     - validatingPath: Closure to validate the path of the endpoint is correct
+    ///     - result: The result to return when the expectation is met
+    @discardableResult
+    public func expectEndpointDownload<E: OutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, andReturn result: Result<URL, DecreeError>) -> OutDownloadExpectation<E> where E.Service == S {
+        return self.add(OutDownloadExpectation<E>(pathValidation: validatingPath, returning: result))
+    }
+
     // -------------------------------------------------------------------------------------------
     // MARK: In/Out Endpoints
     // -------------------------------------------------------------------------------------------
@@ -228,6 +240,79 @@ public class WebServiceMock<S: WebService>: Session {
         return self.add(CustomInOutExpectation<E>(pathValidation: validatingPath, validate: validate))
     }
 
+    /// Add expectation for a download from an in-out endpoint with a specific input and result
+    ///
+    /// If the input matches exactly, the request will return the result, otherwise it will throw an error.
+    ///
+    /// - Parameters:
+    ///     - endpoint: The endpoint to expect
+    ///     - input: The input to expect
+    ///     - result: The result to return if the expectation is met
+    @discardableResult
+    public func expectDownload<E: InOutEndpoint>(_ endpoint: E, receiving input: E.Input, andReturn result: Result<URL, DecreeError>) -> FixedInputInOutDownloadExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInOutDownloadExpectation<E>(pathValidation: endpoint.fixedPathValidation, expectedInput: input, returning: result))
+    }
+
+    /// Add expectation for a download from an in-out endpoint with a specific input and result
+    ///
+    /// If the input matches exactly, the request will return the result, otherwise it will throw an error.
+    ///
+    /// - Parameters:
+    ///     - type: The type of endpoint to expect
+    ///     - validatingPath: Closure to validate the path of the endpoint is correct
+    ///     - input: The input to expect
+    ///     - result: The result to return if the expectation is met
+    @discardableResult
+    public func expectEndpointDownload<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, receiving input: E.Input, andReturn result: Result<URL, DecreeError>) -> FixedInputInOutDownloadExpectation<E> where E.Input: Encodable, E.Service == S {
+        return self.add(FixedInputInOutDownloadExpectation<E>(pathValidation: validatingPath, expectedInput: input, returning: result))
+    }
+
+    /// Add expectation for a download from an in-out endpoint that will throw an error
+    ///
+    /// If the endpoint matches, the error will be thrown
+    ///
+    /// - Parameters:
+    ///     - endpoint: The endpoint to expect
+    ///     - error: Error to the throw if the expectation is met
+    @discardableResult
+    public func expectDownload<E: InOutEndpoint>(_ endpoint: E, throwingError error: DecreeError) -> InOutDownloadExpectation<E> where E.Service == S {
+        return self.add(InOutDownloadExpectation<E>(pathValidation: endpoint.fixedPathValidation, returning: .failure(error)))
+    }
+
+    /// Add expectation for a download from an in-out endpoint that will throw an error
+    ///
+    /// If the endpoint matches, the error will be thrown
+    ///
+    /// - Parameters:
+    ///     - type: The type of endpoint to expect
+    ///     - validatingPath: Closure to validate the path of the endpoint is correct
+    ///     - error: Error to the throw if the expectation is met
+    @discardableResult
+    public func expectEndpointDownload<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, throwingError error: DecreeError) -> InOutDownloadExpectation<E> where E.Service == S {
+        return self.add(InOutDownloadExpectation<E>(pathValidation: validatingPath, returning: .failure(error)))
+    }
+
+    /// Add expectation for a download from an in-out endpoint with custom validation
+    ///
+    /// - Parameters:
+    ///     - endpoint: The endpoint to expect
+    ///     - validate: A closure to validate the input and return a result to return for the request
+    @discardableResult
+    public func expectDownload<E: InOutEndpoint>(_ endpoint: E, validatingInput validate: @escaping (E.Input) throws -> (Result<URL, DecreeError>)) -> CustomInOutDownloadExpectation<E> where E.Service == S {
+        return self.add(CustomInOutDownloadExpectation<E>(pathValidation: endpoint.fixedPathValidation, validate: validate))
+    }
+
+    /// Add expectation for a download from an in-out endpoint with custom validation
+    ///
+    /// - Parameters:
+    ///     - type: The type of endpoint to expect
+    ///     - validatingPath: Closure to validate the path of the endpoint is correct
+    ///     - validate: A closure to validate the input and return a result to return for the request
+    @discardableResult
+    public func expectEndpointDownload<E: InOutEndpoint>(ofType type: E.Type, validatingPath: @escaping PathValidation, validatingInput validate: @escaping (E.Input) throws -> (Result<URL, DecreeError>)) -> CustomInOutDownloadExpectation<E> where E.Service == S {
+        return self.add(CustomInOutDownloadExpectation<E>(pathValidation: validatingPath, validate: validate))
+    }
+
     // -------------------------------------------------------------------------------------------
     // MARK: Custom
     // -------------------------------------------------------------------------------------------
@@ -254,6 +339,10 @@ public class WebServiceMock<S: WebService>: Session {
     }
 
     public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        fatalError("Should not get called. It is special-cased.")
+    }
+
+    public func downloadTask(with request: URLRequest, completionHandler: @escaping (URL?, URLResponse?, Error?) -> Void) -> URLSessionDownloadTask {
         fatalError("Should not get called. It is special-cased.")
     }
 }

@@ -24,6 +24,8 @@
 		490F52AF231110D6005C3FEA /* ProgressObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52AE231110D6005C3FEA /* ProgressObserver.swift */; };
 		490F52B123112104005C3FEA /* Endpoint+PrivateMakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */; };
 		490F52B32311F579005C3FEA /* ProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F52B22311F579005C3FEA /* ProgressTests.swift */; };
+		499E17B2231E28080024A6AE /* DecreeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E17B1231E28080024A6AE /* DecreeRequest.swift */; };
+		499E17B4231F1FA40024A6AE /* DownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E17B3231F1FA40024A6AE /* DownloadTests.swift */; };
 		49D65AF922FBC5AB00C79BC6 /* Expectations+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */; };
 		OBJ_138 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Authorization.swift */; };
 		OBJ_139 /* AuthorizationRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* AuthorizationRequirement.swift */; };
@@ -168,6 +170,8 @@
 		490F52AE231110D6005C3FEA /* ProgressObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressObserver.swift; sourceTree = "<group>"; };
 		490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+PrivateMakeRequest.swift"; sourceTree = "<group>"; };
 		490F52B22311F579005C3FEA /* ProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTests.swift; sourceTree = "<group>"; };
+		499E17B1231E28080024A6AE /* DecreeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecreeRequest.swift; sourceTree = "<group>"; };
+		499E17B3231F1FA40024A6AE /* DownloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTests.swift; sourceTree = "<group>"; };
 		49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expectations+Private.swift"; sourceTree = "<group>"; };
 		"Decree::Decree::Product" /* Decree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Decree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Decree::DecreeTests::Product" /* DecreeTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = DecreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -383,6 +387,7 @@
 				49D65AF822FBC5AB00C79BC6 /* Expectations+Private.swift */,
 				490F52AE231110D6005C3FEA /* ProgressObserver.swift */,
 				490F52B023112104005C3FEA /* Endpoint+PrivateMakeRequest.swift */,
+				499E17B1231E28080024A6AE /* DecreeRequest.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -415,6 +420,7 @@
 				OBJ_70 /* StatusCodeValidationTests.swift */,
 				OBJ_71 /* XCTestManifests.swift */,
 				490F52B22311F579005C3FEA /* ProgressTests.swift */,
+				499E17B3231F1FA40024A6AE /* DownloadTests.swift */,
 			);
 			name = DecreeTests;
 			path = Tests/DecreeTests;
@@ -684,6 +690,7 @@
 				OBJ_138 /* Authorization.swift in Sources */,
 				OBJ_139 /* AuthorizationRequirement.swift in Sources */,
 				OBJ_140 /* DecreeError.swift in Sources */,
+				499E17B2231E28080024A6AE /* DecreeRequest.swift in Sources */,
 				OBJ_141 /* DecreeErrorDescribable.swift in Sources */,
 				OBJ_142 /* EmptyResult.swift in Sources */,
 				OBJ_143 /* ErrorHandling.swift in Sources */,
@@ -752,6 +759,7 @@
 				OBJ_207 /* KeyValueEncoderTests.swift in Sources */,
 				OBJ_208 /* LoggerTests.swift in Sources */,
 				OBJ_209 /* MakeRequestTestCase.swift in Sources */,
+				499E17B4231F1FA40024A6AE /* DownloadTests.swift in Sources */,
 				OBJ_210 /* MockingTests.swift in Sources */,
 				OBJ_211 /* RequestFlowTests.swift in Sources */,
 				OBJ_212 /* ResponseParsingTests.swift in Sources */,

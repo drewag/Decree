@@ -14,7 +14,8 @@ extension EmptyEndpoint {
     /// This is generally most appropriate in front-ends so that the interface remains reactive
     ///
     /// - Parameter service: service to make the request to
-    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
     /// - Parameter onComplete: Callback when the request is complete
     @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
@@ -66,7 +67,8 @@ extension InEndpoint where Input: Encodable {
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
-    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
     /// - Parameter onComplete: Callback when the request is complete
     @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: EmptyResult) -> ()) {
@@ -123,7 +125,8 @@ extension OutEndpoint where Output: Decodable {
     /// **Important**: The Output must be Decodable
     ///
     /// - Parameter service: service to make the request to
-    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ result: Result<Output, DecreeError>) -> ()) {
@@ -171,6 +174,41 @@ extension OutEndpoint where Output: Decodable {
     }
 }
 
+extension OutEndpoint {
+    /// Make asynchronous download request to this endpoint
+    ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The URL in the callback is only guaranteed
+    /// to exist until the callback returns. If you want to keep the file around, you must move
+    /// it somewhere else or open it for reading.
+    ///
+    /// - Parameter service: service to make the request to
+    /// - Parameter callbackQueue: Queue to execute the onComplete callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onComplete: Callback when the request is complete that includes url to the downloaded data
+    public func makeDownloadRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        self._makeDownloadRequest(to: service, callbackQueue: callbackQueue, onProgress: nil, onComplete: onComplete)
+    }
+
+#if canImport(ObjectiveC)
+    /// Make asynchronous download request to this endpoint
+    ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The URL in the callback is only guaranteed
+    /// to exist until the callback returns. If you want to keep the file around, you must move
+    /// it somewhere else or open it for reading.
+    ///
+    /// - Parameter service: service to make the request to
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
+    /// - Parameter onComplete: Callback when the request is complete that includes url to the downloaded data
+    public func makeDownloadRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        self._makeDownloadRequest(to: service, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
+    }
+#endif
+}
+
 extension InOutEndpoint where Input: Encodable, Output: Decodable {
 #if canImport(ObjectiveC)
     /// Make Asynchronous Request to this endpoint
@@ -181,7 +219,8 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
     ///
     /// - Parameter service: service to make the request to
     /// - Parameter input: data to pass to endpoint
-    /// - Parameter callbackQueue: Queue to execute the onComplete callback on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
     /// - Parameter onComplete: Callback when the request is complete that includes output if successful
     @available(iOS 11.0, OSX 10.13, tvOS 11.0, *)
     public func makeRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ error: Result<Output, DecreeError>) -> ()) {
@@ -203,7 +242,7 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
         self._makeRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: nil, onComplete: onComplete)
     }
 
-    /// Make Asynchronous Request to this endpoint
+    /// Make synchronous Request to this endpoint
     ///
     /// This is generally most appropriate on back-ends to keep the handling of requests on the same thread
     ///
@@ -229,4 +268,41 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
             throw error
         }
     }
+}
+
+extension InOutEndpoint where Input: Encodable {
+    /// Make asynchronous download request to this endpoint
+    ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The Input must be Encodable and the URL in the callback is only guaranteed
+    /// to exist until the callback returns. If you want to keep the file around, you must move
+    /// it somewhere else or open it for reading.
+    ///
+    /// - Parameter service: service to make the request to
+    /// - Parameter input: data to pass to endpoint
+    /// - Parameter callbackQueue: Queue to execute the onComplete callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onComplete: Callback when the request is complete that includes url to the downloaded data
+    public func makeDownloadRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        self._makeDownloadRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: nil, onComplete: onComplete)
+    }
+
+#if canImport(ObjectiveC)
+    /// Make asynchronous download request to this endpoint
+    ///
+    /// This is generally most appropriate in front-ends so that the interface remains reactive
+    ///
+    /// **Important**: The Input must be Encodable and the URL in the callback is only guaranteed
+    /// to exist until the callback returns. If you want to keep the file around, you must move
+    /// it somewhere else or open it for reading.
+    ///
+    /// - Parameter service: service to make the request to
+    /// - Parameter input: data to pass to endpoint
+    /// - Parameter callbackQueue: Queue to execute the onComplete and onProgress callbacks on. If nil, it will execute on an unpredictable queue. Defaults to the main queue.
+    /// - Parameter onProgress: Callback that periodically reports the request's progress
+    /// - Parameter onComplete: Callback when the request is complete that includes url to the downloaded data
+    public func makeDownloadRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())?, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        self._makeDownloadRequest(to: service, with: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
+    }
+#endif
 }

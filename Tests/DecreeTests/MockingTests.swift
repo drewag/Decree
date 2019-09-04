@@ -11,6 +11,7 @@ import XCTest
 class MockingTests: XCTestCase {
     let date = Date(timeIntervalSince1970: -14182980)
     let otherDate = Date(timeIntervalSince1970: -14182981)
+    let url = URL(string: "http://example.com")!
     var mock: WebServiceMock<TestService>!
 
     override func setUp() {
@@ -200,6 +201,43 @@ class MockingTests: XCTestCase {
         XCTAssertThrowsError(try Out().makeSynchronousRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
+    func testOutDownloadMocking() throws {
+        XCTAssertThrowsError(try Out().makeSynchronousDownloadRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: A request was made to ‘Out’ during mocking that was not expected.") })
+
+        self.mock.expectDownload(Out(), andReturn: .success(url))
+        XCTAssertEqual(try Out().makeSynchronousDownloadRequest().absoluteString, "http://example.com")
+
+        self.mock.expectDownload(Out(), andReturn: .failure(DecreeError(.unauthorized)))
+        XCTAssertThrowsError(try Out().makeSynchronousDownloadRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+
+        self.mock.expectDownload(InOut(), receiving: .init(date: nil), andReturn: .failure(DecreeError(.unauthorized)))
+        XCTAssertThrowsError(try Out().makeSynchronousDownloadRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: A request was made to ‘Out’ when ‘InOut’ was expected.") })
+
+        XCTAssertThrowsError(try Out().makeSynchronousDownloadRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: A request was made to ‘Out’ during mocking that was not expected.") })
+
+        let pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpointDownload(
+            ofType: Out.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "out")
+                pathCalled.fulfill()
+            },
+            andReturn: .success(url)
+        )
+        XCTAssertNoThrow(try Out().makeSynchronousDownloadRequest())
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpointDownload(
+            ofType: Out.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            andReturn: .success(url)
+        )
+        XCTAssertThrowsError(try Out().makeSynchronousDownloadRequest(), "", { XCTAssertEqual($0.localizedDescription, "Error outing: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+    }
+
     func testInOutMocking() throws {
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ during mocking that was not expected.") })
 
@@ -308,6 +346,116 @@ class MockingTests: XCTestCase {
             }
         )
         XCTAssertThrowsError(try InOut().makeSynchronousRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+    }
+
+    func testInOutDownloadMocking() throws {
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ during mocking that was not expected.") })
+
+        self.mock.expectDownload(InOut(), receiving: .init(date: date), andReturn: .success(url))
+        XCTAssertEqual(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)).absoluteString, "http://example.com")
+
+        self.mock.expectDownload(InOut(), receiving: .init(date: date), andReturn: .failure(DecreeError(.unauthorized)))
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+
+        self.mock.expectDownload(InOut(), receiving: .init(date: otherDate), andReturn: .success(url))
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ with unexpected input.") })
+
+        self.mock.expectDownload(InOut(), throwingError: DecreeError(.unauthorized))
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+
+        self.mock.expectDownload(InOut(), validatingInput: { _ in return .failure(DecreeError(.unauthorized)) })
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+
+        self.mock.expectDownload(InOut(), validatingInput: { input in
+            XCTAssertEqual(input.date, self.date)
+            return .success(self.url)
+        })
+        XCTAssertEqual(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)).absoluteString, "http://example.com")
+
+        self.mock.expectDownload(InOut(), validatingInput: { input in
+            XCTAssertEqual(input.date, self.date)
+            return .failure(DecreeError(.unauthorized))
+        })
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+
+        self.mock.expectDownload(Out(), andReturn: .success(url))
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ when ‘Out’ was expected.") })
+
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: A request was made to ‘InOut’ during mocking that was not expected.") })
+
+        var pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            receiving: .init(date: date),
+            andReturn: .success(url)
+        )
+        XCTAssertNoThrow(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            receiving: .init(date: date),
+            andReturn: .success(url)
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error making request: You are not logged in.") })
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            throwingError: DecreeError(.unauthorized)
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
+
+        pathCalled = expectation(description: "validating path called")
+        pathCalled.assertForOverFulfill = true
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                XCTAssertEqual(path, "inout")
+                pathCalled.fulfill()
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success(self.url)
+            }
+        )
+        XCTAssertNoThrow(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)))
+        wait(for: [pathCalled], timeout: 0)
+
+        self.mock.expectEndpointDownload(
+            ofType: InOut.self,
+            validatingPath: { path in
+                throw OtherError("other")
+            },
+            validatingInput: { input in
+                XCTAssertEqual(input.date, self.date)
+                return .success(self.url)
+            }
+        )
+        XCTAssertThrowsError(try InOut().makeSynchronousDownloadRequest(with: .init(date: date)), "", { XCTAssertEqual($0.localizedDescription, "Error inouting: An internal error has occured. If it continues, please contact support with the description \"other\"") })
     }
 
     func testMockingWithPath() throws {

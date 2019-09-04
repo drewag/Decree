@@ -74,11 +74,55 @@ extension WebServiceMock {
         }
     }
 
+    func handleDownload<E: OutEndpoint>(for endpoint: E, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<URL, DecreeError>) -> ()) {
+        do {
+            let next = try self.nextExpectation(for: endpoint)
+            switch next {
+            case let expectation as OutDownloadExpectation<E>:
+                try expectation.validate(path: endpoint.path, for: endpoint)
+                try expectation.validate(endpoint)
+                DispatchQueue(label: "background").async {
+                    callbackQueue.async {
+                        onComplete(expectation.returning)
+                        expectation.fulfill()
+                    }
+                }
+            default:
+                throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
+            }
+        }
+        catch {
+            onComplete(.failure(DecreeError(other: error, for: endpoint)))
+        }
+    }
+
     func handle<E: InOutEndpoint>(for endpoint: E, input: E.Input, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<E.Output, DecreeError>) -> ()) where E.Input: Encodable {
         do {
             let next = try self.nextExpectation(for: endpoint)
             switch next {
             case let expectation as InOutExpectation<E>:
+                try expectation.validate(path: endpoint.path, for: endpoint)
+                try expectation.validate(endpoint, input: input)
+                DispatchQueue(label: "background").async {
+                    callbackQueue.async {
+                        onComplete(expectation.returning)
+                        expectation.fulfill()
+                    }
+                }
+            default:
+                throw DecreeError(.incorrectExpecation(expected: type(of: next).typeName, actual: "\(E.self)"), operationName: E.operationName)
+            }
+        }
+        catch {
+            onComplete(.failure(DecreeError(other: error, for: endpoint)))
+        }
+    }
+
+    func handleDownload<E: InOutEndpoint>(for endpoint: E, input: E.Input, callbackQueue: DispatchQueue?, onComplete: @escaping (_ result: Result<URL, DecreeError>) -> ()) where E.Input: Encodable {
+        do {
+            let next = try self.nextExpectation(for: endpoint)
+            switch next {
+            case let expectation as InOutDownloadExpectation<E>:
                 try expectation.validate(path: endpoint.path, for: endpoint)
                 try expectation.validate(endpoint, input: input)
                 DispatchQueue(label: "background").async {

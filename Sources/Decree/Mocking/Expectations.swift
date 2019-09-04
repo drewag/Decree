@@ -98,6 +98,28 @@ open class OutExpectation<E: OutEndpoint>: AnyExpectation {
     open func validate(_ endpoint: E) throws {}
 }
 
+/// An expectation for a download from an out endpoint
+///
+/// You will only have to use this type for advanced
+/// mock expectations. The vast majority of the time you will
+/// use the built in expectations through [WebServiceMock](x-source-tag://WebServiceMock).
+open class OutDownloadExpectation<E: OutEndpoint>: AnyExpectation {
+    public let pathValidation: PathValidation
+    public var returning: Result<URL, DecreeError>
+    public var waiting = DispatchSemaphore(value: 0)
+
+    public static var typeName: String {
+        return "\(E.self)"
+    }
+
+    public init(pathValidation: @escaping PathValidation, returning: Result<URL, DecreeError>) {
+        self.pathValidation = pathValidation
+        self.returning = returning
+    }
+
+    open func validate(_ endpoint: E) throws {}
+}
+
 /// An expectation for an InOutEndpoint
 ///
 /// You will only have to use this type for advanced
@@ -113,6 +135,28 @@ open class InOutExpectation<E: InOutEndpoint>: AnyExpectation {
     }
 
     public init(pathValidation: @escaping PathValidation, returning: Result<E.Output, DecreeError>) {
+        self.pathValidation = pathValidation
+        self.returning = returning
+    }
+
+    open func validate(_ endpoint: E, input: E.Input) throws {}
+}
+
+/// An expectation for download from an InOutEndpoint
+///
+/// You will only have to use this type for advanced
+/// mock expectations. The vast majority of the time you will
+/// use the built in expectations through [WebServiceMock](x-source-tag://WebServiceMock).
+open class InOutDownloadExpectation<E: InOutEndpoint>: AnyExpectation {
+    public let pathValidation: PathValidation
+    public var returning: Result<URL, DecreeError>
+    public var waiting = DispatchSemaphore(value: 0)
+
+    public static var typeName: String {
+        return "\(E.self)"
+    }
+
+    public init(pathValidation: @escaping PathValidation, returning: Result<URL, DecreeError>) {
         self.pathValidation = pathValidation
         self.returning = returning
     }
@@ -181,6 +225,25 @@ public class FixedInputInOutExpectation<E: InOutEndpoint>: InOutExpectation<E> w
     }
 }
 
+/// An expectation for a download from an InOutEndpoint endpoint with fixed input
+///
+/// You will only have to use this type for advanced
+/// mock expectations. The vast majority of the time you will
+/// use the built in expectations through [WebServiceMock](x-source-tag://WebServiceMock).
+public class FixedInputInOutDownloadExpectation<E: InOutEndpoint>: InOutDownloadExpectation<E> where E.Input: Encodable {
+    public let expectedInput: E.Input
+
+    public init(pathValidation: @escaping PathValidation, expectedInput: E.Input, returning: Result<URL, DecreeError>) {
+        self.expectedInput = expectedInput
+
+        super.init(pathValidation: pathValidation, returning: returning)
+    }
+
+    public override func validate(_ endpoint: E, input: E.Input) throws {
+        try self.validate(expected: self.expectedInput, actual: input, for: endpoint)
+    }
+}
+
 /// An expectation for an InOutEndpoint endpoint with a custom validator closure
 ///
 /// You will only have to use this type for advanced
@@ -190,6 +253,25 @@ public class CustomInOutExpectation<E: InOutEndpoint>: InOutExpectation<E> {
     public let validate: (E.Input) throws -> Result<E.Output, DecreeError>
 
     public init(pathValidation: @escaping PathValidation, validate: @escaping (E.Input) throws -> Result<E.Output, DecreeError>) {
+        self.validate = validate
+
+        super.init(pathValidation: pathValidation, returning: .failure(DecreeError(.custom("Default expectation error.", details: nil, isInternal: false))))
+    }
+
+    public override func validate(_ endpoint: E, input: E.Input) throws {
+        self.returning = try self.validate(input)
+    }
+}
+
+/// An expectation for a download from an InOutEndpoint endpoint with a custom validator closure
+///
+/// You will only have to use this type for advanced
+/// mock expectations. The vast majority of the time you will
+/// use the built in expectations through [WebServiceMock](x-source-tag://WebServiceMock).
+public class CustomInOutDownloadExpectation<E: InOutEndpoint>: InOutDownloadExpectation<E> {
+    public let validate: (E.Input) throws -> Result<URL, DecreeError>
+
+    public init(pathValidation: @escaping PathValidation, validate: @escaping (E.Input) throws -> Result<URL, DecreeError>) {
         self.validate = validate
 
         super.init(pathValidation: pathValidation, returning: .failure(DecreeError(.custom("Default expectation error.", details: nil, isInternal: false))))

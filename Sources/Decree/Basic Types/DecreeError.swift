@@ -48,6 +48,9 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
         /// No data was returned
         case missingData
 
+        /// No url was returned
+        case missingUrl
+
         /// Failure to decode
         case decoding(typeName: String, DecodingError)
 
@@ -124,6 +127,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return "No response returned."
         case .missingData:
             return "No data returned."
+        case .missingUrl:
+            return "No URL returned."
         case .decoding(let typeName, _):
             return "Failed to decode \(typeName)."
         case .parsed(let parsed, _):
@@ -192,6 +197,8 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return "The data task did not return an error, but it also didn't return a response."
         case .missingData:
             return "The data task did not return an error, but it also didn't return any data."
+        case .missingUrl:
+            return "The download task did not return an error, but it also didn't return any url."
         case .decoding(let typeName, let decodingError):
             var details = ""
 
@@ -309,7 +316,7 @@ public struct DecreeError: LocalizedError, CustomStringConvertible, CustomDebugS
             return false
         case .encoding:
             return true
-        case .noResponse, .missingData, .decoding:
+        case .noResponse, .missingData, .decoding, .missingUrl:
             return true
         case .parsed(let parsed, _):
             return parsed.isInternal

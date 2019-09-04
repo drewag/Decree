@@ -100,6 +100,16 @@ extension OutEndpoint where Output: Decodable {
     }
 }
 
+extension OutEndpoint {
+    func _makeDownloadRequest(to service: Service = Service.shared, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())? = nil, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
+            mock.handleDownload(for: self, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+        service.makeDownloadRequest(to: self, input: .none, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
+    }
+}
+
 extension InOutEndpoint where Input: Encodable, Output: Decodable {
     /// Make Asynchronous Request to this endpoint
     ///
@@ -132,6 +142,25 @@ extension InOutEndpoint where Input: Encodable, Output: Decodable {
                     }
                 }
             }
+        }
+        catch {
+            callbackQueue.async {
+                onComplete(.failure(DecreeError(other: error, for: self)))
+            }
+        }
+    }
+}
+
+extension InOutEndpoint where Input: Encodable {
+    func _makeDownloadRequest(to service: Service = Service.shared, with input: Input, callbackQueue: DispatchQueue? = DispatchQueue.main, onProgress: ((Double) -> ())? = nil, onComplete: @escaping (_ error: Result<URL, DecreeError>) -> ()) {
+        if let mock = service.sessionOverride as? WebServiceMock<Service> {
+            mock.handleDownload(for: self, input: input, callbackQueue: callbackQueue, onComplete: onComplete)
+            return
+        }
+
+        do {
+            let input = try service.encode(input: input, for: self)
+            service.makeDownloadRequest(to: self, input: input, callbackQueue: callbackQueue, onProgress: onProgress, onComplete: onComplete)
         }
         catch {
             callbackQueue.async {
