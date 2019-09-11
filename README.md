@@ -66,6 +66,11 @@ Allows setting [authorization](https://github.com/drewag/Decree/wiki/Declaring-W
 - [Bearer](https://swagger.io/docs/specification/authentication/bearer-authentication)
 - Custom - Custom HTTP header key and value
 
+**Advanced Functionality**
+
+- Download result to a file for to save memory on large requests.
+- Optionally get progress updates through an onProgress handler
+
 **Configurable**
 
 You can *optionally* perform [advanced configuration](https://github.com/drewag/Decree/wiki/Declaring-Web-Services#configuration) to the processing of a request and response.
@@ -174,6 +179,34 @@ Or we can make a synchronous requests that returns the output if successful and 
 ```swift
 let token = try Login().makeSynchronousRequest(with: .init(username: "username", password: "secret")).token
 ```
+
+### Download
+
+For endpoints with larger output, we can download them directly to a file instead of holding the whole response in memory.
+
+```swift
+struct GetDocument: OutEndpoint {
+    typealias Service = ExampleService
+    typealias Output = Data
+
+	let id: Int
+
+    var path: String {
+	    return "documents/\(id)"
+    }
+}
+
+GetDocument(id: 42).makeDownloadRequest() { result in
+    switch result {
+    case .success(let url):
+        // open or move the url
+    case .failure(let error):
+        print("Error :( \(error)")
+    }
+}
+```
+
+Note, you use a the `makeDownloadRequest` method on any endpoint with output (regardless of it's format), but it often makes most sense with raw data output.
 
 ### The Service Definition
 
