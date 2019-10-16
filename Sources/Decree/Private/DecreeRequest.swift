@@ -209,8 +209,8 @@ private extension DecreeRequest {
     /// - Parameter input: the input to upload
     ///
     /// - Returns: the URL to send the input to
-    func createUrl<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URL{
-        var withoutQuery = self.service.baseURL
+    func createUrl<E: Endpoint>(to endpoint: E, input: RequestInput) throws -> URL {
+        var withoutQuery = endpoint.baseURLOverride ?? self.service.baseURL
         if !endpoint.path.isEmpty {
             withoutQuery.appendPathComponent(endpoint.path)
         }

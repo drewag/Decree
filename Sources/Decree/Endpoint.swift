@@ -5,6 +5,8 @@
 //  Created by Andrew J Wagner on 7/20/19.
 //
 
+import Foundation
+
 /// Core requirements for all endpoints
 ///
 /// Do not implment this protocol directly. Instead, implement
@@ -20,6 +22,12 @@ public protocol Endpoint {
 
     /// The path to be appended to the Service's base URL
     var path: String {get}
+
+    /// **OPTIONAL** Override the base URL for the web service
+    ///
+    /// This is useful when trying to make a request to a different URL,
+    /// especially when the full URL is variable.
+    var baseURLOverride: URL? {get}
 
     /// Set the requirements regarding authentication
     ///
@@ -93,6 +101,9 @@ extension Endpoint {
 
     /// Defaults to undefined
     public static var successStatus: HTTPStatus? { return nil }
+
+    /// Defaults to not overriding
+    public var baseURLOverride: URL? { return nil }
 
     /// Create a custom Decree error
     ///
