@@ -54,6 +54,10 @@ struct TestService: WebService {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
 
+    func configure<E>(_ encoder: inout KeyValueEncoder, for endpoint: E) throws where E : Endpoint {
+        encoder.dateEncodingStrategy = .secondsSince1970
+    }
+
     struct Redirect: Error {}
 
     func validate<E: Endpoint>(_ response: URLResponse, for endpoint: E) throws {

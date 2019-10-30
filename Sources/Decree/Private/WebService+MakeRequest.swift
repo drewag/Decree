@@ -98,7 +98,8 @@ extension WebService {
                 try self.configure(&encoder, for: endpoint)
                 return .xml(try encoder.encode(input, withRootKey: rootNode))
             case .urlQuery:
-                let encoder = KeyValueEncoder(codingPath: [])
+                var encoder = KeyValueEncoder(codingPath: [])
+                try self.configure(&encoder, for: endpoint)
                 try input.encode(to: encoder)
                 return .urlQuery(encoder.values.map { value in
                     switch value.1 {
@@ -115,13 +116,15 @@ extension WebService {
                     }
                 })
             case .formURLEncoded:
-                let encoder = KeyValueEncoder(codingPath: [])
+                var encoder = KeyValueEncoder(codingPath: [])
+                try self.configure(&encoder, for: endpoint)
                 try input.encode(to: encoder)
                 let body = FormURLEncoder.encode(encoder.values)
                 let data = body.data(using: .utf8) ?? Data()
                 return .formURLEncoded(data)
             case .formData:
-                let encoder = KeyValueEncoder(codingPath: [])
+                var encoder = KeyValueEncoder(codingPath: [])
+                try self.configure(&encoder, for: endpoint)
                 try input.encode(to: encoder)
                 let data = FormDataEncoder.encode(encoder.values)
                 return .formData(data)

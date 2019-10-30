@@ -38,7 +38,7 @@ class KeyValueEncoderTests: XCTestCase {
 
         XCTAssertTrue(encoder.values.contains(where: { $0 == "string" && $1 == .string("some string")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-14182980.0")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-992490180.0")}))
 
         XCTAssertTrue(encoder.values.contains(where: { $0 == "data" && $1 == .data("some data".data(using: .utf8)!)}))
 
@@ -72,7 +72,7 @@ class KeyValueEncoderTests: XCTestCase {
 
         XCTAssertTrue(encoder.values.contains(where: { $0 == "singleString" && $1 == .string("some string")}))
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-14182980.0")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-992490180.0")}))
 
         XCTAssertTrue(encoder.values.contains(where: { $0 == "singleData" && $1 == .data("some data".data(using: .utf8)!)}))
 
@@ -84,6 +84,91 @@ class KeyValueEncoderTests: XCTestCase {
 
         XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file1)}))
         XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file2)}))
+    }
+
+    func testDateEncodingStrategyDeferredToDate() throws {
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.dateEncodingStrategy = .deferredToDate
+        try Object().encode(to: encoder)
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-992490180.0")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-992490180.0")}))
+    }
+
+    func testDateEncodingStrategySecondsSince1970() throws {
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.dateEncodingStrategy = .secondsSince1970
+        try Object().encode(to: encoder)
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-14182980")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-14182980")}))
+    }
+
+    func testDateEncodingStrategyMillisecondsSince1970() throws {
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.dateEncodingStrategy = .millisecondsSince1970
+        try Object().encode(to: encoder)
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("-14182980000")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("-14182980000")}))
+    }
+
+    func testDateEncodingStrategyFormatted() throws {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'"
+        formatter.locale = Locale(identifier: "en_US")
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.dateEncodingStrategy = .formatted(formatter)
+        try Object().encode(to: encoder)
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("1969-07-20T14:17:00")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("1969-07-20T14:17:00")}))
+    }
+
+    func testArrayEncodingStrategyRepetitionWithBrackets() throws {
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.arrayEncodingStrategy = .repetitionWithBrackets
+        try Object().encode(to: encoder)
+
+        let file1 = File(name: "test.txt", text: "test content")
+        let file2 = File(name: "test2.txt", text: "test content 2")
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array[]" && $1 == .string("three")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray[]" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray[]" && $1 == .file(file2)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray[]" && $1 == .string("three")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray[]" && $1 == .file(file2)}))
+    }
+
+    func testArrayEncodingStrategyRepetition() throws {
+        let encoder = KeyValueEncoder(codingPath: [])
+        encoder.arrayEncodingStrategy = .repetition
+        try Object().encode(to: encoder)
+
+        let file1 = File(name: "test.txt", text: "test content")
+        let file2 = File(name: "test2.txt", text: "test content 2")
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "array" && $1 == .string("three")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "filesArray" && $1 == .file(file2)}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray" && $1 == .string("one")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray" && $1 == .string("two")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleArray" && $1 == .string("three")}))
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray" && $1 == .file(file1)}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleFilesArray" && $1 == .file(file2)}))
     }
 }
 

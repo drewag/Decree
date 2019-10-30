@@ -100,7 +100,7 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], nil)
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
-        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in?date=-14182980.0&string=weird%26%3D?%3C%3Echaracters&nullValue")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/in?date=-14182980&string=weird%26%3D?%3C%3Echaracters&nullValue")
         self.session.startedTasks[0].complete(successData, TestResponse(), nil)
         XCTAssertNil(result?.error)
     }
@@ -118,7 +118,7 @@ class RequestFlowTests: MakeRequestTestCase {
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], nil)
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
-        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout?date=-14182980.0&string=weird%26%3D?%3C%3Echaracters&nullValue")
+        XCTAssertEqual(self.session.startedTasks[0].request.url?.absoluteString, "https://example.com/inout?date=-14182980&string=weird%26%3D?%3C%3Echaracters&nullValue")
         self.session.startedTasks[0].complete(validOutData, TestResponse(), nil)
         XCTAssertEqual(result?.output?.date.timeIntervalSince1970, -14182980)
     }
@@ -132,7 +132,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980.0&string=weird%26%3D%3F%3C%3Echaracters&nullValue=")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980&string=weird%26%3D%3F%3C%3Echaracters&nullValue=")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -150,7 +150,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980.0&string=weird%26%3D%3F%3C%3Echaracters&nullValue=")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "date=-14182980&string=weird%26%3D%3F%3C%3Echaracters&nullValue=")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -168,7 +168,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "PUT")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980.0\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "multipart/form-data; charset=utf-8; boundary=__DECREE_BOUNDARY__")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
@@ -186,7 +186,7 @@ class RequestFlowTests: MakeRequestTestCase {
 
         XCTAssertEqual(self.session.startedTasks.count, 1)
         XCTAssertEqual(self.session.startedTasks[0].request.httpMethod, "POST")
-        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980.0\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
+        XCTAssertEqual(self.session.startedTasks[0].request.httpBody?.string, "--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n-14182980\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"string\"\r\n\r\nweird&=?<>characters\r\n--__DECREE_BOUNDARY__\r\nContent-Disposition: form-data; name=\"nullValue\"\r\n\r\n--__DECREE_BOUNDARY__--")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Accept"], "application/json")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Content-Type"], "multipart/form-data; charset=utf-8; boundary=__DECREE_BOUNDARY__")
         XCTAssertEqual(self.session.startedTasks[0].request.allHTTPHeaderFields?["Test"], "VALUE")
