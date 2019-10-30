@@ -7,6 +7,9 @@
 
 import XCTest
 import Decree
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 class AllRequestHandlingTests: XCTestCase {
     override func tearDown() {

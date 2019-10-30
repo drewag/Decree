@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 /// Set expectations for [mocking a WebService](x-source-tag://WebServiceMocking)
 /// - Tag: WebServiceMock

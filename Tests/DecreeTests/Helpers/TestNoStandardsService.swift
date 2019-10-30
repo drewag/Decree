@@ -8,6 +8,9 @@
 import Foundation
 import Decree
 import XMLCoder
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 struct TestNoStandardsService: WebService {
     typealias BasicResponse = NoBasicResponse

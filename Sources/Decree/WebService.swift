@@ -7,6 +7,9 @@
 
 import Foundation
 import XMLCoder
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 /// Root of a given request
 ///

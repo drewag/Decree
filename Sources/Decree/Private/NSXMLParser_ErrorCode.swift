@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationXML)
+    import FoundationXML
+#endif
 
 extension XMLParser.ErrorCode: CustomStringConvertible {
     public var description: String {
@@ -196,8 +199,6 @@ extension XMLParser.ErrorCode: CustomStringConvertible {
             return "Missing DTD."
         case .delegateAbortedParseError:
             return "Delegate aborted parse."
-        @unknown default:
-            return "Unkown Error"
         }
     }
 }

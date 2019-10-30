@@ -122,8 +122,6 @@ class KeyValueEncoderTests: XCTestCase {
         encoder.dateEncodingStrategy = .formatted(formatter)
         try Object().encode(to: encoder)
 
-        print(encoder.values)
-
         XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("1969-07-20T20:17:00")}))
         XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("1969-07-20T20:17:00")}))
     }

@@ -7,6 +7,9 @@
 
 import Foundation
 import Decree
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 class TestURLSession: Session {
     static let test = TestURLSession()
