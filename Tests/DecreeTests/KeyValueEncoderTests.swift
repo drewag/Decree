@@ -117,12 +117,15 @@ class KeyValueEncoderTests: XCTestCase {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'"
         formatter.locale = Locale(identifier: "en_US")
+        formatter.timeZone = TimeZone(identifier: "UTC")
         let encoder = KeyValueEncoder(codingPath: [])
         encoder.dateEncodingStrategy = .formatted(formatter)
         try Object().encode(to: encoder)
 
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("1969-07-20T14:17:00")}))
-        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("1969-07-20T14:17:00")}))
+        print(encoder.values)
+
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "date" && $1 == .string("1969-07-20T20:17:00")}))
+        XCTAssertTrue(encoder.values.contains(where: { $0 == "singleDate" && $1 == .string("1969-07-20T20:17:00")}))
     }
 
     func testArrayEncodingStrategyRepetitionWithBrackets() throws {

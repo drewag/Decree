@@ -2,22 +2,28 @@ trigger:
 - master
 
 jobs:
-- job: Xcode10_2
+- job: Xcode11_1
   pool:
     vmImage: 'macos-latest'
   steps:
-  - bash: Tests/test_xcodebuild.sh Xcode_10.2.1
+  - bash: Tests/test_xcodebuild.sh Xcode_11.1
     env:
-      IOS_DEVICE: 'platform=iOS Simulator,OS=12.2,name=iPhone SE'
-      TVOS_DEVICE: 'platform=tvOS Simulator,OS=12.2,name=Apple TV 4K'
+      IOS_DEVICE: 'platform=iOS Simulator,OS=13.1,name=iPhone SE'
+      TVOS_DEVICE: 'platform=tvOS Simulator,OS=13.1,name=Apple TV 4K'
 - job: SwiftPM
   pool:
     vmImage: 'macos-latest'
   steps:
   - script: Tests/test_swiftpm.sh
-- job: Linux
+- job: Linux_5_0
   pool:
     vmImage: 'Ubuntu 16.04'
   container: norionomura/swift:501
+  steps:
+  - script: Tests/test_swiftpm.sh
+- job: Linux_5_1
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  container: norionomura/swift:51
   steps:
   - script: Tests/test_swiftpm.sh
